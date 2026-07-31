@@ -1,0 +1,126 @@
+@import "tailwindcss";
+
+/*
+  Palette rule, and the one idea the whole site is built on:
+  colour encodes epistemic status.
+
+  --signal (warm)  a measured, verified, defensible number
+  --model  (cool)  something a model produced — an estimate, a simulation
+  --risk   (red)   downside, floor breach
+
+  Nothing on this site is warm unless it is true.
+*/
+
+@theme {
+  --color-ink: #0e1418;
+  --color-surface: #161d22;
+  --color-surface-2: #1c252b;
+  --color-line: #263239;
+  --color-line-bright: #35454e;
+
+  --color-fg: #e8eff2;
+  --color-fg-2: #93a6b0;
+  --color-fg-3: #5f7581;
+
+  --color-signal: #ffb454;
+  --color-signal-dim: #7a5624;
+  --color-model: #5ac8e8;
+  --color-model-dim: #245c6e;
+  --color-risk: #e5484d;
+
+  --font-display: var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-plex-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, monospace;
+}
+
+html {
+  background: var(--color-ink);
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  color: var(--color-fg);
+  font-family: var(--font-sans);
+}
+
+::selection {
+  background: var(--color-signal);
+  color: var(--color-ink);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-signal);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* Numbers are instruments. They always set in mono, always tabular. */
+.num {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+}
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-fg-3);
+}
+
+.rule {
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    var(--color-line-bright),
+    var(--color-line) 30%,
+    transparent
+  );
+}
+
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+  cursor: grab;
+}
+input[type="range"]:active {
+  cursor: grabbing;
+}
+input[type="range"]::-webkit-slider-runnable-track {
+  height: 2px;
+  background: var(--color-line-bright);
+}
+input[type="range"]::-moz-range-track {
+  height: 2px;
+  background: var(--color-line-bright);
+}
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  margin-top: -9px;
+  border-radius: 50%;
+  background: var(--color-signal);
+  border: 3px solid var(--color-ink);
+  box-shadow: 0 0 0 1px var(--color-signal);
+}
+input[type="range"]::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--color-signal);
+  border: 3px solid var(--color-ink);
+  box-shadow: 0 0 0 1px var(--color-signal);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
