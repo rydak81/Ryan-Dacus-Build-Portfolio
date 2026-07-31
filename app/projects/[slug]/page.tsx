@@ -3,6 +3,8 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { projects, bySlug, tier1, type Project } from '@/lib/projects';
 import CorrelationExplorer from '@/components/CorrelationExplorer';
+import RecoverySimulator from '@/components/RecoverySimulator';
+import BayesianExplorer from '@/components/BayesianExplorer';
 import ArchitectureDiagram from '@/components/ArchitectureDiagram';
 
 export function generateStaticParams() {
@@ -100,6 +102,39 @@ export default async function ProjectPage({
           </p>
           <div className="mt-8">
             <CorrelationExplorer />
+          </div>
+        </section>
+      )}
+
+      {p.interactive === 'recovery' && (
+        <section className="pb-16">
+          <p className="eyebrow">Run it yourself</p>
+          <h2 className="mt-4 text-2xl tracking-tight md:text-3xl" style={{ fontFamily: 'var(--font-display)' }}>
+            The corrected model, in your browser
+          </h2>
+          <p className="mt-4 max-w-2xl leading-relaxed text-fg-2">
+            The bottom-up recovery model from the same engine, on illustrative
+            inputs. Drag them — especially selling price — and watch which ones
+            the recovery rate actually answers to.
+          </p>
+          <div className="mt-8">
+            <RecoverySimulator />
+          </div>
+        </section>
+      )}
+
+      {p.interactive === 'bayesian' && (
+        <section className="pb-16">
+          <p className="eyebrow">Run it yourself</p>
+          <h2 className="mt-4 text-2xl tracking-tight md:text-3xl" style={{ fontFamily: 'var(--font-display)' }}>
+            The inference layer, in your browser
+          </h2>
+          <p className="mt-4 max-w-2xl leading-relaxed text-fg-2">
+            The dashboard&rsquo;s Beta-conjugate updating, on an illustrative
+            partner. Feed it a small sample and watch it refuse to overreact.
+          </p>
+          <div className="mt-8">
+            <BayesianExplorer />
           </div>
         </section>
       )}
