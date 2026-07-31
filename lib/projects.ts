@@ -334,6 +334,24 @@ export const projects: Project[] = [
     stack: ['Next.js', 'React', 'TypeScript', 'Financial modeling'],
   },
   {
+    slug: '3t-recovery-wizard',
+    title: '3T Recovery Wizard',
+    org: 'Threecolts',
+    tier: 2,
+    group: 'Financial & Acquisition Analysis',
+    status: 'Live',
+    role: 'Designed and built solo',
+    problem:
+      'A recovery estimate on its own is half an answer: a seller sees how large the opportunity could be, but not how likely it is to actually pay out.',
+    built:
+      'A guided recovery estimator built for the Threecolts team. It pairs an estimated recovery value with an estimated probability that the recovery lands, drawing on historical recovery data and simulation runs — so an opportunity carries a likelihood as well as a size.',
+    changed:
+      'Gives sellers and the team a clearer read on recovery potential: every opportunity carries how much and how likely, not just a headline number.',
+    stack: ['Next.js', 'React', 'Vercel', 'Simulation modeling'],
+    url: 'https://v0-3trecovery-wizard.vercel.app',
+    note: 'Built for internal Threecolts team use.',
+  },
+  {
     slug: 'acquisition-analyzer',
     title: 'Universal Business Acquisition Analyzer',
     org: 'BeaconPath Holdings',
@@ -471,7 +489,6 @@ export const projects: Project[] = [
   // TODO — live on Vercel, needs identification before publishing
   // v0-partnership-intelligence-hub  (LIVE, most recently updated)
   // v0-opportunity-estimator-app
-  // v0-3trecovery-wizard
   // v0-partner-landing-page
   // vehicle-fishstick
   // agentmail-template-starkhq
