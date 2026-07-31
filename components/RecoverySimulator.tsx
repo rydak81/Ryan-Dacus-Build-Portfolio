@@ -23,6 +23,8 @@ const BAR_GAP = 4;
 const AXIS_MAX = SENSITIVITY_BUMP * 1.25;
 
 const usd = (n: number) => '$' + Math.round(n).toLocaleString('en-US');
+const usdCents = (n: number) =>
+  '$' + n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 const pct1 = (n: number) => (n * 100).toFixed(1) + '%';
 const pct2 = (n: number) => (n * 100).toFixed(2) + '%';
 
@@ -69,7 +71,7 @@ export default function RecoverySimulator() {
         />
         <Stat
           label="Reimbursement per lost unit"
-          value={usd(result.reimbPerUnit)}
+          value={usdCents(result.reimbPerUnit)}
           tone="model"
           sub="landed COGS, not retail price"
         />
