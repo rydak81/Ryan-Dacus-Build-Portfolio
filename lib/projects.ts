@@ -190,16 +190,16 @@ export const projects: Project[] = [
     org: 'Threecolts',
     tier: 2,
     group: 'Revenue Systems & Forecasting',
-    status: 'Built',
+    status: 'Live',
     role: 'Designed and built solo',
     problem:
       'Partners sign after getting excited about the revenue share, then go quiet and never actually introduce anyone. Time-to-first-referral ran around ninety days, and the standard response — more check-in calls — treats the symptom.',
     built:
-      'A partner portal that does the operational work on the partner\u2019s behalf so the friction between intent and action approaches zero. Eight sections: a personalised dashboard, a seven-milestone onboarding timeline, a twelve-asset pitch toolkit, copy-to-clipboard email templates, a LinkedIn post library, a co-marketing calendar, deal registration, and a tier and revenue dashboard. Behind it, a full Next.js App Router architecture across thirteen routes with a Supabase schema, row-level security policies, and Resend notifications.',
+      'A partner portal that does the operational work on the partner\u2019s behalf so the friction between intent and action approaches zero. Eight sections: a personalised dashboard, a seven-milestone onboarding timeline, a twelve-asset pitch toolkit, copy-to-clipboard email templates, a LinkedIn post library, a co-marketing calendar, deal registration, and a tier and revenue dashboard. Behind it, a full Next.js App Router architecture across thirteen routes with a Supabase schema, row-level security policies, and Resend notifications. The referral loop runs end to end: a partner submits a qualified referral, Resend fires the notifications, the referral lands in the database, and a live tracking sheet plus a per-partner dashboard \u2014 scoped so each partner sees only their own referrals \u2014 keep the partner\u2019s view current.',
     changed:
-      'Designed against a target of cutting time-to-first-referral from roughly ninety days to fourteen. Built as a working prototype with the production architecture specced end to end.',
+      'Designed against a target of cutting time-to-first-referral from roughly ninety days to fourteen. Deployed as a live pilot for a single partner on the partner\u2019s own dedicated domain.',
     stack: ['React', 'Next.js', 'Recharts', 'Supabase / PostgreSQL', 'Row-level security', 'Resend'],
-    note: 'Design target, not a measured result.',
+    note: 'The 14-day figure is a design target, not a measured result. The pilot partner is not named or linked here \u2014 real partner names stay off this site.',
   },
   {
     slug: 'prospecting-command-center',
@@ -344,10 +344,10 @@ export const projects: Project[] = [
     problem:
       'A recovery estimate on its own is half an answer: a seller sees how large the opportunity could be, but not how likely it is to actually pay out.',
     built:
-      'A guided recovery estimator built for the Threecolts team. It pairs an estimated recovery value with an estimated probability that the recovery lands, drawing on historical recovery data and simulation runs — so an opportunity carries a likelihood as well as a size.',
+      'A guided recovery estimator built for the Threecolts team. It pairs an estimated recovery value with an estimated probability that the recovery lands, drawing on historical recovery data and simulation runs — so an opportunity carries a likelihood as well as a size. New recovery data entered in the app is stored in a connected Supabase database, and the estimator is designed as a continuous-improvement loop: every engagement added grows the historical base the next estimate draws on.',
     changed:
-      'Gives sellers and the team a clearer read on recovery potential: every opportunity carries how much and how likely, not just a headline number.',
-    stack: ['Next.js', 'React', 'Vercel', 'Simulation modeling'],
+      'Gives sellers and the team a clearer read on recovery potential: every opportunity carries how much and how likely, not just a headline number — and the tool is built to sharpen as its recovery history grows.',
+    stack: ['Next.js', 'React', 'Supabase / PostgreSQL', 'Vercel', 'Simulation modeling'],
     url: 'https://v0-3trecovery-wizard.vercel.app',
     note: 'Built for internal Threecolts team use.',
   },
