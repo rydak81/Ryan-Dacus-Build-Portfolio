@@ -38,4 +38,8 @@ together; each deal's marginal close probability is preserved exactly.
 
 ## Deploy
 
-Push to GitHub, import at vercel.com, add the domain. No env vars needed yet.
+Push to GitHub, import at vercel.com, add the domain.
+
+One optional env var: `ANTHROPIC_API_KEY` (Vercel → Project Settings →
+Environment Variables) enables the Role Lens. Without it the feature
+quietly disables itself and the site works normally.

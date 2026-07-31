@@ -1,6 +1,17 @@
 import Link from 'next/link';
 import CorrelationExplorer from '@/components/CorrelationExplorer';
-import { tier1, tier2, tier3, groups, byGroup, type Project } from '@/lib/projects';
+import RoleLens, { type LensProject } from '@/components/RoleLens';
+import { projects, tier1, tier2, tier3, groups, byGroup, type Project } from '@/lib/projects';
+
+/** The compact slice of lib/projects.ts the Role Lens renders from. */
+const LENS_DATA: LensProject[] = projects.map((p) => ({
+  slug: p.slug,
+  title: p.title,
+  org: p.org,
+  status: p.status,
+  problem: p.problem,
+  stack: p.stack,
+}));
 
 const EMAIL = 'ryandacus@gmail.com';
 const LINKEDIN = 'https://linkedin.com/in/ryandacus-sbc';
@@ -12,8 +23,10 @@ export default function Home() {
       <Hero />
       <Proof />
       <Method />
-      <SelectedWork />
-      <EverythingElse />
+      <RoleLens data={LENS_DATA}>
+        <SelectedWork />
+        <EverythingElse />
+      </RoleLens>
       <Stack />
       <ThroughLine />
       <Contact />
@@ -132,7 +145,7 @@ function Method() {
 
 function SelectedWork() {
   return (
-    <section id="work" className="pb-20 md:pb-28">
+    <section className="pb-20 md:pb-28">
       <SectionHead
         eyebrow="Selected work"
         title="Five that carry the most weight"
