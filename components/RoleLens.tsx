@@ -73,9 +73,10 @@ export default function RoleLens({
   return (
     <div id="work">
       <section className="pb-14">
+        <div className="rule mb-8" />
         <p className="eyebrow">Role lens</p>
         <h2
-          className="mt-4 max-w-3xl text-2xl tracking-tight md:text-4xl"
+          className="mt-4 max-w-3xl text-3xl tracking-tight md:text-4xl"
           style={{ fontFamily: 'var(--font-display)' }}
         >
           Reading this for a specific role?

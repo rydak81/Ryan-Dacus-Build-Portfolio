@@ -46,14 +46,14 @@ export default async function ProjectPage({
         </Link>
       </nav>
 
-      <header className="pt-10 pb-12 md:pt-14">
+      <header className="pt-10 pb-14 md:pt-16">
         <div className="flex flex-wrap items-center gap-3">
           <StatusBadge status={p.status} />
           <span className="eyebrow">{p.org}</span>
           <span className="eyebrow">{p.role}</span>
         </div>
         <h1
-          className="mt-6 text-3xl leading-tight tracking-tight md:text-5xl"
+          className="mt-6 max-w-4xl text-4xl leading-[1.06] tracking-tight md:text-5xl"
           style={{ fontFamily: 'var(--font-display)' }}
         >
           {p.title}
@@ -207,7 +207,8 @@ function Section({
   accent?: boolean;
 }) {
   return (
-    <section className="pb-14">
+    <section className="pb-16">
+      <div className="rule mb-8" />
       <div className="flex items-baseline gap-4">
         <span className="num text-xs text-signal">{n}</span>
         <h2 className="text-2xl tracking-tight md:text-3xl" style={{ fontFamily: 'var(--font-display)' }}>

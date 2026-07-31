@@ -39,41 +39,47 @@ export default function Home() {
 
 function Hero() {
   return (
-    <header className="pt-20 pb-14 md:pt-32 md:pb-20">
-      <p className="eyebrow">Greenville, SC · Partnerships &amp; revenue systems</p>
-      <h1
-        className="mt-6 max-w-4xl text-4xl leading-[1.05] tracking-tight md:text-6xl"
-        style={{ fontFamily: 'var(--font-display)' }}
-      >
-        I sell technology
-        <br />
-        I actually know how to build.
-      </h1>
-      <p className="mt-7 max-w-2xl text-lg leading-relaxed text-fg-2">
-        Twenty years in e-commerce revenue — Amazon seller, founding sales hire,
-        partnerships lead. Somewhere in that run I stopped filing requests for
-        the tools I needed and started building them. Everything below came out
-        of a problem I hit inside my own work.
-      </p>
-      <div className="mt-9 flex flex-wrap items-center gap-x-3 gap-y-3">
-        <a
-          href="#work"
-          className="border border-signal bg-signal px-5 py-2.5 text-sm font-medium text-ink transition-opacity hover:opacity-85"
+    <header className="relative pt-24 pb-16 md:pt-40 md:pb-24">
+      <div
+        aria-hidden
+        className="hero-grid pointer-events-none absolute -inset-x-8 -top-10 bottom-0"
+      />
+      <div className="relative">
+        <p className="rise eyebrow">Greenville, SC · Partnerships &amp; revenue systems</p>
+        <h1
+          className="rise rise-1 mt-7 max-w-5xl text-[2.6rem] leading-[1.04] tracking-tight md:text-[4.25rem]"
+          style={{ fontFamily: 'var(--font-display)' }}
         >
-          See the work
-        </a>
-        <a
-          href={`mailto:${EMAIL}`}
-          className="border border-line-bright px-5 py-2.5 text-sm text-fg transition-colors hover:border-fg-2"
-        >
-          Get in touch
-        </a>
-        <a
-          href={GITHUB}
-          className="num px-2 py-2.5 text-sm text-fg-3 underline decoration-line-bright underline-offset-4 transition-colors hover:text-fg-2"
-        >
-          github.com/rydak81
-        </a>
+          I sell technology
+          <br />
+          I actually know how to build.
+        </h1>
+        <p className="rise rise-2 mt-8 max-w-2xl text-lg leading-relaxed text-fg-2">
+          Twenty years in e-commerce revenue — Amazon seller, founding sales hire,
+          partnerships lead. Somewhere in that run I stopped filing requests for
+          the tools I needed and started building them. Everything below came out
+          of a problem I hit inside my own work.
+        </p>
+        <div className="rise rise-3 mt-10 flex flex-wrap items-center gap-x-3 gap-y-3">
+          <a
+            href="#work"
+            className="border border-signal bg-signal px-6 py-3 text-sm font-medium text-ink transition-opacity hover:opacity-85"
+          >
+            See the work
+          </a>
+          <a
+            href={`mailto:${EMAIL}`}
+            className="border border-line-bright px-6 py-3 text-sm text-fg transition-colors hover:border-fg-2"
+          >
+            Get in touch
+          </a>
+          <a
+            href={GITHUB}
+            className="num px-2 py-3 text-sm text-fg-3 underline decoration-line-bright underline-offset-4 transition-colors hover:text-fg-2"
+          >
+            github.com/rydak81
+          </a>
+        </div>
       </div>
     </header>
   );
@@ -83,7 +89,7 @@ function Hero() {
 
 function Proof() {
   return (
-    <section className="pb-20 md:pb-28">
+    <section className="pb-24 md:pb-32">
       <SectionHead
         eyebrow="Live model — not a screenshot"
         title="Your pipeline forecast is lying to you about risk"
@@ -119,7 +125,7 @@ const STEPS: [string, string][] = [
 
 function Method() {
   return (
-    <section className="pb-20 md:pb-28">
+    <section className="pb-24 md:pb-32">
       <SectionHead
         eyebrow="Method"
         title="How every one of these got built"
@@ -145,7 +151,7 @@ function Method() {
 
 function SelectedWork() {
   return (
-    <section className="pb-20 md:pb-28">
+    <section className="pb-24 md:pb-32">
       <SectionHead
         eyebrow="Selected work"
         title="Five that carry the most weight"
@@ -162,7 +168,7 @@ function SelectedWork() {
 
 function FeatureCard({ p }: { p: Project }) {
   return (
-    <article className="bg-surface p-6 md:p-8">
+    <article className="bg-surface p-6 md:p-10">
       <div className="flex flex-wrap items-center gap-3">
         <StatusBadge status={p.status} />
         <span className="eyebrow">{p.org}</span>
@@ -186,7 +192,7 @@ function FeatureCard({ p }: { p: Project }) {
         <dl className="mt-6 grid gap-px border border-line bg-line sm:grid-cols-2 lg:grid-cols-4">
           {p.metrics.map((m) => (
             <div key={m.label} className="bg-surface-2 px-4 py-3">
-              <dd className="num text-lg text-signal">{m.value}</dd>
+              <dd className="num text-xl text-signal md:text-2xl">{m.value}</dd>
               <dt className="mt-1 text-[11px] leading-snug text-fg-3">
                 {m.label}
               </dt>
@@ -245,7 +251,7 @@ function FeatureCard({ p }: { p: Project }) {
 
 function EverythingElse() {
   return (
-    <section className="pb-20 md:pb-28">
+    <section className="pb-24 md:pb-32">
       <SectionHead eyebrow="Everything else" title="The rest of the shelf" />
       <div className="mt-9 space-y-12">
         {groups.map((g) => {
@@ -336,7 +342,7 @@ const STACK: [string, string[]][] = [
 
 function Stack() {
   return (
-    <section className="pb-20 md:pb-28">
+    <section className="pb-24 md:pb-32">
       <SectionHead eyebrow="Stack" title="What I actually work in" />
       <dl className="mt-9 divide-y divide-line border-y border-line">
         {STACK.map(([label, items]) => (
@@ -358,10 +364,10 @@ function Stack() {
 
 function ThroughLine() {
   return (
-    <section className="border-y border-line py-16 md:py-24">
+    <section className="border-y border-line py-20 md:py-28">
       <p className="eyebrow">The through line</p>
       <p
-        className="mt-7 max-w-4xl text-xl leading-relaxed md:text-2xl"
+        className="mt-7 max-w-4xl text-2xl leading-relaxed md:text-3xl"
         style={{ fontFamily: 'var(--font-display)' }}
       >
         None of these came from a roadmap, a ticket, or an assignment. Each one
@@ -384,9 +390,9 @@ function ThroughLine() {
 
 function Contact() {
   return (
-    <section className="py-20 md:py-28">
+    <section className="py-24 md:py-32">
       <h2
-        className="text-3xl tracking-tight md:text-4xl"
+        className="text-4xl tracking-tight md:text-5xl"
         style={{ fontFamily: 'var(--font-display)' }}
       >
         Open to a conversation.
@@ -443,9 +449,10 @@ function SectionHead({
 }) {
   return (
     <div>
+      <div className="rule mb-8" />
       <p className="eyebrow">{eyebrow}</p>
       <h2
-        className="mt-4 max-w-3xl text-2xl tracking-tight md:text-4xl"
+        className="mt-4 max-w-3xl text-3xl tracking-tight md:text-4xl"
         style={{ fontFamily: 'var(--font-display)' }}
       >
         {title}

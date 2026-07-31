@@ -79,6 +79,58 @@ body {
   );
 }
 
+/*
+  The one orchestrated motion moment: the hero settles into place once,
+  on load. Nothing else on the site animates. The reduced-motion guard at
+  the bottom of this file zeroes these durations automatically.
+*/
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.rise {
+  animation: rise 0.7s cubic-bezier(0.2, 0.7, 0.3, 1) both;
+}
+.rise-1 {
+  animation-delay: 0.08s;
+}
+.rise-2 {
+  animation-delay: 0.18s;
+}
+.rise-3 {
+  animation-delay: 0.3s;
+}
+
+/* Faint plotting grid behind the hero. An instrument, not a brochure. */
+.hero-grid {
+  background-image:
+    linear-gradient(
+      color-mix(in srgb, var(--color-surface-2) 70%, transparent) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--color-surface-2) 70%, transparent) 1px,
+      transparent 1px
+    );
+  background-size: 56px 56px;
+  /* Fade well inside the element so no hard grid edge is ever visible. */
+  mask-image: radial-gradient(ellipse 62% 68% at 34% 34%, black, transparent 68%);
+  -webkit-mask-image: radial-gradient(ellipse 62% 68% at 34% 34%, black, transparent 68%);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
 input[type="range"] {
   -webkit-appearance: none;
   appearance: none;
