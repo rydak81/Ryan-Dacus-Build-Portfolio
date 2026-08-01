@@ -23,6 +23,9 @@ const plexMono = IBM_Plex_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_SITE_URL ?? 'https://ryandacus.com'
+  ),
   title: 'Ryan Dacus — Revenue systems, forecasting, applied AI',
   description:
     'Twenty years in e-commerce revenue, and a working portfolio of the systems I built rather than waited for: AI pipelines, probabilistic forecasting engines, and partner infrastructure.',

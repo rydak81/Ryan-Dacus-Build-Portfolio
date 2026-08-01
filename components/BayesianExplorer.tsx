@@ -87,11 +87,12 @@ export default function BayesianExplorer() {
         />
       </div>
 
-      {/* Chart */}
-      <div className="px-3 pt-5 pb-1 md:px-5">
+      {/* Chart. Scrolls horizontally on small screens so the marker labels
+          stay legible instead of scaling down with the SVG. */}
+      <div className="overflow-x-auto px-3 pt-5 pb-1 md:px-5">
         <svg
           viewBox={`0 0 ${W} ${H}`}
-          className="w-full"
+          className="w-full min-w-[520px]"
           role="img"
           aria-label={`Prior and posterior densities of the partner activation rate. With ${k} activations in ${n} observations, the naive rate is ${
             naive !== null ? pct(naive) : 'undefined'

@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import CorrelationExplorer from '@/components/CorrelationExplorer';
+import DeferredMount from '@/components/DeferredMount';
 import RoleLens, { type LensProject } from '@/components/RoleLens';
 import { projects, tier1, tier2, tier3, groups, byGroup, type Project } from '@/lib/projects';
 
@@ -96,7 +97,9 @@ function Proof() {
         lede="Standard forecasting treats every deal as independent. They aren't — quarter-end pressure, budget cycles, and shared activation capacity make them move together. This is the copula model from my forecasting engine, running in your browser."
       />
       <div className="mt-9">
-        <CorrelationExplorer />
+        <DeferredMount minHeight={620}>
+          <CorrelationExplorer />
+        </DeferredMount>
       </div>
     </section>
   );

@@ -20,13 +20,15 @@
 
   --color-fg: #e8eff2;
   --color-fg-2: #93a6b0;
-  --color-fg-3: #5f7581;
+  /* Brightened from #5f7581 for WCAG AA: ≥4.5:1 on both surfaces. */
+  --color-fg-3: #75909f;
 
   --color-signal: #ffb454;
   --color-signal-dim: #7a5624;
   --color-model: #5ac8e8;
   --color-model-dim: #245c6e;
-  --color-risk: #e5484d;
+  /* Brightened from #e5484d for WCAG AA: ≥4.5:1 on both surfaces. */
+  --color-risk: #ec5f60;
 
   --font-display: var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif;
   --font-sans: var(--font-plex-sans), ui-sans-serif, system-ui, sans-serif;
@@ -95,16 +97,16 @@ body {
   }
 }
 .rise {
-  animation: rise 0.7s cubic-bezier(0.2, 0.7, 0.3, 1) both;
+  animation: rise 0.5s cubic-bezier(0.2, 0.7, 0.3, 1) both;
 }
 .rise-1 {
-  animation-delay: 0.08s;
+  animation-delay: 0.06s;
 }
 .rise-2 {
-  animation-delay: 0.18s;
+  animation-delay: 0.14s;
 }
 .rise-3 {
-  animation-delay: 0.3s;
+  animation-delay: 0.22s;
 }
 
 /* Faint plotting grid behind the hero. An instrument, not a brochure. */

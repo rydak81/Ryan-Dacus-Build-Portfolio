@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { projects, bySlug, tier1, type Project } from '@/lib/projects';
 import CorrelationExplorer from '@/components/CorrelationExplorer';
+import DeferredMount from '@/components/DeferredMount';
 import RecoverySimulator from '@/components/RecoverySimulator';
 import BayesianExplorer from '@/components/BayesianExplorer';
 import ArchitectureDiagram from '@/components/ArchitectureDiagram';
@@ -101,7 +102,9 @@ export default async function ProjectPage({
             and values are synthetic; the behaviour is not.
           </p>
           <div className="mt-8">
-            <CorrelationExplorer />
+            <DeferredMount minHeight={620}>
+              <CorrelationExplorer />
+            </DeferredMount>
           </div>
         </section>
       )}
@@ -118,7 +121,9 @@ export default async function ProjectPage({
             the recovery rate actually answers to.
           </p>
           <div className="mt-8">
-            <RecoverySimulator />
+            <DeferredMount minHeight={700}>
+              <RecoverySimulator />
+            </DeferredMount>
           </div>
         </section>
       )}
@@ -134,7 +139,9 @@ export default async function ProjectPage({
             partner. Feed it a small sample and watch it refuse to overreact.
           </p>
           <div className="mt-8">
-            <BayesianExplorer />
+            <DeferredMount minHeight={640}>
+              <BayesianExplorer />
+            </DeferredMount>
           </div>
         </section>
       )}

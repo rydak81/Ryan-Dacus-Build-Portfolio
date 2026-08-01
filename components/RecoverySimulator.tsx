@@ -77,8 +77,9 @@ export default function RecoverySimulator() {
         />
       </div>
 
-      {/* Sensitivity chart */}
-      <div className="px-3 pt-5 pb-1 md:px-5">
+      {/* Sensitivity chart. Scrolls horizontally on small screens so the
+          row labels stay legible instead of scaling down with the SVG. */}
+      <div className="overflow-x-auto px-3 pt-5 pb-1 md:px-5">
         <div className="flex flex-wrap items-center gap-x-5 gap-y-1">
           <span className="eyebrow">
             Effect of +{Math.round(SENSITIVITY_BUMP * 100)}% in each input
@@ -100,7 +101,7 @@ export default function RecoverySimulator() {
         </div>
         <svg
           viewBox={`0 0 ${W} ${H}`}
-          className="mt-4 w-full"
+          className="mt-4 w-full min-w-[560px]"
           role="img"
           aria-label={`Sensitivity of the recovery estimate to each input. A ${Math.round(
             SENSITIVITY_BUMP * 100
