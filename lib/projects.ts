@@ -341,15 +341,20 @@ export const projects: Project[] = [
     group: 'Financial & Acquisition Analysis',
     status: 'Live',
     role: 'Designed and built solo',
+    aliases: ['Lighthouse', 'Bayesian Recovery Intelligence'],
     problem:
-      'A recovery estimate on its own is half an answer: a seller sees how large the opportunity could be, but not how likely it is to actually pay out.',
+      'A recovery estimate on its own is half an answer: a seller sees how large the opportunity could be, but not how likely it is to pay out — or how much to trust the number.',
     built:
-      'A guided recovery estimator built for the Threecolts team. It pairs an estimated recovery value with an estimated probability that the recovery lands, drawing on historical recovery data and simulation runs — so an opportunity carries a likelihood as well as a size. New recovery data entered in the app is stored in a connected Supabase database, and the estimator is designed as a continuous-improvement loop: every engagement added grows the historical base the next estimate draws on.',
+      'A Bayesian recovery-intelligence app built for the Threecolts team, forecasting conservative recovery value across five channels: Amazon 1P, Amazon 3P, Walmart 1P, carrier invoice audit, and carrier contract optimization. Every parameter in the multiplicative recovery chain — exposure, base found rate, opportunity multiplier, attainment rate, policy multiplier, timing — carries a Gaussian posterior rather than a point value. Recorded outcomes conjugate-update each posterior, first-order error propagation combines them into 50/80/90/95% credible intervals, and a reliability score derived from the coefficient of variation says how much weight the estimate deserves. Outcomes land in a connected Supabase database, and a calibration step blends aggregated results back into the priors — a continuous-improvement loop where every recorded engagement tightens the next estimate. A scenario builder, a multi-year forecast with seasonality, and a channel-level uncertainty decomposition round it out.',
     changed:
-      'Gives sellers and the team a clearer read on recovery potential: every opportunity carries how much and how likely, not just a headline number — and the tool is built to sharpen as its recovery history grows.',
-    stack: ['Next.js', 'React', 'Supabase / PostgreSQL', 'Vercel', 'Simulation modeling'],
+      'Gives sellers and the team three reads instead of one: how much, how likely, and how much to trust it — the reliability score marks when an estimate is defensible and when it is a directional guide pending an audit. Built to sharpen as its recovery history grows.',
+    stack: ['Next.js', 'React', 'Supabase / PostgreSQL', 'Bayesian updating', 'Error propagation', 'Vercel'],
+    metrics: [
+      { label: 'Recovery channels modeled', value: '5' },
+      { label: 'Credible intervals per estimate', value: '50/80/90/95%' },
+    ],
     url: 'https://v0-3trecovery-wizard.vercel.app',
-    note: 'Built for internal Threecolts team use.',
+    note: 'Built for internal Threecolts team use. Commercial terms shown in the app are not repeated here.',
   },
   {
     slug: 'acquisition-analyzer',
