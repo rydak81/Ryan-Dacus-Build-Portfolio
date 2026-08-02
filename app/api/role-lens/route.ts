@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { projects } from '@/lib/projects';
+import { published } from '@/lib/projects';
 
 /**
  * Role Lens.
@@ -50,8 +50,12 @@ function rateLimited(ip: string): boolean {
   return false;
 }
 
-/** What the model is allowed to see — already-public content only. */
-const CATALOG = projects.map((p) => ({
+/**
+ * What the model is allowed to see — already-public content only, and
+ * `published` so a draft's TODO placeholder copy can never be surfaced as a
+ * match or quoted back to a visitor.
+ */
+const CATALOG = published.map((p) => ({
   slug: p.slug,
   title: p.title,
   org: p.org,
@@ -62,7 +66,7 @@ const CATALOG = projects.map((p) => ({
   stack: p.stack,
 }));
 
-const VALID_SLUGS = new Set(projects.map((p) => p.slug));
+const VALID_SLUGS = new Set(published.map((p) => p.slug));
 
 const SYSTEM = [
   'You are the Role Lens on a personal portfolio site. You receive the full',

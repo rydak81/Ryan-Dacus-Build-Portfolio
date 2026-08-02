@@ -1,11 +1,13 @@
 import Link from 'next/link';
 import CorrelationExplorer from '@/components/CorrelationExplorer';
 import DeferredMount from '@/components/DeferredMount';
+import HeroMosaic from '@/components/HeroMosaic';
 import RoleLens, { type LensProject } from '@/components/RoleLens';
-import { projects, tier1, tier2, tier3, groups, byGroup, type Project } from '@/lib/projects';
+import { published, tier1, tier2, tier3, groups, byGroup, type Project } from '@/lib/projects';
+import { accentFor } from '@/lib/accents';
 
 /** The compact slice of lib/projects.ts the Role Lens renders from. */
-const LENS_DATA: LensProject[] = projects.map((p) => ({
+const LENS_DATA: LensProject[] = published.map((p) => ({
   slug: p.slug,
   title: p.title,
   org: p.org,
@@ -22,6 +24,7 @@ export default function Home() {
   return (
     <main className="mx-auto max-w-6xl overflow-x-clip px-5 md:px-8">
       <Hero />
+      <HeroMosaic />
       <Proof />
       <Method />
       <RoleLens data={LENS_DATA}>
@@ -176,14 +179,33 @@ function SelectedWork() {
 }
 
 function FeatureCard({ p }: { p: Project }) {
+  /*
+    Accent is present only for projects whose running UI I could actually
+    sample (see lib/accents.ts). Everything else renders in the house
+    palette — the absence is deliberate, not an oversight.
+  */
+  const accent = accentFor(p.slug);
+
   return (
-    <article className="panel p-6 md:p-9">
-      <div className="flex flex-wrap items-center gap-3">
+    <article
+      className={`panel relative overflow-hidden p-6 md:p-9 ${
+        accent ? 'card-accent' : ''
+      }`}
+      style={
+        accent
+          ? ({
+              '--accent': accent.tint,
+              '--accent-raw': accent.raw,
+            } as React.CSSProperties)
+          : undefined
+      }
+    >
+      <div className="relative flex flex-wrap items-center gap-3">
         <StatusBadge status={p.status} />
         <span className="eyebrow">{p.org}</span>
       </div>
       <h3
-        className="mt-4 text-balance text-2xl tracking-[-0.02em] md:text-3xl"
+        className="relative mt-4 text-balance text-2xl tracking-[-0.02em] md:text-3xl"
         style={{ fontFamily: 'var(--font-display)' }}
       >
         <Link
@@ -193,12 +215,16 @@ function FeatureCard({ p }: { p: Project }) {
           {p.title}
         </Link>
       </h3>
-      <p className="mt-4 max-w-3xl text-pretty leading-relaxed text-fg-2">
+      <p className="relative mt-4 max-w-3xl text-pretty leading-relaxed text-fg-2">
         {p.problem}
       </p>
 
       {p.metrics && (
-        <dl className={`grid-lines mt-6 grid ${metricCols(p.metrics.length)}`}>
+        <dl
+          className={`grid-lines relative mt-6 grid ${metricCols(
+            p.metrics.length
+          )}`}
+        >
           {p.metrics.map((m) => (
             <div key={m.label} className="bg-surface-2 px-4 py-3.5">
               <dd className="num text-xl text-signal md:text-2xl">{m.value}</dd>
@@ -210,47 +236,41 @@ function FeatureCard({ p }: { p: Project }) {
         </dl>
       )}
 
-      <div className="mt-6 flex flex-wrap gap-1.5">
+      <div className="relative mt-6 flex flex-wrap gap-1.5">
         {p.stack.map((s) => (
           <Tag key={s}>{s}</Tag>
         ))}
       </div>
 
-      <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm">
+      <div className="relative mt-6 flex flex-wrap items-center gap-x-5 gap-y-3 text-sm">
         <Link
           href={`/projects/${p.slug}`}
           className="rounded-card border border-line-bright px-4 py-2 transition-colors hover:border-signal hover:text-signal"
         >
           Read the case study
         </Link>
+        {p.url && (
+          <a
+            href={p.url}
+            className="num accent-link text-model underline decoration-model-dim underline-offset-4 transition-colors hover:decoration-model"
+          >
+            {p.url.replace('https://', '')} &#8599;
+          </a>
+        )}
+        {p.repo && (
+          <a
+            href={p.repo}
+            className="num text-model underline decoration-model-dim underline-offset-4 transition-colors hover:decoration-model"
+          >
+            source &#8599;
+          </a>
+        )}
       </div>
 
-      {true && (
-        <div className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm">
-          {p.url && (
-            <a
-              href={p.url}
-              className="num text-model underline decoration-model-dim underline-offset-4 transition-colors hover:decoration-model"
-            >
-              {p.url.replace('https://', '')}
-            </a>
-          )}
-          {p.repo && (
-            <a
-              href={p.repo}
-              className="num text-model underline decoration-model-dim underline-offset-4 transition-colors hover:decoration-model"
-            >
-              source
-            </a>
-          )}
-          {p.note && <span className="text-fg-3">{p.note}</span>}
-          <Link
-            href={`/projects/${p.slug}`}
-            className="num text-signal underline decoration-signal-dim underline-offset-4 transition-colors hover:decoration-signal"
-          >
-            Read the case study &rarr;
-          </Link>
-        </div>
+      {p.note && (
+        <p className="relative mt-4 text-sm leading-relaxed text-fg-3">
+          {p.note}
+        </p>
       )}
     </article>
   );
@@ -272,16 +292,28 @@ function EverythingElse() {
                 {g}
               </h3>
               <div className="grid-lines grid md:grid-cols-2">
-                {items.map((p) => (
+                {items.map((p) => {
+                  const accent = accentFor(p.slug);
+                  return (
                   <article
                     key={p.slug}
-                    className="bg-surface p-5 transition-colors hover:bg-surface-2"
+                    className={`relative overflow-hidden bg-surface p-5 transition-colors hover:bg-surface-2 ${
+                      accent ? 'card-accent' : ''
+                    }`}
+                    style={
+                      accent
+                        ? ({
+                            '--accent': accent.tint,
+                            '--accent-raw': accent.raw,
+                          } as React.CSSProperties)
+                        : undefined
+                    }
                   >
-                    <div className="flex flex-wrap items-center gap-2.5">
+                    <div className="relative flex flex-wrap items-center gap-2.5">
                       <StatusBadge status={p.status} small />
                       <span className="eyebrow">{p.org}</span>
                     </div>
-                    <h4 className="mt-3 text-lg font-medium">
+                    <h4 className="relative mt-3 text-lg font-medium">
                       <Link
                         href={`/projects/${p.slug}`}
                         className="transition-colors hover:text-signal"
@@ -289,16 +321,17 @@ function EverythingElse() {
                         {p.title}
                       </Link>
                     </h4>
-                    <p className="mt-2 text-sm leading-relaxed text-fg-2">
+                    <p className="relative mt-2 text-sm leading-relaxed text-fg-2">
                       {p.problem}
                     </p>
-                    <div className="mt-4 flex flex-wrap gap-1.5">
+                    <div className="relative mt-4 flex flex-wrap gap-1.5">
                       {p.stack.slice(0, 5).map((s) => (
                         <Tag key={s}>{s}</Tag>
                       ))}
                     </div>
                   </article>
-                ))}
+                  );
+                })}
               </div>
             </div>
           );

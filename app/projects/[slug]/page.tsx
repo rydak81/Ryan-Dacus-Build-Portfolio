@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { projects, bySlug, tier1, type Project } from '@/lib/projects';
+import { published, bySlug, tier1, type Project } from '@/lib/projects';
 import CorrelationExplorer from '@/components/CorrelationExplorer';
 import DeferredMount from '@/components/DeferredMount';
 import RecoverySimulator from '@/components/RecoverySimulator';
@@ -9,7 +9,8 @@ import BayesianExplorer from '@/components/BayesianExplorer';
 import ArchitectureDiagram from '@/components/ArchitectureDiagram';
 
 export function generateStaticParams() {
-  return projects.map((p) => ({ slug: p.slug }));
+  // `published` only — a draft entry must not get a route.
+  return published.map((p) => ({ slug: p.slug }));
 }
 
 export async function generateMetadata({

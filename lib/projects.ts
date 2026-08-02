@@ -59,6 +59,12 @@ export interface Project {
   diagram?: boolean;
   /** Rendered as a small muted line on the card. Honesty is the point. */
   note?: string;
+  /**
+   * Structurally present, not yet verified. Draft entries are excluded from
+   * every exported list below, so they cannot reach the site until the copy
+   * is real. Delete the flag to publish.
+   */
+  draft?: boolean;
 }
 
 export const projects: Project[] = [
@@ -491,6 +497,30 @@ export const projects: Project[] = [
   },
 
   // ─────────────────────────────────────────────────────────────
+  // DRAFT — structure only. `draft: true` keeps these out of every
+  // exported list, so nothing here renders until the copy is verified.
+  // ─────────────────────────────────────────────────────────────
+  {
+    slug: 'rigwire',
+    title: 'Rigwire',
+    // TODO(ryan): every field below marked TODO is a placeholder I wrote as
+    // scaffolding, not a description of your project. Replace them, then
+    // delete `draft: true`. Nothing renders until you do.
+    org: 'TODO: Threecolts / BeaconPath / Independent?',
+    tier: 2,
+    group: 'Revenue Systems & Forecasting', // TODO: confirm grouping.
+    status: 'In Progress', // TODO: confirm against the status vocabulary above.
+    role: 'TODO: your actual role.',
+    problem: 'TODO: the friction you hit, in your own words.',
+    built: 'TODO: what it actually is, specifically.',
+    changed: 'TODO: what changed as a result. Only what you can defend.',
+    stack: [], // TODO: real stack.
+    // metrics: leave absent unless every number is verified.
+    // url / repo: add only if reachable.
+    draft: true,
+  },
+
+  // ─────────────────────────────────────────────────────────────
   // TODO — live on Vercel, needs identification before publishing
   // v0-partnership-intelligence-hub  (LIVE, most recently updated)
   // v0-opportunity-estimator-app
@@ -500,9 +530,15 @@ export const projects: Project[] = [
   // ─────────────────────────────────────────────────────────────
 ];
 
-export const tier1 = projects.filter((p) => p.tier === 1);
-export const tier2 = projects.filter((p) => p.tier === 2);
-export const tier3 = projects.filter((p) => p.tier === 3);
+/**
+ * Everything renderable. Draft entries are structure-only and deliberately
+ * invisible — this is the list the site should read from, not `projects`.
+ */
+export const published = projects.filter((p) => !p.draft);
+
+export const tier1 = published.filter((p) => p.tier === 1);
+export const tier2 = published.filter((p) => p.tier === 2);
+export const tier3 = published.filter((p) => p.tier === 3);
 
 export const groups: Group[] = [
   'Revenue Systems & Forecasting',
@@ -511,5 +547,5 @@ export const groups: Group[] = [
   'Strategy & Enablement',
 ];
 
-export const byGroup = (g: Group) => projects.filter((p) => p.group === g);
-export const bySlug = (slug: string) => projects.find((p) => p.slug === slug);
+export const byGroup = (g: Group) => published.filter((p) => p.group === g);
+export const bySlug = (slug: string) => published.find((p) => p.slug === slug);

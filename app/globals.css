@@ -290,6 +290,214 @@ body {
     );
 }
 
+/* ── per-project accent ───────────────────────────────────────────────
+   A card for a project with a live, inspectable UI carries a trace of that
+   app's own colour. Three cheap touches, in order of subtlety: a bright top
+   edge, a soft corner wash, and a slightly lifted border. Enough to make
+   the card feel like it belongs to a product rather than a list.
+
+   `--accent` is the text-safe tint. `--accent-raw` is the app's real colour
+   and is used only where nothing needs to be legible on top of it.
+*/
+.card-accent {
+  border-color: color-mix(in srgb, var(--accent) 22%, var(--color-line));
+}
+
+/* The top edge. Brightest at the left, fading out — reads as light coming
+   off the product rather than as a rule. */
+.card-accent::before {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  top: 0;
+  height: 1px;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    var(--accent),
+    color-mix(in srgb, var(--accent) 30%, transparent) 38%,
+    transparent 72%
+  );
+}
+
+/* A single soft wash in the top-left corner, at low strength so body copy
+   over it keeps its contrast. */
+.card-accent::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    38% 44% at 0% 0%,
+    color-mix(in srgb, var(--accent-raw) 15%, transparent),
+    transparent 68%
+  );
+}
+
+/* The live URL on an accented card takes the app's colour instead of the
+   generic model blue — the link and the product agree. */
+.card-accent .accent-link {
+  color: var(--accent);
+  text-decoration-color: color-mix(in srgb, var(--accent) 45%, transparent);
+}
+.card-accent .accent-link:hover {
+  text-decoration-color: var(--accent);
+}
+
+/* ── hero mosaic ──────────────────────────────────────────────────────
+   Shipped-product screenshots in minimal browser chrome, tilted and
+   layered. Mobile first: a single clean horizontal band, flat and sharp,
+   sitting below the hero copy and never behind it. The tilt, the overlap,
+   and the depth treatments are all additive from 768px up.
+*/
+.mosaic {
+  display: flex;
+  gap: 1rem;
+  /* Bleed the band to the viewport edge so it reads as a band, not a row
+     of cards inside a container. */
+  margin-inline: calc(50% - 50vw);
+  padding-inline: 1.25rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.mosaic::-webkit-scrollbar {
+  display: none;
+}
+
+.mosaic-frame {
+  flex: 0 0 78vw;
+  scroll-snap-align: center;
+  margin: 0;
+  border-radius: 10px;
+  border: 1px solid var(--color-line);
+  background: var(--color-surface-2);
+  overflow: hidden;
+  box-shadow: 0 18px 40px -24px rgb(0 0 0 / 0.8);
+}
+
+/* Minimal browser chrome: a dark bar and three dots. */
+.mosaic-chrome {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 26px;
+  padding-inline: 10px;
+  background: var(--color-ink);
+  border-bottom: 1px solid var(--color-line);
+}
+.mosaic-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--color-line-bright);
+}
+/* The frame's own app colour, used once, on the leftmost dot only. Enough
+   to tie the frame to the product without recolouring the whole card. */
+.mosaic-dot:first-child {
+  background: var(--accent);
+}
+
+.mosaic-shot {
+  /* Screenshots are wider than they are tall; crop from the top so the
+     app's header and primary UI survive and the footer is what is lost. */
+  max-height: 260px;
+  overflow: hidden;
+}
+
+/* Ambient wash behind the band, matching the hero's indigo. */
+.mosaic-wash {
+  background: radial-gradient(
+    58% 60% at 50% 30%,
+    color-mix(in srgb, var(--color-glow) 16%, transparent),
+    transparent 72%
+  );
+}
+
+@media (min-width: 768px) {
+  .mosaic {
+    /* Layered stack: negative gap pulls frames into overlap, and the tilt
+       plus depth ladder does the rest. */
+    gap: 0;
+    overflow: visible;
+    padding-inline: 0;
+    margin-inline: 0;
+    justify-content: center;
+    align-items: center;
+    /* Keep the perspective shallow — this is a tilt, not a 3D carousel. */
+    perspective: 1400px;
+  }
+
+  .mosaic-frame {
+    flex: 0 1 460px;
+    min-width: 0;
+    transform: rotate(var(--tilt)) scale(var(--depth-scale, 1));
+    transition: transform 0.45s cubic-bezier(0.2, 0.7, 0.3, 1);
+  }
+  .mosaic-frame:not(:first-child) {
+    margin-left: -5.5%;
+  }
+
+  /*
+    The depth ladder. Nearer frames are sharper, brighter, larger, and sit
+    above their neighbours; farther frames recede on every axis at once,
+    which is what makes the stack read as depth rather than as overlap.
+  */
+  .mosaic-frame[data-depth="0"] {
+    --depth-scale: 1;
+    z-index: 3;
+    filter: none;
+    box-shadow:
+      0 34px 70px -30px rgb(0 0 0 / 0.9),
+      0 0 0 1px color-mix(in srgb, var(--accent) 26%, transparent),
+      0 0 46px -18px color-mix(in srgb, var(--accent) 34%, transparent);
+  }
+  .mosaic-frame[data-depth="1"] {
+    --depth-scale: 0.94;
+    z-index: 2;
+    filter: blur(0.7px) brightness(0.82) saturate(0.9);
+  }
+  .mosaic-frame[data-depth="2"] {
+    --depth-scale: 0.88;
+    z-index: 1;
+    filter: blur(1.6px) brightness(0.66) saturate(0.82);
+  }
+
+  /* Hovering a receded frame brings it forward and clears it — the depth
+     ladder becomes an affordance instead of just decoration. */
+  .mosaic-frame:hover {
+    --depth-scale: 1.01;
+    z-index: 4;
+    filter: none;
+  }
+
+  .mosaic-shot {
+    max-height: 300px;
+  }
+}
+
+/*
+  The only motion: a very slow vertical float, staggered per frame so the
+  band breathes rather than pulsing in unison. No parallax, no scroll
+  coupling. Fully off under reduced motion via the guard below.
+*/
+@keyframes mosaic-float {
+  from {
+    translate: 0 -5px;
+  }
+  to {
+    translate: 0 5px;
+  }
+}
+
+@media (min-width: 768px) and (prefers-reduced-motion: no-preference) {
+  .mosaic-frame {
+    animation: mosaic-float 13s ease-in-out var(--float-delay) infinite
+      alternate;
+  }
+}
+
 @media (prefers-reduced-motion: no-preference) {
   html {
     scroll-behavior: smooth;
