@@ -48,7 +48,7 @@ export default async function ProjectPage({
       <nav className="pt-8">
         <Link
           href="/#work"
-          className="num rounded-chip text-sm text-fg-3 transition-colors hover:text-fg-2"
+          className="label rounded-chip text-sm text-fg-3 transition-colors hover:text-fg-2"
         >
           ← All work
         </Link>
@@ -182,7 +182,7 @@ export default async function ProjectPage({
           {p.stack.map((s) => (
             <span
               key={s}
-              className="num rounded-chip border border-line bg-surface-2 px-2.5 py-1 text-[11px] text-fg-2"
+              className="label rounded-chip border border-line bg-surface-2 px-2.5 py-1 text-[11px] text-fg-2"
             >
               {s}
             </span>
@@ -221,7 +221,7 @@ export default async function ProjectPage({
       )}
 
       <footer className="py-14">
-        <Link href="/#work" className="num text-sm text-fg-3 transition-colors hover:text-fg-2">
+        <Link href="/#work" className="label text-sm text-fg-3 transition-colors hover:text-fg-2">
           ← All work
         </Link>
       </footer>
@@ -276,7 +276,7 @@ function StatusBadge({ status }: { status: Project['status'] }) {
   const live = status === 'Live';
   return (
     <span
-      className="num inline-flex items-center gap-1.5 rounded-chip border px-2 py-0.5 text-[10px] uppercase tracking-wider"
+      className="label inline-flex items-center gap-1.5 rounded-chip border px-2 py-0.5 text-[10px] uppercase tracking-wider"
       style={{
         color: live ? 'var(--color-signal)' : 'var(--color-fg-2)',
         borderColor: live ? 'var(--color-signal-dim)' : 'var(--color-line-bright)',

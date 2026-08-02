@@ -109,11 +109,26 @@ h4 {
   scroll-margin-top: 84px;
 }
 
-/* Numbers are instruments. They always set in mono, always tabular. */
+/*
+  Numbers are instruments. They always set in mono, always tabular — this
+  is now reserved for genuine numerics (metric values, step indices, chart
+  ticks, literal URLs) where column alignment is functional.
+*/
 .num {
   font-family: var(--font-mono);
   font-variant-numeric: tabular-nums;
   letter-spacing: -0.01em;
+}
+
+/*
+  UI text that was previously wearing .num purely for flavour — tag chips,
+  status badges, back-links. These are words, not measurements, so mono
+  bought nothing and cost legibility. Semibold Inter instead.
+*/
+.label {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  letter-spacing: 0.005em;
 }
 
 /*

@@ -157,7 +157,9 @@ function Method() {
             <span className="num text-xs text-signal">
               {String(i + 1).padStart(2, '0')}
             </span>
-            <h3 className="mt-3 text-base font-medium">{title}</h3>
+            {/* No font-medium here — a utility class outranks the element-level
+                h3 weight rule and would silently pin this back to 500. */}
+            <h3 className="mt-3 text-base">{title}</h3>
             <p className="mt-2 text-sm leading-relaxed text-fg-2">
               {body}
             </p>
@@ -234,7 +236,7 @@ function FeatureCard({ p }: { p: Project }) {
           )}`}
         >
           {p.metrics.map((m) => (
-            <div key={m.label} className="bg-surface-2 px-4 py-3.5">
+            <div key={m.label} className="cell px-4 py-3.5">
               <dd className="num text-xl text-signal md:text-2xl">{m.value}</dd>
               <dt className="mt-1 text-[11px] leading-snug text-fg-3">
                 {m.label}
@@ -321,7 +323,7 @@ function EverythingElse() {
                       <StatusBadge status={p.status} small />
                       <span className="eyebrow">{p.org}</span>
                     </div>
-                    <h4 className="relative mt-3 text-lg font-medium">
+                    <h4 className="relative mt-3 text-lg">
                       <Link
                         href={`/projects/${p.slug}`}
                         className="transition-colors hover:text-signal"
@@ -355,7 +357,7 @@ function EverythingElse() {
                 key={p.slug}
                 className="cell flex flex-wrap items-baseline gap-x-4 gap-y-1 px-5 py-4"
               >
-                <span className="font-medium">{p.title}</span>
+                <span className="font-bold tracking-[-0.015em]">{p.title}</span>
                 <span className="text-sm text-fg-3">{p.org}</span>
                 <span className="flex-1 basis-full text-sm text-fg-2 md:basis-auto">
                   {p.changed}
@@ -547,7 +549,7 @@ function metricCols(n: number) {
 
 function Tag({ children }: { children: React.ReactNode }) {
   return (
-    <span className="num rounded-chip border border-line bg-surface-2 px-2 py-1 text-[11px] text-fg-2">
+    <span className="label rounded-chip border border-line bg-surface-2 px-2 py-1 text-[11px] text-fg-2">
       {children}
     </span>
   );
@@ -563,7 +565,7 @@ function StatusBadge({
   const live = status === 'Live';
   return (
     <span
-      className="num inline-flex items-center gap-1.5 rounded-chip border px-2 py-0.5 text-[10px] uppercase tracking-wider"
+      className="label inline-flex items-center gap-1.5 rounded-chip border px-2 py-0.5 text-[10px] uppercase tracking-wider"
       style={{
         color: live ? 'var(--color-signal)' : 'var(--color-fg-2)',
         borderColor: live ? 'var(--color-signal-dim)' : 'var(--color-line-bright)',
