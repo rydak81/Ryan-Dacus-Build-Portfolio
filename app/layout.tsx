@@ -1,5 +1,6 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import { Space_Grotesk, IBM_Plex_Sans, IBM_Plex_Mono } from 'next/font/google';
+import SiteNav from '@/components/SiteNav';
 import './globals.css';
 
 const spaceGrotesk = Space_Grotesk({
@@ -37,6 +38,11 @@ export const metadata: Metadata = {
   },
 };
 
+export const viewport: Viewport = {
+  themeColor: '#0b0c14',
+  colorScheme: 'dark',
+};
+
 export default function RootLayout({
   children,
 }: {
@@ -45,9 +51,12 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${spaceGrotesk.variable} ${plexSans.variable} ${plexMono.variable}`}
+      className={`${spaceGrotesk.variable} ${plexSans.variable} ${plexMono.variable} bg-ink`}
     >
-      <body>{children}</body>
+      <body>
+        <SiteNav email="ryandacus@gmail.com" />
+        {children}
+      </body>
     </html>
   );
 }

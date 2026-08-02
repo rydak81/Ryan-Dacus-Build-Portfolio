@@ -4,7 +4,7 @@ import { join } from 'node:path';
 
 /**
  * The LinkedIn share card. Same argument as the site, compressed to one
- * frame: the palette (ink, amber for true, cyan for modeled), the mono
+ * frame: the palette (ink, amber for true, indigo for modeled), the mono
  * eyebrow, the display headline, and the plotting grid. Fonts are checked
  * into app/og-fonts so the build never depends on the network.
  */
@@ -14,14 +14,14 @@ export const alt =
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
 
-const INK = '#0e1418';
-const SURFACE_2 = '#1c252b';
-const LINE = '#263239';
-const FG = '#e8eff2';
-const FG_2 = '#93a6b0';
-const FG_3 = '#75909f';
-const SIGNAL = '#ffb454';
-const MODEL = '#5ac8e8';
+const INK = '#0b0c14';
+const SURFACE_2 = '#191c2b';
+const LINE = '#252a3d';
+const FG = '#e9ecf5';
+const FG_2 = '#a0a7bd';
+const FG_3 = '#7e87a3';
+const SIGNAL = '#ffbf5c';
+const MODEL = '#7c8cff';
 
 export default async function OpengraphImage() {
   const [display, mono] = await Promise.all([

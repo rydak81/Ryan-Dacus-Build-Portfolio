@@ -88,7 +88,7 @@ export default function RoleLens({
           comes from the source file.
         </p>
 
-        <div className="mt-6 max-w-2xl border border-line bg-surface p-4">
+        <div className="panel mt-6 max-w-2xl p-4">
           <label htmlFor="role-jd" className="eyebrow">
             Job description
           </label>
@@ -98,14 +98,14 @@ export default function RoleLens({
             value={jd}
             onChange={(e) => setJd(e.target.value)}
             placeholder="Paste the full posting, or just the responsibilities section…"
-            className="mt-3 w-full resize-y border border-line bg-ink p-3 text-sm leading-relaxed text-fg placeholder:text-fg-3 focus:outline-none"
+            className="well mt-3 w-full resize-y p-3 text-sm leading-relaxed text-fg placeholder:text-fg-3 focus:outline-none"
           />
           <div className="mt-3 flex flex-wrap items-center gap-x-5 gap-y-2">
             <button
               type="button"
               onClick={run}
               disabled={state.kind === 'loading' || jd.trim().length < 40}
-              className="border border-model-dim px-5 py-2.5 text-sm text-model transition-colors hover:border-model disabled:cursor-not-allowed disabled:opacity-50"
+              className="rounded-card border border-model-dim bg-surface-2 px-5 py-2.5 text-sm text-model transition-colors hover:border-model disabled:cursor-not-allowed disabled:opacity-50"
             >
               {state.kind === 'loading' ? 'Reading the role…' : 'Focus the lens'}
             </button>
@@ -143,12 +143,15 @@ export default function RoleLens({
               relevance lines are model output
             </p>
           </div>
-          <div className="mt-6 grid gap-px border border-line bg-line">
+          <div className="grid-lines mt-6 grid">
             {state.matches.map((m, i) => {
               const p = bySlug.get(m.slug);
               if (!p) return null;
               return (
-                <article key={m.slug} className="bg-surface p-5 md:p-6">
+                <article
+                  key={m.slug}
+                  className="bg-surface p-5 transition-colors hover:bg-surface-2 md:p-6"
+                >
                   <div className="flex flex-wrap items-center gap-2.5">
                     <span className="num text-xs text-fg-3">
                       {String(i + 1).padStart(2, '0')}
@@ -164,7 +167,13 @@ export default function RoleLens({
                       {p.title}
                     </Link>
                   </h3>
-                  <p className="mt-2 border-l-2 border-model-dim pl-3 text-sm leading-relaxed text-model">
+                  <p
+                    className="mt-3 rounded-chip border-l-2 border-model-dim py-2 pl-3 pr-3 text-sm leading-relaxed text-model"
+                    style={{
+                      background:
+                        'color-mix(in srgb, var(--color-model) 8%, transparent)',
+                    }}
+                  >
                     {m.line}
                   </p>
                   <p className="mt-3 max-w-3xl text-sm leading-relaxed text-fg-2">
@@ -174,7 +183,7 @@ export default function RoleLens({
                     {p.stack.slice(0, 6).map((s) => (
                       <span
                         key={s}
-                        className="num border border-line px-2 py-1 text-[11px] text-fg-2"
+                        className="num rounded-chip border border-line bg-surface-2 px-2 py-1 text-[11px] text-fg-2"
                       >
                         {s}
                       </span>
@@ -196,10 +205,13 @@ function StatusBadge({ status }: { status: Status }) {
   const live = status === 'Live';
   return (
     <span
-      className="num inline-flex items-center gap-1.5 border px-2 py-0.5 text-[10px] uppercase tracking-wider"
+      className="num inline-flex items-center gap-1.5 rounded-chip border px-2 py-0.5 text-[10px] uppercase tracking-wider"
       style={{
         color: live ? 'var(--color-signal)' : 'var(--color-fg-2)',
         borderColor: live ? 'var(--color-signal-dim)' : 'var(--color-line-bright)',
+        background: live
+          ? 'color-mix(in srgb, var(--color-signal) 10%, transparent)'
+          : 'var(--color-surface-2)',
       }}
     >
       {live && (
