@@ -22,7 +22,12 @@ const GITHUB = 'https://github.com/rydak81';
 
 export default function Home() {
   return (
-    <main className="mx-auto max-w-6xl overflow-x-clip px-5 md:px-8">
+    /*
+      Full-bleed. The width constraint moved down into each section's
+      .shell so background graphics (hero glow, grid, panel washes) can
+      reach the viewport edges instead of stopping at a centred column.
+    */
+    <main className="overflow-x-clip">
       <Hero />
       <HeroMosaic />
       <Proof />
@@ -44,23 +49,27 @@ export default function Home() {
 function Hero() {
   return (
     <header className="relative overflow-x-clip pt-20 pb-16 md:pt-32 md:pb-24">
+      {/* Both layers are inset-0 on a full-bleed header, so they now span
+          the entire viewport width rather than a centred column. */}
       <div
         aria-hidden
-        className="hero-glow pointer-events-none absolute -inset-x-24 -top-24 bottom-0"
+        className="hero-glow pointer-events-none absolute inset-x-0 -top-24 bottom-0"
       />
       <div
         aria-hidden
-        className="hero-grid pointer-events-none absolute -inset-x-8 -top-10 bottom-0"
+        className="hero-grid pointer-events-none absolute inset-x-0 -top-10 bottom-0"
       />
-      <div className="relative">
+      <div className="shell relative">
         <p className="rise eyebrow">Greenville, SC · Partnerships &amp; revenue systems</p>
-        <h1
-          className="rise rise-1 mt-7 max-w-5xl text-balance text-[2.6rem] leading-[1.04] tracking-[-0.03em] md:text-[4.25rem]"
-          style={{ fontFamily: 'var(--font-display)' }}
-        >
-          I sell technology
-          <br />
-          I actually know how to build.
+        {/*
+          Fluid display size via clamp() rather than a single md: jump —
+          at 900 weight a fixed 4.25rem crowded the shell padding at
+          mid-range widths (~800px). text-balance handles the line breaks,
+          so the old hard <br /> is gone; it was forcing a bad break once
+          the type got heavier.
+        */}
+        <h1 className="rise rise-1 mt-7 max-w-[19ch] text-balance text-[clamp(2.5rem,7vw,5rem)] leading-[1.03]">
+          I sell technology I actually know how to build.
         </h1>
         <p className="rise rise-2 mt-8 max-w-2xl text-pretty text-lg leading-relaxed text-fg-2">
           Twenty years in e-commerce revenue — Amazon seller, founding sales hire,
@@ -71,13 +80,13 @@ function Hero() {
         <div className="rise rise-3 mt-10 flex flex-wrap items-center gap-x-3 gap-y-3">
           <a
             href="#work"
-            className="rounded-card bg-signal px-6 py-3 text-sm font-medium text-ink shadow-[0_8px_24px_-14px_rgba(255,191,92,0.5)] transition-opacity hover:opacity-90"
+            className="rounded-card bg-signal px-6 py-3 text-sm font-bold text-ink shadow-[0_8px_24px_-14px_rgba(255,191,92,0.5)] transition-opacity hover:opacity-90"
           >
             See the work
           </a>
           <a
             href={`mailto:${EMAIL}`}
-            className="rounded-card border border-line-bright bg-surface px-6 py-3 text-sm text-fg transition-colors hover:border-fg-3 hover:bg-surface-2"
+            className="cell rounded-card border border-line-bright px-6 py-3 text-sm font-semibold text-fg transition-colors hover:border-fg-3"
           >
             Get in touch
           </a>
@@ -97,7 +106,7 @@ function Hero() {
 
 function Proof() {
   return (
-    <section className="fade-in pb-24 md:pb-32">
+    <section className="shell fade-in pb-24 md:pb-32">
       <SectionHead
         eyebrow="Live model — not a screenshot"
         title="Your pipeline forecast is lying to you about risk"
@@ -137,14 +146,14 @@ const STEPS: [string, string][] = [
 
 function Method() {
   return (
-    <section id="method" className="fade-in pb-24 md:pb-32">
+    <section id="method" className="shell fade-in pb-24 md:pb-32">
       <SectionHead
         eyebrow="Method"
         title="How every one of these got built"
       />
       <ol className="grid-lines mt-9 grid md:grid-cols-4">
         {STEPS.map(([title, body], i) => (
-          <li key={title} className="bg-surface p-5 transition-colors hover:bg-surface-2">
+          <li key={title} className="cell p-5">
             <span className="num text-xs text-signal">
               {String(i + 1).padStart(2, '0')}
             </span>
@@ -163,7 +172,7 @@ function Method() {
 
 function SelectedWork() {
   return (
-    <section className="fade-in pb-24 md:pb-32">
+    <section className="shell fade-in pb-24 md:pb-32">
       <SectionHead
         eyebrow="Selected work"
         title="Five that carry the most weight"
@@ -206,7 +215,6 @@ function FeatureCard({ p }: { p: Project }) {
       </div>
       <h3
         className="relative mt-4 text-balance text-2xl tracking-[-0.02em] md:text-3xl"
-        style={{ fontFamily: 'var(--font-display)' }}
       >
         <Link
           href={`/projects/${p.slug}`}
@@ -280,7 +288,7 @@ function FeatureCard({ p }: { p: Project }) {
 
 function EverythingElse() {
   return (
-    <section className="fade-in pb-24 md:pb-32">
+    <section className="shell fade-in pb-24 md:pb-32">
       <SectionHead eyebrow="Everything else" title="The rest of the shelf" />
       <div className="mt-9 space-y-12">
         {groups.map((g) => {
@@ -297,7 +305,7 @@ function EverythingElse() {
                   return (
                   <article
                     key={p.slug}
-                    className={`relative overflow-hidden bg-surface p-5 transition-colors hover:bg-surface-2 ${
+                    className={`cell relative overflow-hidden p-5 ${
                       accent ? 'card-accent' : ''
                     }`}
                     style={
@@ -345,7 +353,7 @@ function EverythingElse() {
             {tier3.map((p) => (
               <li
                 key={p.slug}
-                className="flex flex-wrap items-baseline gap-x-4 gap-y-1 bg-surface px-5 py-4 transition-colors hover:bg-surface-2"
+                className="cell flex flex-wrap items-baseline gap-x-4 gap-y-1 px-5 py-4"
               >
                 <span className="font-medium">{p.title}</span>
                 <span className="text-sm text-fg-3">{p.org}</span>
@@ -387,7 +395,7 @@ const STACK: [string, string[]][] = [
 
 function Stack() {
   return (
-    <section id="stack" className="fade-in pb-24 md:pb-32">
+    <section id="stack" className="shell fade-in pb-24 md:pb-32">
       <SectionHead eyebrow="Stack" title="What I actually work in" />
       <dl className="panel mt-9 divide-y divide-line">
         {STACK.map(([label, items]) => (
@@ -412,7 +420,11 @@ function Stack() {
 
 function ThroughLine() {
   return (
-    <section className="fade-in panel relative overflow-hidden px-6 py-16 md:px-12 md:py-20">
+    /* The panel is the visual object here, so the shell wraps it rather
+       than being applied to it — otherwise the shell's padding would sit
+       inside the card's own border. */
+    <div className="shell">
+      <section className="fade-in panel relative overflow-hidden px-6 py-16 md:px-12 md:py-20">
       <div
         aria-hidden
         className="hero-glow pointer-events-none absolute inset-0 opacity-70"
@@ -421,7 +433,6 @@ function ThroughLine() {
         <p className="eyebrow">The through line</p>
         <p
           className="mt-7 max-w-4xl text-pretty text-2xl leading-relaxed md:text-3xl"
-          style={{ fontFamily: 'var(--font-display)' }}
         >
           None of these came from a roadmap, a ticket, or an assignment. Each one
           started the same way: I hit a problem inside my own revenue work and
@@ -436,7 +447,8 @@ function ThroughLine() {
           parts work. The building is what makes them count.
         </p>
       </div>
-    </section>
+      </section>
+    </div>
   );
 }
 
@@ -444,10 +456,9 @@ function ThroughLine() {
 
 function Contact() {
   return (
-    <section className="fade-in py-24 md:py-32">
+    <section className="shell fade-in py-24 md:py-32">
       <h2
         className="text-4xl tracking-[-0.03em] md:text-5xl"
-        style={{ fontFamily: 'var(--font-display)' }}
       >
         Open to a conversation.
       </h2>
@@ -483,9 +494,13 @@ function Contact() {
 
 function Footer() {
   return (
-    <footer className="num border-t border-line py-8 text-xs leading-relaxed text-fg-3">
-      Ryan Dacus · Greenville, SC · Built with Next.js on Vercel · Every status
-      label on this page means exactly what it says.
+    /* Border sits on the full-bleed element so the rule spans the whole
+       viewport; the text stays inside the shell. */
+    <footer className="border-t border-line">
+      <div className="shell py-8 text-xs leading-relaxed text-fg-3">
+        Ryan Dacus · Greenville, SC · Built with Next.js on Vercel · Every
+        status label on this page means exactly what it says.
+      </div>
     </footer>
   );
 }
@@ -507,7 +522,6 @@ function SectionHead({
       <p className="eyebrow">{eyebrow}</p>
       <h2
         className="mt-4 max-w-3xl text-balance text-3xl tracking-[-0.025em] md:text-4xl"
-        style={{ fontFamily: 'var(--font-display)' }}
       >
         {title}
       </h2>

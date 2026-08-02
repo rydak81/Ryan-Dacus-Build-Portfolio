@@ -29,24 +29,27 @@ export default function HeroMosaic() {
       aria-labelledby="mosaic-label"
       className="relative pb-20 md:pb-28"
     >
+      {/* Full-bleed wash behind a shelled content column. */}
       <div
         aria-hidden
-        className="mosaic-wash pointer-events-none absolute -inset-x-24 -top-16 bottom-0"
+        className="mosaic-wash pointer-events-none absolute inset-x-0 -top-16 bottom-0"
       />
 
-      <p id="mosaic-label" className="eyebrow relative">
-        Internal tools and shipped dashboards — the live models run below.
-      </p>
+      <div className="shell">
+        <p id="mosaic-label" className="eyebrow relative">
+          Internal tools and shipped dashboards — the live models run below.
+        </p>
 
-      {/*
-        Desktop: an overlapping, tilted stack. Mobile: the same frames in a
-        single clean horizontally-scrolled band, untilted and unblurred.
-        One DOM, two layouts — no duplicate markup to drift.
-      */}
-      <div className="mosaic relative mt-7">
-        {shots.map((shot, i) => (
-          <Frame key={shot.src} shot={shot} index={i} />
-        ))}
+        {/*
+          Desktop: an overlapping, tilted stack. Mobile: the same frames in a
+          single clean horizontally-scrolled band, untilted and unblurred.
+          One DOM, two layouts — no duplicate markup to drift.
+        */}
+        <div className="mosaic relative mt-7">
+          {shots.map((shot, i) => (
+            <Frame key={shot.src} shot={shot} index={i} />
+          ))}
+        </div>
       </div>
     </section>
   );

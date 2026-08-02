@@ -72,13 +72,10 @@ export default function RoleLens({
 
   return (
     <div id="work">
-      <section className="pb-14">
+      <section className="shell pb-14">
         <div className="rule mb-8" />
         <p className="eyebrow">Role lens</p>
-        <h2
-          className="mt-4 max-w-3xl text-3xl tracking-tight md:text-4xl"
-          style={{ fontFamily: 'var(--font-display)' }}
-        >
+        <h2 className="mt-4 max-w-3xl text-3xl md:text-4xl">
           Reading this for a specific role?
         </h2>
         <p className="mt-5 max-w-2xl leading-relaxed text-fg-2">
@@ -134,7 +131,7 @@ export default function RoleLens({
       </section>
 
       {state.kind === 'active' ? (
-        <section className="pb-20 md:pb-28">
+        <section className="shell pb-20 md:pb-28">
           <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
             <p className="eyebrow">
               Model-ordered · {state.matches.length} of {data.length} projects
@@ -150,7 +147,7 @@ export default function RoleLens({
               return (
                 <article
                   key={m.slug}
-                  className="bg-surface p-5 transition-colors hover:bg-surface-2 md:p-6"
+                  className="cell p-5 md:p-6"
                 >
                   <div className="flex flex-wrap items-center gap-2.5">
                     <span className="num text-xs text-fg-3">

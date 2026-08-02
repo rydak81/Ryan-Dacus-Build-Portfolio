@@ -47,9 +47,18 @@
   --radius-card: 10px;
   --radius-panel: 12px;
 
-  --font-display: var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif;
-  --font-sans: var(--font-plex-sans), ui-sans-serif, system-ui, sans-serif;
-  --font-mono: var(--font-plex-mono), ui-monospace, monospace;
+  /*
+    One family, Inter, for both display and body — matching
+    marketplacebeta.com. Weight and tracking do the differentiating, which
+    is why --font-display and --font-sans resolve to the same stack.
+  */
+  --font-display: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-mono-num), ui-monospace, monospace;
+
+  /* Content column. Wide enough to feel like a product, capped so long
+     measures never get unreadable. */
+  --shell: 1440px;
 }
 
 html {
@@ -60,6 +69,28 @@ html {
 body {
   color: var(--color-fg);
   font-family: var(--font-sans);
+  /* Inter's default 400 reads thin on a dark field; 420 via variable weight
+     restores the density lost to the dark background. */
+  font-weight: 420;
+}
+
+/*
+  Headings carry the weight, matching marketplacebeta: 800–900 at display
+  sizes with tight negative tracking, stepping down to 700 for section
+  heads. This is the single biggest change in how the page reads.
+*/
+h1 {
+  font-weight: 900;
+  letter-spacing: -0.035em;
+}
+h2 {
+  font-weight: 800;
+  letter-spacing: -0.028em;
+}
+h3,
+h4 {
+  font-weight: 700;
+  letter-spacing: -0.018em;
 }
 
 ::selection {
@@ -85,10 +116,17 @@ body {
   letter-spacing: -0.01em;
 }
 
+/*
+  Eyebrows are now Inter, not mono. The old wide-tracked monospace was the
+  main source of the dated teletype look — especially in the hero, where it
+  was the first thing read. Semibold with restrained tracking keeps the
+  label function without the typewriter costume.
+*/
 .eyebrow {
-  font-family: var(--font-mono);
-  font-size: 0.6875rem;
-  letter-spacing: 0.14em;
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--color-fg-3);
 }
@@ -103,18 +141,88 @@ body {
   );
 }
 
+/* ── layout shell ─────────────────────────────────────────────────────
+   The content column. `main` itself is full-bleed so background graphics
+   can reach the viewport edges; each section wraps its own content in a
+   .shell instead. This is what lets the hero glow and grid span the whole
+   screen while the copy stays in a readable measure.
+*/
+.shell {
+  width: 100%;
+  max-width: var(--shell);
+  margin-inline: auto;
+  padding-inline: 1.25rem;
+}
+@media (min-width: 768px) {
+  .shell {
+    padding-inline: 2.5rem;
+  }
+}
+@media (min-width: 1280px) {
+  .shell {
+    padding-inline: 3.5rem;
+  }
+}
+
 /* ── surfaces ─────────────────────────────────────────────────────────
-   One elevation primitive. Soft 1px border, 10px radius, and a barely
-   perceptible top highlight so a card reads as lit from above rather
-   than drawn on. No blur here — glass is reserved for the nav.
+   One elevation primitive, now genuinely raised rather than merely
+   outlined. Three stacked effects do the work:
+
+     1. a top-lit gradient, so the card's own surface is brighter at its
+        top edge than at its bottom — the cue the eye reads as a physical
+        face catching light
+     2. a bright inset hairline along that top edge
+     3. a real drop shadow with enough spread to separate the card from
+        the field behind it
+
+   Together these are what made the hero mosaic frames read as objects,
+   and this is the same treatment generalised to every card.
 */
 .panel {
-  background: var(--color-surface);
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--color-surface-2) 82%, var(--color-fg)) 0%,
+      var(--color-surface-2) 14%,
+      var(--color-surface) 100%
+    );
   border: 1px solid var(--color-line);
-  border-radius: var(--radius-card);
+  border-radius: var(--radius-panel);
   box-shadow:
-    inset 0 1px 0 rgb(255 255 255 / 0.035),
-    0 1px 2px rgb(0 0 0 / 0.4);
+    inset 0 1px 0 rgb(255 255 255 / 0.07),
+    0 1px 1px rgb(0 0 0 / 0.5),
+    0 8px 20px -10px rgb(0 0 0 / 0.65),
+    0 20px 44px -22px rgb(0 0 0 / 0.55);
+}
+
+/*
+  Raised cell: the same lift, for cards that sit inside a hairline grid
+  where a border and radius of their own would fight the grid. Gets the
+  top-lit face and inset highlight, skips the outer shadow (the grid
+  provides the separation), and lifts on hover.
+*/
+.cell {
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--color-surface-2) 88%, var(--color-fg)) 0%,
+    var(--color-surface-2) 16%,
+    var(--color-surface) 100%
+  );
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.055);
+  transition:
+    background 0.2s ease,
+    box-shadow 0.2s ease;
+}
+.cell:hover {
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--color-surface-2) 78%, var(--color-fg)) 0%,
+    var(--color-surface-2) 18%,
+    var(--color-surface-2) 100%
+  );
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.09),
+    inset 0 0 0 1px rgb(255 255 255 / 0.02);
 }
 
 /* A recessed well: inputs, code, anything the visitor types into. */
@@ -124,13 +232,21 @@ body {
   border-radius: var(--radius-chip);
 }
 
-/* Hairline dividers used to build seamless grids out of panels. */
+/*
+  Hairline dividers used to build seamless grids out of cells. The grid
+  itself now carries the outer shadow so a block of cells reads as one
+  raised slab rather than as a flat table.
+*/
 .grid-lines {
   background: var(--color-line);
   border: 1px solid var(--color-line);
-  border-radius: var(--radius-card);
+  border-radius: var(--radius-panel);
   overflow: hidden;
   gap: 1px;
+  box-shadow:
+    0 1px 1px rgb(0 0 0 / 0.5),
+    0 8px 20px -10px rgb(0 0 0 / 0.6),
+    0 20px 44px -22px rgb(0 0 0 / 0.5);
 }
 
 /* ── the live-model stages ────────────────────────────────────────────

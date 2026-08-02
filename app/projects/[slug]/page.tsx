@@ -41,7 +41,10 @@ export default async function ProjectPage({
   const next = idx >= 0 && idx < tier1.length - 1 ? tier1[idx + 1] : null;
 
   return (
-    <main className="mx-auto max-w-4xl px-5 md:px-8">
+    /* Case studies are long-form prose, so this page keeps a narrower
+       reading measure than the home page's full-bleed shell — widening it
+       to 1440px would hurt legibility. */
+    <main className="mx-auto max-w-4xl px-5 md:px-10">
       <nav className="pt-8">
         <Link
           href="/#work"
@@ -63,7 +66,6 @@ export default async function ProjectPage({
         </div>
         <h1
           className="relative mt-6 max-w-4xl text-balance text-4xl leading-[1.06] tracking-[-0.03em] md:text-5xl"
-          style={{ fontFamily: 'var(--font-display)' }}
         >
           {p.title}
         </h1>
@@ -87,7 +89,7 @@ export default async function ProjectPage({
       {p.metrics && (
         <dl className={`grid-lines mb-14 grid ${metricCols(p.metrics.length)}`}>
           {p.metrics.map((m) => (
-            <div key={m.label} className="bg-surface px-5 py-5">
+            <div key={m.label} className="cell px-5 py-5">
               <dd className="num text-xl text-signal md:text-2xl">{m.value}</dd>
               <dt className="mt-2 text-xs leading-snug text-fg-3">{m.label}</dt>
             </div>
@@ -102,7 +104,7 @@ export default async function ProjectPage({
       {p.interactive === 'correlation' && (
         <section className="pb-16">
           <p className="eyebrow">Run it yourself</p>
-          <h2 className="mt-4 text-2xl tracking-tight md:text-3xl" style={{ fontFamily: 'var(--font-display)' }}>
+          <h2 className="mt-4 text-2xl tracking-tight md:text-3xl">
             The copula, in your browser
           </h2>
           <p className="mt-4 max-w-2xl leading-relaxed text-fg-2">
@@ -122,7 +124,7 @@ export default async function ProjectPage({
       {p.interactive === 'recovery' && (
         <section className="pb-16">
           <p className="eyebrow">Run it yourself</p>
-          <h2 className="mt-4 text-2xl tracking-tight md:text-3xl" style={{ fontFamily: 'var(--font-display)' }}>
+          <h2 className="mt-4 text-2xl tracking-tight md:text-3xl">
             The corrected model, in your browser
           </h2>
           <p className="mt-4 max-w-2xl leading-relaxed text-fg-2">
@@ -143,7 +145,7 @@ export default async function ProjectPage({
       {p.interactive === 'bayesian' && (
         <section className="pb-16">
           <p className="eyebrow">Run it yourself</p>
-          <h2 className="mt-4 text-2xl tracking-tight md:text-3xl" style={{ fontFamily: 'var(--font-display)' }}>
+          <h2 className="mt-4 text-2xl tracking-tight md:text-3xl">
             The inference layer, in your browser
           </h2>
           <p className="mt-4 max-w-2xl leading-relaxed text-fg-2">
@@ -163,7 +165,7 @@ export default async function ProjectPage({
       {p.diagram && (
         <section className="pb-16">
           <p className="eyebrow">Architecture</p>
-          <h2 className="mt-4 text-2xl tracking-tight md:text-3xl" style={{ fontFamily: 'var(--font-display)' }}>
+          <h2 className="mt-4 text-2xl tracking-tight md:text-3xl">
             How it runs
           </h2>
           <div className="stage mt-8">
@@ -194,7 +196,7 @@ export default async function ProjectPage({
           {prev ? (
             <Link
               href={`/projects/${prev.slug}`}
-              className="group bg-surface p-6 transition-colors hover:bg-surface-2"
+              className="cell group p-6"
             >
               <span className="eyebrow">Previous</span>
               <span className="mt-2 block text-lg text-fg-2 transition-colors group-hover:text-fg">
@@ -207,7 +209,7 @@ export default async function ProjectPage({
           {next && (
             <Link
               href={`/projects/${next.slug}`}
-              className="group bg-surface p-6 transition-colors hover:bg-surface-2 md:text-right"
+              className="cell group p-6 md:text-right"
             >
               <span className="eyebrow">Next</span>
               <span className="mt-2 block text-lg text-fg-2 transition-colors group-hover:text-fg">
@@ -253,7 +255,6 @@ function Section({
         <span className="num text-xs text-signal">{n}</span>
         <h2
           className="text-balance text-2xl tracking-[-0.025em] md:text-3xl"
-          style={{ fontFamily: 'var(--font-display)' }}
         >
           {title}
         </h2>
