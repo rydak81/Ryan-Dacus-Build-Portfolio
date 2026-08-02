@@ -9,26 +9,43 @@
   --risk   (red)   downside, floor breach
 
   Nothing on this site is warm unless it is true.
+
+  Direction: "Indigo Instrument". Near-black with an indigo cast, tuned to
+  share a brand with the 3TRecovery Wizard (indigo #6366f1 field, amber
+  verification). Amber remains the only warm thing on screen.
+
+  Contrast, measured against the two surfaces text ever sits on
+  (--surface #12141f, L=0.0073 · --surface-2 #191c2b, L=0.0121):
+    fg-3  #7e87a3 → 5.14:1 on surface · 4.74:1 on surface-2
+    signal #ffbf5c → 11.2:1 · 10.4:1
+    model  #7c8cff → 6.16:1 · 5.68:1
+    risk   #f2666b → 6.02:1 · 5.55:1
+  All ≥ 4.5:1. Any change to these four must be re-checked.
 */
 
 @theme {
-  --color-ink: #0e1418;
-  --color-surface: #161d22;
-  --color-surface-2: #1c252b;
-  --color-line: #263239;
-  --color-line-bright: #35454e;
+  --color-ink: #0b0c14;
+  --color-surface: #12141f;
+  --color-surface-2: #191c2b;
+  --color-line: #252a3d;
+  --color-line-bright: #38405c;
 
-  --color-fg: #e8eff2;
-  --color-fg-2: #93a6b0;
-  /* Brightened from #5f7581 for WCAG AA: ≥4.5:1 on both surfaces. */
-  --color-fg-3: #75909f;
+  --color-fg: #e9ecf5;
+  --color-fg-2: #a0a7bd;
+  --color-fg-3: #7e87a3;
 
-  --color-signal: #ffb454;
-  --color-signal-dim: #7a5624;
-  --color-model: #5ac8e8;
-  --color-model-dim: #245c6e;
-  /* Brightened from #e5484d for WCAG AA: ≥4.5:1 on both surfaces. */
-  --color-risk: #ec5f60;
+  --color-signal: #ffbf5c;
+  --color-signal-dim: #8a6229;
+  --color-model: #7c8cff;
+  --color-model-dim: #414a99;
+  --color-risk: #f2666b;
+
+  /* Ambient depth only — never used to carry meaning. */
+  --color-glow: #4c4fd6;
+
+  --radius-chip: 6px;
+  --radius-card: 10px;
+  --radius-panel: 12px;
 
   --font-display: var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif;
   --font-sans: var(--font-plex-sans), ui-sans-serif, system-ui, sans-serif;
@@ -56,6 +73,11 @@ body {
   border-radius: 2px;
 }
 
+/* Sticky nav clearance for anchor jumps. */
+[id] {
+  scroll-margin-top: 84px;
+}
+
 /* Numbers are instruments. They always set in mono, always tabular. */
 .num {
   font-family: var(--font-mono);
@@ -81,10 +103,106 @@ body {
   );
 }
 
+/* ── surfaces ─────────────────────────────────────────────────────────
+   One elevation primitive. Soft 1px border, 10px radius, and a barely
+   perceptible top highlight so a card reads as lit from above rather
+   than drawn on. No blur here — glass is reserved for the nav.
+*/
+.panel {
+  background: var(--color-surface);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-card);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.035),
+    0 1px 2px rgb(0 0 0 / 0.4);
+}
+
+/* A recessed well: inputs, code, anything the visitor types into. */
+.well {
+  background: var(--color-ink);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-chip);
+}
+
+/* Hairline dividers used to build seamless grids out of panels. */
+.grid-lines {
+  background: var(--color-line);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-card);
+  overflow: hidden;
+  gap: 1px;
+}
+
+/* ── the live-model stages ────────────────────────────────────────────
+   The three widgets are the product. Each sits in a framed panel over a
+   sparse indigo/amber glow: cool light from the model side, a warmer
+   trace from the verified side. Gradients only — no blur filter, so this
+   costs nothing to paint.
+*/
+.stage {
+  position: relative;
+}
+.stage::before {
+  content: "";
+  position: absolute;
+  inset: -12% -5% -6%;
+  pointer-events: none;
+  background:
+    radial-gradient(
+      42% 56% at 16% 4%,
+      color-mix(in srgb, var(--color-glow) 26%, transparent),
+      transparent 68%
+    ),
+    radial-gradient(
+      38% 50% at 88% 16%,
+      color-mix(in srgb, var(--color-signal) 8%, transparent),
+      transparent 70%
+    );
+}
+.stage > * {
+  position: relative;
+}
+
+/* Gradient hairline frame. The widgets draw their own square 1px border;
+   clipping it to this radius is what rounds them without touching their
+   files. */
+.stage-frame {
+  padding: 1px;
+  border-radius: var(--radius-panel);
+  overflow: hidden;
+  background: linear-gradient(
+    180deg,
+    var(--color-line-bright),
+    var(--color-line) 45%
+  );
+  box-shadow:
+    0 24px 48px -28px rgb(0 0 0 / 0.85),
+    inset 0 1px 0 rgb(255 255 255 / 0.05);
+}
+.stage-frame > * {
+  border-radius: calc(var(--radius-panel) - 1px);
+  overflow: hidden;
+}
+
+/* ── sticky nav ───────────────────────────────────────────────────────
+   The only glass on the site, and only once scrolled.
+*/
+.nav-shell {
+  border-bottom: 1px solid transparent;
+  transition: background-color 0.25s ease, border-color 0.25s ease;
+}
+.nav-shell[data-scrolled="true"] {
+  background: color-mix(in srgb, var(--color-ink) 72%, transparent);
+  border-bottom-color: var(--color-line);
+  backdrop-filter: blur(14px) saturate(150%);
+  -webkit-backdrop-filter: blur(14px) saturate(150%);
+}
+
 /*
   The one orchestrated motion moment: the hero settles into place once,
-  on load. Nothing else on the site animates. The reduced-motion guard at
-  the bottom of this file zeroes these durations automatically.
+  on load. Everything else is a gentle opacity fade tied to scroll
+  position. The reduced-motion guard at the bottom of this file zeroes
+  these durations automatically.
 */
 @keyframes rise {
   from {
@@ -109,22 +227,49 @@ body {
   animation-delay: 0.22s;
 }
 
+/* Scroll-linked fade. Pure CSS via a view timeline — no observer, no JS,
+   and browsers without support simply render the content plainly. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .fade-in {
+      animation: rise linear both;
+      animation-timeline: view();
+      animation-range: entry 5% entry 55%;
+    }
+  }
+}
+
 /* Faint plotting grid behind the hero. An instrument, not a brochure. */
 .hero-grid {
   background-image:
     linear-gradient(
-      color-mix(in srgb, var(--color-surface-2) 70%, transparent) 1px,
+      color-mix(in srgb, var(--color-line) 78%, transparent) 1px,
       transparent 1px
     ),
     linear-gradient(
       90deg,
-      color-mix(in srgb, var(--color-surface-2) 70%, transparent) 1px,
+      color-mix(in srgb, var(--color-line) 78%, transparent) 1px,
       transparent 1px
     );
   background-size: 56px 56px;
   /* Fade well inside the element so no hard grid edge is ever visible. */
   mask-image: radial-gradient(ellipse 62% 68% at 34% 34%, black, transparent 68%);
   -webkit-mask-image: radial-gradient(ellipse 62% 68% at 34% 34%, black, transparent 68%);
+}
+
+/* Single ambient wash behind the hero, indigo, low and off-centre. */
+.hero-glow {
+  background:
+    radial-gradient(
+      50% 45% at 12% 8%,
+      color-mix(in srgb, var(--color-glow) 22%, transparent),
+      transparent 70%
+    ),
+    radial-gradient(
+      44% 40% at 78% 0%,
+      color-mix(in srgb, var(--color-model) 10%, transparent),
+      transparent 72%
+    );
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -145,10 +290,12 @@ input[type="range"]:active {
 input[type="range"]::-webkit-slider-runnable-track {
   height: 2px;
   background: var(--color-line-bright);
+  border-radius: 2px;
 }
 input[type="range"]::-moz-range-track {
   height: 2px;
   background: var(--color-line-bright);
+  border-radius: 2px;
 }
 input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none;

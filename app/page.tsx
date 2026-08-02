@@ -40,7 +40,11 @@ export default function Home() {
 
 function Hero() {
   return (
-    <header className="relative pt-24 pb-16 md:pt-40 md:pb-24">
+    <header className="relative pt-20 pb-16 md:pt-32 md:pb-24">
+      <div
+        aria-hidden
+        className="hero-glow pointer-events-none absolute -inset-x-24 -top-24 bottom-0"
+      />
       <div
         aria-hidden
         className="hero-grid pointer-events-none absolute -inset-x-8 -top-10 bottom-0"
@@ -48,14 +52,14 @@ function Hero() {
       <div className="relative">
         <p className="rise eyebrow">Greenville, SC · Partnerships &amp; revenue systems</p>
         <h1
-          className="rise rise-1 mt-7 max-w-5xl text-[2.6rem] leading-[1.04] tracking-tight md:text-[4.25rem]"
+          className="rise rise-1 mt-7 max-w-5xl text-balance text-[2.6rem] leading-[1.04] tracking-[-0.03em] md:text-[4.25rem]"
           style={{ fontFamily: 'var(--font-display)' }}
         >
           I sell technology
           <br />
           I actually know how to build.
         </h1>
-        <p className="rise rise-2 mt-8 max-w-2xl text-lg leading-relaxed text-fg-2">
+        <p className="rise rise-2 mt-8 max-w-2xl text-pretty text-lg leading-relaxed text-fg-2">
           Twenty years in e-commerce revenue — Amazon seller, founding sales hire,
           partnerships lead. Somewhere in that run I stopped filing requests for
           the tools I needed and started building them. Everything below came out
@@ -64,19 +68,19 @@ function Hero() {
         <div className="rise rise-3 mt-10 flex flex-wrap items-center gap-x-3 gap-y-3">
           <a
             href="#work"
-            className="border border-signal bg-signal px-6 py-3 text-sm font-medium text-ink transition-opacity hover:opacity-85"
+            className="rounded-card bg-signal px-6 py-3 text-sm font-medium text-ink shadow-[0_8px_24px_-14px_rgba(255,191,92,0.5)] transition-opacity hover:opacity-90"
           >
             See the work
           </a>
           <a
             href={`mailto:${EMAIL}`}
-            className="border border-line-bright px-6 py-3 text-sm text-fg transition-colors hover:border-fg-2"
+            className="rounded-card border border-line-bright bg-surface px-6 py-3 text-sm text-fg transition-colors hover:border-fg-3 hover:bg-surface-2"
           >
             Get in touch
           </a>
           <a
             href={GITHUB}
-            className="num px-2 py-3 text-sm text-fg-3 underline decoration-line-bright underline-offset-4 transition-colors hover:text-fg-2"
+            className="num rounded-card px-3 py-3 text-sm text-fg-3 underline decoration-line-bright underline-offset-4 transition-colors hover:text-fg-2"
           >
             github.com/rydak81
           </a>
@@ -90,16 +94,18 @@ function Hero() {
 
 function Proof() {
   return (
-    <section className="pb-24 md:pb-32">
+    <section className="fade-in pb-24 md:pb-32">
       <SectionHead
         eyebrow="Live model — not a screenshot"
         title="Your pipeline forecast is lying to you about risk"
         lede="Standard forecasting treats every deal as independent. They aren't — quarter-end pressure, budget cycles, and shared activation capacity make them move together. This is the copula model from my forecasting engine, running in your browser."
       />
-      <div className="mt-9">
-        <DeferredMount minHeight={620}>
-          <CorrelationExplorer />
-        </DeferredMount>
+      <div className="stage mt-9">
+        <div className="stage-frame">
+          <DeferredMount minHeight={620}>
+            <CorrelationExplorer />
+          </DeferredMount>
+        </div>
       </div>
     </section>
   );
@@ -128,14 +134,14 @@ const STEPS: [string, string][] = [
 
 function Method() {
   return (
-    <section className="pb-24 md:pb-32">
+    <section id="method" className="fade-in pb-24 md:pb-32">
       <SectionHead
         eyebrow="Method"
         title="How every one of these got built"
       />
-      <ol className="mt-9 grid gap-px border border-line bg-line md:grid-cols-4">
+      <ol className="grid-lines mt-9 grid md:grid-cols-4">
         {STEPS.map(([title, body], i) => (
-          <li key={title} className="bg-surface p-5">
+          <li key={title} className="bg-surface p-5 transition-colors hover:bg-surface-2">
             <span className="num text-xs text-signal">
               {String(i + 1).padStart(2, '0')}
             </span>
@@ -154,13 +160,13 @@ function Method() {
 
 function SelectedWork() {
   return (
-    <section className="pb-24 md:pb-32">
+    <section className="fade-in pb-24 md:pb-32">
       <SectionHead
         eyebrow="Selected work"
         title="Five that carry the most weight"
         lede="Status labels mean what they say. Live is deployed and reachable. Built runs but isn't hosted. Nothing here is inflated to the next tier up."
       />
-      <div className="mt-9 grid gap-px border border-line bg-line">
+      <div className="mt-9 flex flex-col gap-4">
         {tier1.map((p) => (
           <FeatureCard key={p.slug} p={p} />
         ))}
@@ -171,13 +177,13 @@ function SelectedWork() {
 
 function FeatureCard({ p }: { p: Project }) {
   return (
-    <article className="bg-surface p-6 md:p-10">
+    <article className="panel p-6 md:p-9">
       <div className="flex flex-wrap items-center gap-3">
         <StatusBadge status={p.status} />
         <span className="eyebrow">{p.org}</span>
       </div>
       <h3
-        className="mt-4 text-2xl tracking-tight md:text-3xl"
+        className="mt-4 text-balance text-2xl tracking-[-0.02em] md:text-3xl"
         style={{ fontFamily: 'var(--font-display)' }}
       >
         <Link
@@ -187,14 +193,14 @@ function FeatureCard({ p }: { p: Project }) {
           {p.title}
         </Link>
       </h3>
-      <p className="mt-4 max-w-3xl leading-relaxed text-fg-2">
+      <p className="mt-4 max-w-3xl text-pretty leading-relaxed text-fg-2">
         {p.problem}
       </p>
 
       {p.metrics && (
-        <dl className="mt-6 grid gap-px border border-line bg-line sm:grid-cols-2 lg:grid-cols-4">
+        <dl className={`grid-lines mt-6 grid ${metricCols(p.metrics.length)}`}>
           {p.metrics.map((m) => (
-            <div key={m.label} className="bg-surface-2 px-4 py-3">
+            <div key={m.label} className="bg-surface-2 px-4 py-3.5">
               <dd className="num text-xl text-signal md:text-2xl">{m.value}</dd>
               <dt className="mt-1 text-[11px] leading-snug text-fg-3">
                 {m.label}
@@ -213,7 +219,7 @@ function FeatureCard({ p }: { p: Project }) {
       <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm">
         <Link
           href={`/projects/${p.slug}`}
-          className="border border-line-bright px-4 py-2 transition-colors hover:border-signal hover:text-signal"
+          className="rounded-card border border-line-bright px-4 py-2 transition-colors hover:border-signal hover:text-signal"
         >
           Read the case study
         </Link>
@@ -224,7 +230,7 @@ function FeatureCard({ p }: { p: Project }) {
           {p.url && (
             <a
               href={p.url}
-              className="num text-model underline decoration-model-dim underline-offset-4"
+              className="num text-model underline decoration-model-dim underline-offset-4 transition-colors hover:decoration-model"
             >
               {p.url.replace('https://', '')}
             </a>
@@ -232,7 +238,7 @@ function FeatureCard({ p }: { p: Project }) {
           {p.repo && (
             <a
               href={p.repo}
-              className="num text-model underline decoration-model-dim underline-offset-4"
+              className="num text-model underline decoration-model-dim underline-offset-4 transition-colors hover:decoration-model"
             >
               source
             </a>
@@ -240,7 +246,7 @@ function FeatureCard({ p }: { p: Project }) {
           {p.note && <span className="text-fg-3">{p.note}</span>}
           <Link
             href={`/projects/${p.slug}`}
-            className="num text-signal underline decoration-signal-dim underline-offset-4"
+            className="num text-signal underline decoration-signal-dim underline-offset-4 transition-colors hover:decoration-signal"
           >
             Read the case study &rarr;
           </Link>
@@ -254,7 +260,7 @@ function FeatureCard({ p }: { p: Project }) {
 
 function EverythingElse() {
   return (
-    <section className="pb-24 md:pb-32">
+    <section className="fade-in pb-24 md:pb-32">
       <SectionHead eyebrow="Everything else" title="The rest of the shelf" />
       <div className="mt-9 space-y-12">
         {groups.map((g) => {
@@ -262,12 +268,15 @@ function EverythingElse() {
           if (!items.length) return null;
           return (
             <div key={g}>
-              <h3 className="eyebrow border-b border-line pb-3">
+              <h3 className="eyebrow mb-3">
                 {g}
               </h3>
-              <div className="grid gap-px border-x border-b border-line bg-line md:grid-cols-2">
+              <div className="grid-lines grid md:grid-cols-2">
                 {items.map((p) => (
-                  <article key={p.slug} className="bg-surface p-5">
+                  <article
+                    key={p.slug}
+                    className="bg-surface p-5 transition-colors hover:bg-surface-2"
+                  >
                     <div className="flex flex-wrap items-center gap-2.5">
                       <StatusBadge status={p.status} small />
                       <span className="eyebrow">{p.org}</span>
@@ -296,14 +305,14 @@ function EverythingElse() {
         })}
 
         <div>
-          <h3 className="eyebrow border-b border-line pb-3">
+          <h3 className="eyebrow mb-3">
             Strategy &amp; enablement
           </h3>
-          <ul className="divide-y divide-line border-x border-b border-line">
+          <ul className="grid-lines grid">
             {tier3.map((p) => (
               <li
                 key={p.slug}
-                className="flex flex-wrap items-baseline gap-x-4 gap-y-1 bg-surface px-5 py-4"
+                className="flex flex-wrap items-baseline gap-x-4 gap-y-1 bg-surface px-5 py-4 transition-colors hover:bg-surface-2"
               >
                 <span className="font-medium">{p.title}</span>
                 <span className="text-sm text-fg-3">{p.org}</span>
@@ -345,11 +354,14 @@ const STACK: [string, string[]][] = [
 
 function Stack() {
   return (
-    <section className="pb-24 md:pb-32">
+    <section id="stack" className="fade-in pb-24 md:pb-32">
       <SectionHead eyebrow="Stack" title="What I actually work in" />
-      <dl className="mt-9 divide-y divide-line border-y border-line">
+      <dl className="panel mt-9 divide-y divide-line">
         {STACK.map(([label, items]) => (
-          <div key={label} className="grid gap-3 py-5 md:grid-cols-[180px_1fr] md:gap-8">
+          <div
+            key={label}
+            className="grid gap-3 p-5 md:grid-cols-[180px_1fr] md:gap-8"
+          >
             <dt className="eyebrow pt-1">{label.replace('&amp;', '&')}</dt>
             <dd className="flex flex-wrap gap-1.5">
               {items.map((i) => (
@@ -367,24 +379,30 @@ function Stack() {
 
 function ThroughLine() {
   return (
-    <section className="border-y border-line py-20 md:py-28">
-      <p className="eyebrow">The through line</p>
-      <p
-        className="mt-7 max-w-4xl text-2xl leading-relaxed md:text-3xl"
-        style={{ fontFamily: 'var(--font-display)' }}
-      >
-        None of these came from a roadmap, a ticket, or an assignment. Each one
-        started the same way: I hit a problem inside my own revenue work and
-        decided the cost of waiting was higher than the cost of building.
-      </p>
-      <p className="mt-6 max-w-3xl leading-relaxed text-fg-2">
-        That is the actual skill on offer — not React, and not any particular
-        model. It&rsquo;s the judgment to recognise which problems are worth
-        solving with software, the range to structure and ship the solution, and
-        the commercial instinct to know when a spreadsheet was already the right
-        answer. Twenty years carrying a number is what makes the first and third
-        parts work. The building is what makes them count.
-      </p>
+    <section className="fade-in panel relative overflow-hidden px-6 py-16 md:px-12 md:py-20">
+      <div
+        aria-hidden
+        className="hero-glow pointer-events-none absolute inset-0 opacity-70"
+      />
+      <div className="relative">
+        <p className="eyebrow">The through line</p>
+        <p
+          className="mt-7 max-w-4xl text-pretty text-2xl leading-relaxed md:text-3xl"
+          style={{ fontFamily: 'var(--font-display)' }}
+        >
+          None of these came from a roadmap, a ticket, or an assignment. Each one
+          started the same way: I hit a problem inside my own revenue work and
+          decided the cost of waiting was higher than the cost of building.
+        </p>
+        <p className="mt-6 max-w-3xl text-pretty leading-relaxed text-fg-2">
+          That is the actual skill on offer — not React, and not any particular
+          model. It&rsquo;s the judgment to recognise which problems are worth
+          solving with software, the range to structure and ship the solution, and
+          the commercial instinct to know when a spreadsheet was already the right
+          answer. Twenty years carrying a number is what makes the first and third
+          parts work. The building is what makes them count.
+        </p>
+      </div>
     </section>
   );
 }
@@ -393,14 +411,14 @@ function ThroughLine() {
 
 function Contact() {
   return (
-    <section className="py-24 md:py-32">
+    <section className="fade-in py-24 md:py-32">
       <h2
-        className="text-4xl tracking-tight md:text-5xl"
+        className="text-4xl tracking-[-0.03em] md:text-5xl"
         style={{ fontFamily: 'var(--font-display)' }}
       >
         Open to a conversation.
       </h2>
-      <p className="mt-5 max-w-2xl leading-relaxed text-fg-2">
+      <p className="mt-5 max-w-2xl text-pretty leading-relaxed text-fg-2">
         Partnerships and business development, go-to-market engineering,
         solutions consulting — particularly at companies building for commerce,
         retail, or logistics, where twenty years of domain knowledge is worth
@@ -409,19 +427,19 @@ function Contact() {
       <div className="mt-8 flex flex-wrap gap-x-8 gap-y-3">
         <a
           href={`mailto:${EMAIL}`}
-          className="num text-signal underline decoration-signal-dim underline-offset-4"
+          className="num text-signal underline decoration-signal-dim underline-offset-4 transition-colors hover:decoration-signal"
         >
           {EMAIL}
         </a>
         <a
           href={LINKEDIN}
-          className="num text-model underline decoration-model-dim underline-offset-4"
+          className="num text-model underline decoration-model-dim underline-offset-4 transition-colors hover:decoration-model"
         >
           linkedin.com/in/ryandacus-sbc
         </a>
         <a
           href={GITHUB}
-          className="num text-model underline decoration-model-dim underline-offset-4"
+          className="num text-model underline decoration-model-dim underline-offset-4 transition-colors hover:decoration-model"
         >
           github.com/rydak81
         </a>
@@ -432,7 +450,7 @@ function Contact() {
 
 function Footer() {
   return (
-    <footer className="num border-t border-line py-8 text-xs text-fg-3">
+    <footer className="num border-t border-line py-8 text-xs leading-relaxed text-fg-3">
       Ryan Dacus · Greenville, SC · Built with Next.js on Vercel · Every status
       label on this page means exactly what it says.
     </footer>
@@ -455,13 +473,13 @@ function SectionHead({
       <div className="rule mb-8" />
       <p className="eyebrow">{eyebrow}</p>
       <h2
-        className="mt-4 max-w-3xl text-3xl tracking-tight md:text-4xl"
+        className="mt-4 max-w-3xl text-balance text-3xl tracking-[-0.025em] md:text-4xl"
         style={{ fontFamily: 'var(--font-display)' }}
       >
         {title}
       </h2>
       {lede && (
-        <p className="mt-5 max-w-2xl leading-relaxed text-fg-2">
+        <p className="mt-5 max-w-2xl text-pretty leading-relaxed text-fg-2">
           {lede}
         </p>
       )}
@@ -469,9 +487,20 @@ function SectionHead({
   );
 }
 
+/**
+ * Metric strips are hairline grids, so an unfilled cell reads as a dead
+ * panel. Only ever open as many columns as there are metrics.
+ */
+function metricCols(n: number) {
+  if (n <= 1) return '';
+  if (n === 2) return 'sm:grid-cols-2';
+  if (n === 3) return 'sm:grid-cols-2 lg:grid-cols-3';
+  return 'sm:grid-cols-2 lg:grid-cols-4';
+}
+
 function Tag({ children }: { children: React.ReactNode }) {
   return (
-    <span className="num border border-line px-2 py-1 text-[11px] text-fg-2">
+    <span className="num rounded-chip border border-line bg-surface-2 px-2 py-1 text-[11px] text-fg-2">
       {children}
     </span>
   );
@@ -487,10 +516,13 @@ function StatusBadge({
   const live = status === 'Live';
   return (
     <span
-      className="num inline-flex items-center gap-1.5 border px-2 py-0.5 text-[10px] uppercase tracking-wider"
+      className="num inline-flex items-center gap-1.5 rounded-chip border px-2 py-0.5 text-[10px] uppercase tracking-wider"
       style={{
         color: live ? 'var(--color-signal)' : 'var(--color-fg-2)',
         borderColor: live ? 'var(--color-signal-dim)' : 'var(--color-line-bright)',
+        background: live
+          ? 'color-mix(in srgb, var(--color-signal) 10%, transparent)'
+          : 'var(--color-surface-2)',
         fontSize: small ? '9px' : undefined,
       }}
     >
