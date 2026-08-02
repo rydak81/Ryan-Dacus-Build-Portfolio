@@ -20,7 +20,7 @@ const GITHUB = 'https://github.com/rydak81';
 
 export default function Home() {
   return (
-    <main className="mx-auto max-w-6xl px-5 md:px-8">
+    <main className="mx-auto max-w-6xl overflow-x-clip px-5 md:px-8">
       <Hero />
       <Proof />
       <Method />
@@ -40,7 +40,7 @@ export default function Home() {
 
 function Hero() {
   return (
-    <header className="relative pt-20 pb-16 md:pt-32 md:pb-24">
+    <header className="relative overflow-x-clip pt-20 pb-16 md:pt-32 md:pb-24">
       <div
         aria-hidden
         className="hero-glow pointer-events-none absolute -inset-x-24 -top-24 bottom-0"

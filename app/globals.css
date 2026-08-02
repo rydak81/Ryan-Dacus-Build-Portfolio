@@ -251,10 +251,28 @@ body {
       color-mix(in srgb, var(--color-line) 78%, transparent) 1px,
       transparent 1px
     );
-  background-size: 56px 56px;
-  /* Fade well inside the element so no hard grid edge is ever visible. */
-  mask-image: radial-gradient(ellipse 62% 68% at 34% 34%, black, transparent 68%);
-  -webkit-mask-image: radial-gradient(ellipse 62% 68% at 34% 34%, black, transparent 68%);
+  background-size: 40px 40px;
+  opacity: 0.5;
+  /*
+    Fade well inside the element so no hard grid edge is ever visible. A
+    narrow hero is tall and thin, so the wash is anchored high and dies out
+    fast — otherwise its dense centre lands right behind the headline.
+  */
+  mask-image: radial-gradient(ellipse 80% 40% at 46% 14%, black, transparent 72%);
+  -webkit-mask-image: radial-gradient(ellipse 80% 40% at 46% 14%, black, transparent 72%);
+}
+
+@media (min-width: 768px) {
+  .hero-grid {
+    background-size: 56px 56px;
+    opacity: 0.75;
+    mask-image: radial-gradient(ellipse 72% 58% at 40% 22%, black, transparent 74%);
+    -webkit-mask-image: radial-gradient(
+      ellipse 72% 58% at 40% 22%,
+      black,
+      transparent 74%
+    );
+  }
 }
 
 /* Single ambient wash behind the hero, indigo, low and off-centre. */

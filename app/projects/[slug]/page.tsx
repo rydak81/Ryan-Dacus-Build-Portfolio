@@ -50,7 +50,7 @@ export default async function ProjectPage({
         </Link>
       </nav>
 
-      <header className="relative pt-10 pb-14 md:pt-14">
+      <header className="relative overflow-x-clip pt-10 pb-14 md:pt-14">
         <div
           aria-hidden
           className="hero-glow pointer-events-none absolute -inset-x-24 -top-20 bottom-0"
