@@ -54,7 +54,36 @@ export interface Shot {
  * entries, and renders nothing while it does not.
  */
 export const shots: Shot[] = [
-  { src: '/screenshots/f1.png', alt: 'TEMP FIXTURE', width: 1280, height: 800, depth: 1, slug: 'marketplace-beta' },
-  { src: '/screenshots/f2.png', alt: 'TEMP FIXTURE', width: 1280, height: 800, depth: 0, slug: '3t-recovery-wizard' },
-  { src: '/screenshots/f3.png', alt: 'TEMP FIXTURE', width: 1280, height: 800, depth: 2, slug: 'qbr-funnel-command-center' },
+  // Drop your PNGs into public/screenshots/, then uncomment and edit the
+  // entries below — one per image. The three slugs here are the projects
+  // whose accent colours are already wired up (see lib/accents.ts), so
+  // these are the strongest candidates for the three visible frames.
+  //
+  // Set `depth` deliberately: put your best-looking screenshot at 0 (it
+  // renders sharp and centre-stage) and the two supporting ones at 1 and 2.
+  //
+  // {
+  //   src: '/screenshots/YOUR-FILE.png',
+  //   alt: 'Recovery forecast dashboard with credible intervals',
+  //   width: 0,   // ← true intrinsic pixels, or you get layout shift
+  //   height: 0,
+  //   depth: 0,
+  //   slug: '3t-recovery-wizard',
+  // },
+  // {
+  //   src: '/screenshots/YOUR-FILE.png',
+  //   alt: 'Marketplace listing management interface',
+  //   width: 0,
+  //   height: 0,
+  //   depth: 1,
+  //   slug: 'marketplace-beta',
+  // },
+  // {
+  //   src: '/screenshots/YOUR-FILE.png',
+  //   alt: 'Pipeline funnel dashboard with stage conversion table',
+  //   width: 0,
+  //   height: 0,
+  //   depth: 2,
+  //   slug: 'qbr-funnel-command-center',
+  // },
 ];
