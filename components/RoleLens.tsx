@@ -72,13 +72,10 @@ export default function RoleLens({
 
   return (
     <div id="work">
-      <section className="pb-14">
+      <section className="shell pb-14">
         <div className="rule mb-8" />
         <p className="eyebrow">Role lens</p>
-        <h2
-          className="mt-4 max-w-3xl text-3xl tracking-tight md:text-4xl"
-          style={{ fontFamily: 'var(--font-display)' }}
-        >
+        <h2 className="mt-4 max-w-3xl text-3xl md:text-4xl">
           Reading this for a specific role?
         </h2>
         <p className="mt-5 max-w-2xl leading-relaxed text-fg-2">
@@ -105,7 +102,7 @@ export default function RoleLens({
               type="button"
               onClick={run}
               disabled={state.kind === 'loading' || jd.trim().length < 40}
-              className="rounded-card border border-model-dim bg-surface-2 px-5 py-2.5 text-sm text-model transition-colors hover:border-model disabled:cursor-not-allowed disabled:opacity-50"
+              className="cell rounded-card border border-model-dim px-5 py-2.5 text-sm font-semibold text-model transition-colors hover:border-model disabled:cursor-not-allowed disabled:opacity-50"
             >
               {state.kind === 'loading' ? 'Reading the role…' : 'Focus the lens'}
             </button>
@@ -113,7 +110,7 @@ export default function RoleLens({
               <button
                 type="button"
                 onClick={() => setState({ kind: 'idle' })}
-                className="num text-sm text-fg-3 underline decoration-line-bright underline-offset-4 transition-colors hover:text-fg-2"
+                className="label text-sm text-fg-3 underline decoration-line-bright underline-offset-4 transition-colors hover:text-fg-2"
               >
                 clear — back to default order
               </button>
@@ -134,12 +131,12 @@ export default function RoleLens({
       </section>
 
       {state.kind === 'active' ? (
-        <section className="pb-20 md:pb-28">
+        <section className="shell pb-20 md:pb-28">
           <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
             <p className="eyebrow">
               Model-ordered · {state.matches.length} of {data.length} projects
             </p>
-            <p className="num text-[11px] text-fg-3">
+            <p className="label text-[11px] text-fg-3">
               relevance lines are model output
             </p>
           </div>
@@ -150,7 +147,7 @@ export default function RoleLens({
               return (
                 <article
                   key={m.slug}
-                  className="bg-surface p-5 transition-colors hover:bg-surface-2 md:p-6"
+                  className="cell p-5 md:p-6"
                 >
                   <div className="flex flex-wrap items-center gap-2.5">
                     <span className="num text-xs text-fg-3">
@@ -159,7 +156,7 @@ export default function RoleLens({
                     <StatusBadge status={p.status} />
                     <span className="eyebrow">{p.org}</span>
                   </div>
-                  <h3 className="mt-3 text-xl font-medium">
+                  <h3 className="mt-3 text-xl">
                     <Link
                       href={`/projects/${p.slug}`}
                       className="transition-colors hover:text-signal"
@@ -183,7 +180,7 @@ export default function RoleLens({
                     {p.stack.slice(0, 6).map((s) => (
                       <span
                         key={s}
-                        className="num rounded-chip border border-line bg-surface-2 px-2 py-1 text-[11px] text-fg-2"
+                        className="label rounded-chip border border-line bg-surface-2 px-2 py-1 text-[11px] text-fg-2"
                       >
                         {s}
                       </span>
@@ -205,7 +202,7 @@ function StatusBadge({ status }: { status: Status }) {
   const live = status === 'Live';
   return (
     <span
-      className="num inline-flex items-center gap-1.5 rounded-chip border px-2 py-0.5 text-[10px] uppercase tracking-wider"
+      className="label inline-flex items-center gap-1.5 rounded-chip border px-2 py-0.5 text-[10px] uppercase tracking-wider"
       style={{
         color: live ? 'var(--color-signal)' : 'var(--color-fg-2)',
         borderColor: live ? 'var(--color-signal-dim)' : 'var(--color-line-bright)',

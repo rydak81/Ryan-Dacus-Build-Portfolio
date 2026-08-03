@@ -1,25 +1,30 @@
 import type { Metadata, Viewport } from 'next';
-import { Space_Grotesk, IBM_Plex_Sans, IBM_Plex_Mono } from 'next/font/google';
+import { Inter, JetBrains_Mono } from 'next/font/google';
 import SiteNav from '@/components/SiteNav';
 import './globals.css';
 
-const spaceGrotesk = Space_Grotesk({
+/*
+  Inter, matching marketplacebeta.com — which runs Inter at 900 for display
+  and 700 for headings. One family across display and body, differentiated
+  by weight rather than by typeface, which is what makes it read as a
+  product rather than as a document.
+*/
+const inter = Inter({
   subsets: ['latin'],
-  variable: '--font-space-grotesk',
+  variable: '--font-inter',
   display: 'swap',
 });
 
-const plexSans = IBM_Plex_Sans({
+/*
+  Mono is now demoted to genuine numerics only — metric values, percentages,
+  URLs. It is no longer used for eyebrows or body copy, which is what gave
+  the page its dated teletype feel. JetBrains Mono has a taller x-height and
+  far less typewriter character than IBM Plex Mono.
+*/
+const mono = JetBrains_Mono({
   subsets: ['latin'],
   weight: ['400', '500', '600'],
-  variable: '--font-plex-sans',
-  display: 'swap',
-});
-
-const plexMono = IBM_Plex_Mono({
-  subsets: ['latin'],
-  weight: ['400', '500'],
-  variable: '--font-plex-mono',
+  variable: '--font-mono-num',
   display: 'swap',
 });
 
@@ -51,7 +56,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${spaceGrotesk.variable} ${plexSans.variable} ${plexMono.variable} bg-ink`}
+      className={`${inter.variable} ${mono.variable} bg-ink`}
     >
       <body>
         <SiteNav email="ryandacus@gmail.com" />

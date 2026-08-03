@@ -1,0 +1,18 @@
+Hero mosaic screenshots go here.
+
+Drop curated PNGs of shipped dashboards into this directory, then declare
+each one in lib/screenshots.ts (that file has a commented-out template with
+the exact shape and the project slugs that already have accent colours).
+
+Two things to get right, because both are load-bearing:
+
+  - width/height in the manifest must be the image's TRUE intrinsic pixel
+    dimensions. next/image uses them to reserve space before the image
+    loads; a wrong number reintroduces layout shift.
+
+  - alt text is short, factual, and describes only what is visibly on
+    screen. No metrics, no outcomes, no claims.
+
+Nothing in this directory is generated or mocked up. The mosaic renders
+exactly the files declared in the manifest, and renders nothing when the
+manifest is empty.

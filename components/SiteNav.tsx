@@ -32,12 +32,11 @@ export default function SiteNav({ email }: { email: string }) {
     >
       <nav
         aria-label="Primary"
-        className="mx-auto flex h-14 max-w-6xl items-center justify-between gap-4 px-5 md:px-8"
+        className="shell flex h-16 items-center justify-between gap-4"
       >
         <Link
           href="/"
-          className="flex items-center gap-2.5 text-sm font-medium tracking-tight text-fg"
-          style={{ fontFamily: 'var(--font-display)' }}
+          className="flex items-center gap-2.5 text-[0.9375rem] font-bold tracking-[-0.02em] text-fg"
         >
           <span aria-hidden className="flex items-end gap-[2px]">
             <span className="block h-1.5 w-[3px] rounded-[1px] bg-model-dim" />
@@ -53,7 +52,7 @@ export default function SiteNav({ email }: { email: string }) {
               <li key={label}>
                 <Link
                   href={href}
-                  className="rounded-chip px-3 py-1.5 text-sm text-fg-2 transition-colors hover:bg-surface-2 hover:text-fg"
+                  className="rounded-chip px-3 py-1.5 text-sm font-semibold text-fg-2 transition-colors hover:bg-surface-2 hover:text-fg"
                 >
                   {label}
                 </Link>
@@ -62,7 +61,7 @@ export default function SiteNav({ email }: { email: string }) {
           </ul>
           <a
             href={`mailto:${email}`}
-            className="rounded-chip border border-line-bright px-3.5 py-1.5 text-sm text-fg transition-colors hover:border-signal hover:text-signal"
+            className="cell rounded-chip border border-line-bright px-3.5 py-1.5 text-sm font-semibold text-fg transition-colors hover:border-signal hover:text-signal"
           >
             Get in touch
           </a>
