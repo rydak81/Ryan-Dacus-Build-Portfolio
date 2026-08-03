@@ -65,6 +65,26 @@ const nextConfig = {
   async headers() {
     return [{ source: '/:path*', headers: securityHeaders }];
   },
+  /*
+    Four project slugs were renamed away from "partner" wording. These are
+    permanent redirects so any link already shared — in a CV, an email, a
+    LinkedIn post — still lands on the right page instead of a 404.
+
+    Keep them indefinitely. They cost nothing, and an old URL may be sitting
+    in someone's inbox.
+  */
+  async redirects() {
+    return [
+      ['partner-enablement-portal', 'channel-enablement-portal'],
+      ['monday-partner-crm', 'monday-revenue-crm'],
+      ['partner-health-slack', 'channel-health-slack'],
+      ['partner-enablement-system', 'sales-enablement-system'],
+    ].map(([from, to]) => ({
+      source: `/projects/${from}`,
+      destination: `/projects/${to}`,
+      permanent: true,
+    }));
+  },
 };
 
 export default nextConfig;

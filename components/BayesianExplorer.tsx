@@ -61,7 +61,7 @@ export default function BayesianExplorer() {
           label="Observed"
           value={`${k} of ${n}`}
           tone="neutral"
-          sub="partners activated"
+          sub="accounts activated"
         />
         <Stat
           label="Naive rate"
@@ -94,7 +94,7 @@ export default function BayesianExplorer() {
           viewBox={`0 0 ${W} ${H}`}
           className="w-full min-w-[520px]"
           role="img"
-          aria-label={`Prior and posterior densities of the partner activation rate. With ${k} activations in ${n} observations, the naive rate is ${
+          aria-label={`Prior and posterior densities of the account activation rate. With ${k} activations in ${n} observations, the naive rate is ${
             naive !== null ? pct(naive) : 'undefined'
           } and the posterior mean is ${pct(postMean)}.`}
         >
@@ -215,7 +215,7 @@ export default function BayesianExplorer() {
           <div>
             <div className="flex items-baseline justify-between gap-x-4">
               <label htmlFor="bay-n" className="eyebrow">
-                Partners observed
+                Accounts observed
               </label>
               <span className="num text-sm text-signal">n = {n}</span>
             </div>
@@ -232,7 +232,7 @@ export default function BayesianExplorer() {
                 if (k > next) setK(next);
               }}
               className="mt-3 w-full"
-              aria-valuetext={`${n} partners observed`}
+              aria-valuetext={`${n} accounts observed`}
             />
           </div>
           <div>
@@ -259,15 +259,15 @@ export default function BayesianExplorer() {
         <p className="mt-6 max-w-2xl text-sm leading-relaxed text-fg-2">
           {naive !== null ? (
             <>
-              The spreadsheet says this partner activates{' '}
+              The spreadsheet says this account activates{' '}
               <span className="num">{pct(naive)}</span> of the time. The
               posterior says <span className="num text-model">{pct(postMean)}</span> —
               because {n} observation{n === 1 ? '' : 's'} can&rsquo;t outvote a
               prior carrying the weight of {PRIOR_ALPHA + PRIOR_BETA}{' '}
               pseudo-observations of program history. Push n and k up together
               and watch the data take over: the curve tightens and walks away
-              from the prior. A partner that activated 1 of 2 times is not a
-              50% partner. A partner that activated 30 of 60 times might be.
+              from the prior. An account that activated 1 of 2 times is not a
+              50% account. An account that activated 30 of 60 times might be.
             </>
           ) : (
             <>
@@ -278,8 +278,8 @@ export default function BayesianExplorer() {
           )}
         </p>
         <p className="mt-3 max-w-2xl text-sm leading-relaxed text-fg-3">
-          In the QBR dashboard this same conjugate update runs on partner
-          conversion signals, implemented from first principles rather than
+            In the QBR dashboard this same conjugate update runs on channel
+            conversion signals, implemented from first principles rather than
           imported — so a quarterly review stops treating a two-touch sample
           and a two-year track record as equally load-bearing.
         </p>

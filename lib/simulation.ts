@@ -1,7 +1,7 @@
 /**
  * Factor-structured Gaussian copula Monte Carlo.
  *
- * This is a browser port of the model in the Partner ACV Forecast Engine.
+ * This is a browser port of the model in the Sales ACV Forecast Engine.
  * The mechanism, in full:
  *
  *   F     ~ N(0,1)                    one shared market factor per trial
@@ -24,7 +24,7 @@ export interface Deal {
 
 /** Anonymised. Shape and spread mirror a real quarter; names and values do not. */
 export const DEALS: Deal[] = [
-  { name: 'Enterprise Retail Partner', segment: 'Agency', p: 0.8, value: 42000 },
+  { name: 'Enterprise Retail Group', segment: 'Agency', p: 0.8, value: 42000 },
   { name: '3PL Network — Midwest', segment: '3PL', p: 0.65, value: 38000 },
   { name: 'Returns Platform', segment: 'SaaS', p: 0.55, value: 31000 },
   { name: 'Marketplace Agency — West', segment: 'Agency', p: 0.75, value: 24000 },
@@ -38,7 +38,7 @@ export const DEALS: Deal[] = [
   { name: 'Logistics Consultancy', segment: '3PL', p: 0.25, value: 9000 },
 ];
 
-/** Committed run-rate from already-active partners. Not at risk in the sim. */
+/** Committed run-rate from already-active accounts. Not at risk in the sim. */
 export const BASE_RUN_RATE = 45000;
 export const TARGET = 215000;
 /** The number you've told leadership you will not go below. */

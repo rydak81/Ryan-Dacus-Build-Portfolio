@@ -34,7 +34,7 @@ export const metadata: Metadata = {
   ),
   title: 'Ryan Dacus — Revenue systems, forecasting, applied AI',
   description:
-    'Twenty years in e-commerce revenue, and a working portfolio of the systems I built rather than waited for: AI pipelines, probabilistic forecasting engines, and partner infrastructure.',
+    'Twenty years in e-commerce revenue, and a working portfolio of the systems I built rather than waited for: AI pipelines, probabilistic forecasting engines, and revenue infrastructure.',
   openGraph: {
     title: 'Ryan Dacus',
     description:
