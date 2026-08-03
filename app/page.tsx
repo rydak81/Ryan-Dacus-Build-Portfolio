@@ -69,13 +69,14 @@ function Hero() {
           the type got heavier.
         */}
         <h1 className="rise rise-1 mt-7 max-w-[19ch] text-balance text-[clamp(2.5rem,7vw,5rem)] leading-[1.03]">
-          I sell technology I actually know how to build.
+          I sell technology I know how to build.
         </h1>
         <p className="rise rise-2 mt-8 max-w-2xl text-pretty text-lg leading-relaxed text-fg-2">
-          Twenty years in e-commerce revenue — Amazon seller, founding sales hire,
-          partnerships lead. Somewhere in that run I stopped filing requests for
-          the tools I needed and started building them. Everything below came out
-          of a problem I hit inside my own work.
+          Twenty years in sales, business development, and partnerships taught me
+          exactly where revenue work breaks — manual reporting, dead pipeline data,
+          enablement that never gets built. I stopped filing requests for those
+          tools and started building them. Everything below is a solution and came
+          out of a problem within my own work.
         </p>
         <div className="rise rise-3 mt-10 flex flex-wrap items-center gap-x-3 gap-y-3">
           <a

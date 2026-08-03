@@ -10,7 +10,7 @@ import { join } from 'node:path';
  */
 
 export const alt =
-  'Ryan Dacus — I sell technology I actually know how to build.';
+  'Ryan Dacus — I sell technology I know how to build.';
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
 
@@ -95,7 +95,7 @@ export default async function OpengraphImage() {
           }}
         >
           <div style={{ display: 'flex' }}>I sell technology</div>
-          <div style={{ display: 'flex' }}>I actually know how to build.</div>
+          <div style={{ display: 'flex' }}>I know how to build.</div>
         </div>
 
         {/* Sub line */}
