@@ -209,7 +209,7 @@ export default function RecoverySimulator() {
             recovery estimate was sized off revenue and came out{' '}
             <span className="num text-signal">{CORRECTION}</span> — caught and
             rebuilt bottom-up on units &times; manufacturing cost before it
-            reached a partner.
+            reached a client.
           </p>
         )}
         <p className="mt-5 max-w-2xl border-l-2 border-line-bright pl-4 text-sm leading-relaxed text-fg-3">

@@ -150,7 +150,7 @@ export default async function ProjectPage({
           </h2>
           <p className="mt-4 max-w-2xl leading-relaxed text-fg-2">
             The dashboard&rsquo;s Beta-conjugate updating, on an illustrative
-            partner. Feed it a small sample and watch it refuse to overreact.
+            account. Feed it a small sample and watch it refuse to overreact.
           </p>
           <div className="stage mt-8">
             <div className="stage-frame">

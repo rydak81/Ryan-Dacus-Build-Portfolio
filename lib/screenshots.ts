@@ -118,12 +118,16 @@ export const shots: Shot[] = [
   {
     src: '/screenshots/supabase-schema.png',
     /*
-      Slugged to the QBR command centre: the visible tables — partners,
-      prospects, quarterly_targets with target_acv, recommendations, and a
+      Slugged to the QBR command centre: the visible tables — prospects,
+      quarterly_targets with target_acv, recommendations, and a
       model-version table — are that project's schema, and it is the
       Supabase build in the catalogue.
+
+      The capture's own table names are Postgres identifiers baked into the
+      PNG and cannot be edited out, so the alt text describes them in the
+      site's vocabulary rather than quoting them verbatim.
     */
-    alt: 'Postgres schema visualiser showing related partner, prospect and quarterly target tables',
+    alt: 'Postgres schema visualiser showing related account, prospect and quarterly target tables',
     width: 1600,
     height: 1000,
     depth: 1,

@@ -1,22 +1,22 @@
 /**
- * Beta-conjugate updating on a partner activation rate.
+ * Beta-conjugate updating on an account activation rate.
  *
  * Browser port of the inference mechanism in the QBR dashboard, where it
- * runs on partner conversion signals. The mechanism, in full:
+ * runs on channel conversion signals. The mechanism, in full:
  *
  *   prior      rate ~ Beta(α, β)
- *   observe    n partners, k activations
+ *   observe    n accounts, k activations
  *   posterior  rate ~ Beta(α + k, β + n − k)
  *
- * The prior acts as α + β pseudo-observations of program history. A partner
- * observed twice cannot outvote it; a partner observed sixty times can.
+ * The prior acts as α + β pseudo-observations of program history. An account
+ * observed twice cannot outvote it; an account observed sixty times can.
  * That is the entire argument for shrinkage in a QBR: small samples get
  * pulled toward the base rate instead of being reported at face value.
  */
 
 /**
  * Illustrative program-level prior: mean α/(α+β) = 1/3, carrying the weight
- * of twelve pseudo-observations. Not fitted to real partner data.
+ * of twelve pseudo-observations. Not fitted to real account data.
  */
 export const PRIOR_ALPHA = 4;
 export const PRIOR_BETA = 8;

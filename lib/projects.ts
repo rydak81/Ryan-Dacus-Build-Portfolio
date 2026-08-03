@@ -73,7 +73,7 @@ export const projects: Project[] = [
   // ─────────────────────────────────────────────────────────────
   {
     slug: 'acv-forecast-engine',
-    title: 'Partner ACV Forecast Engine',
+    title: 'Sales ACV Forecast Engine',
     org: 'Threecolts',
     tier: 1,
     group: 'Revenue Systems & Forecasting',
@@ -135,7 +135,7 @@ export const projects: Project[] = [
     built:
       'One parameterized Python engine driving three analytical reports and an interactive calculator, so every number reconciles across every document. A 20,000-trial Monte Carlo forward revenue projection incorporating a seasonality index, per-ASIN lognormal estimate error, cohort growth drift, and a hero-ASIN disruption shock. Per-ASIN profitability reconstruction using modeled COGS by product line and TACoS by listing-age cohort. Bayesian shrinkage on star ratings to stop low-volume ASINs from dominating. OLS rank elasticity. Concentration analysis. And a recovery model rebuilt bottom-up on units times manufacturing cost, matching Amazon\u2019s post-March-2025 reimbursement policy.',
     changed:
-      'I flagged my own first recovery estimate as roughly 2.5× overstated — it had been sized as a percentage of revenue rather than bottom-up on units and manufacturing cost — and rebuilt it before it reached a partner. Sensitivity analysis on the corrected model showed average selling price largely cancels out, and the real driver of recovery rate is landed COGS as a share of retail price. That finding changed how the opportunity gets sized in every conversation since.',
+      'I flagged my own first recovery estimate as roughly 2.5× overstated — it had been sized as a percentage of revenue rather than bottom-up on units and manufacturing cost — and rebuilt it before it reached a client. Sensitivity analysis on the corrected model showed average selling price largely cancels out, and the real driver of recovery rate is landed COGS as a share of retail price. That finding changed how the opportunity gets sized in every conversation since.',
     stack: ['Python', 'pandas', 'NumPy', 'Monte Carlo simulation', 'Bayesian shrinkage', 'OLS regression'],
     metrics: [
       { label: 'Correction to initial recovery estimate', value: '2.5× overstated' },
@@ -143,13 +143,13 @@ export const projects: Project[] = [
       { label: 'Catalog concentration', value: 'Gini 0.83 · HHI 1,511' },
       { label: 'Monte Carlo trials', value: '20,000' },
     ],
-    // TODO: link only after the partner-economics panel is deleted from source.
+    // TODO: link only after the revenue-share economics panel is deleted from source.
     // Verified live at v0-recovery-calculator.vercel.app
     interactive: 'recovery',
   },
   {
     slug: 'qbr-funnel-command-center',
-    title: 'QBR Dashboard & Partner Funnel Command Center',
+    title: 'QBR Dashboard & Revenue Ops Command Center',
     org: 'Threecolts',
     tier: 1,
     group: 'Revenue Systems & Forecasting',
@@ -157,9 +157,9 @@ export const projects: Project[] = [
     role: 'Designed and built solo',
     aliases: ['Agency Intelligence OS', 'Executive Dashboard'],
     problem:
-      'Partner program quarterly reviews were assembled by hand every cycle. Leadership got a static snapshot well after the fact, with no forward view and no way to interrogate it.',
+      'Channel program quarterly reviews were assembled by hand every cycle. Leadership got a static snapshot well after the fact, with no forward view and no way to interrogate it.',
     built:
-      'A five-tab React dashboard on Supabase: program overview, pipeline management with full CRUD, an interactive funnel model with live-updating sliders, cadence targets by period, and an insights tab. The inference layer runs client-side and was implemented from first principles rather than pulled from a library — Beta-distribution conjugate Bayesian updating on partner conversion signals, OLS multivariate regression solved by Gaussian elimination, and probability decay applied to stalled deals so a forecast degrades honestly when nothing is happening.',
+      'A five-tab React dashboard on Supabase: program overview, pipeline management with full CRUD, an interactive funnel model with live-updating sliders, cadence targets by period, and an insights tab. The inference layer runs client-side and was implemented from first principles rather than pulled from a library — Beta-distribution conjugate Bayesian updating on channel conversion signals, OLS multivariate regression solved by Gaussian elimination, and probability decay applied to stalled deals so a forecast degrades honestly when nothing is happening.',
     changed:
       'Built to replace a manual, backward-looking reporting cycle with live program visibility and a forward projection attached. A multi-user version was fully specced on Supabase; I stopped short of standing it up once the hosting cost exceeded what the tool was returning.',
     stack: ['React', 'Supabase / PostgreSQL', 'TypeScript', 'Bayesian updating', 'OLS regression'],
@@ -191,21 +191,21 @@ export const projects: Project[] = [
   // TIER 2 — Cards
   // ─────────────────────────────────────────────────────────────
   {
-    slug: 'partner-enablement-portal',
-    title: 'Partner Enablement Portal',
+    slug: 'channel-enablement-portal',
+    title: 'Channel Enablement Portal',
     org: 'Threecolts',
     tier: 2,
     group: 'Revenue Systems & Forecasting',
     status: 'Live',
     role: 'Designed and built solo',
     problem:
-      'Partners sign after getting excited about the revenue share, then go quiet and never actually introduce anyone. Time-to-first-referral ran around ninety days, and the standard response — more check-in calls — treats the symptom.',
+      'Channel accounts sign after getting excited about the revenue share, then go quiet and never actually introduce anyone. Time-to-first-referral ran around ninety days, and the standard response — more check-in calls — treats the symptom.',
     built:
-      'A partner portal that does the operational work on the partner\u2019s behalf so the friction between intent and action approaches zero. Eight sections: a personalised dashboard, a seven-milestone onboarding timeline, a twelve-asset pitch toolkit, copy-to-clipboard email templates, a LinkedIn post library, a co-marketing calendar, deal registration, and a tier and revenue dashboard. Behind it, a full Next.js App Router architecture across thirteen routes with a Supabase schema, row-level security policies, and Resend notifications. The referral loop runs end to end: a partner submits a qualified referral, Resend fires the notifications, the referral lands in the database, and a live tracking sheet plus a per-partner dashboard \u2014 scoped so each partner sees only their own referrals \u2014 keep the partner\u2019s view current.',
+      'A channel portal that does the operational work on the account\u2019s behalf so the friction between intent and action approaches zero. Eight sections: a personalised dashboard, a seven-milestone onboarding timeline, a twelve-asset pitch toolkit, copy-to-clipboard email templates, a LinkedIn post library, a co-marketing calendar, deal registration, and a tier and revenue dashboard. Behind it, a full Next.js App Router architecture across thirteen routes with a Supabase schema, row-level security policies, and Resend notifications. The referral loop runs end to end: an account submits a qualified referral, Resend fires the notifications, the referral lands in the database, and a live tracking sheet plus a per-account dashboard \u2014 scoped so each account sees only their own referrals \u2014 keep the account\u2019s view current.',
     changed:
-      'Designed against a target of cutting time-to-first-referral from roughly ninety days to fourteen. Deployed as a live pilot for a single partner on the partner\u2019s own dedicated domain.',
+      'Designed against a target of cutting time-to-first-referral from roughly ninety days to fourteen. Deployed as a live pilot for a single account on the account\u2019s own dedicated domain.',
     stack: ['React', 'Next.js', 'Recharts', 'Supabase / PostgreSQL', 'Row-level security', 'Resend'],
-    note: 'The 14-day figure is a design target, not a measured result. The pilot partner is not named or linked here \u2014 real partner names stay off this site.',
+    note: 'The 14-day figure is a design target, not a measured result. The pilot account is not named or linked here \u2014 real company names stay off this site.',
   },
   {
     slug: 'prospecting-command-center',
@@ -241,35 +241,35 @@ export const projects: Project[] = [
     note: 'The only employer-scale systems build here with a live ERP integration.',
   },
   {
-    slug: 'monday-partner-crm',
-    title: 'Partner CRM',
+    slug: 'monday-revenue-crm',
+    title: 'Revenue Pipeline CRM',
     org: 'Threecolts',
     tier: 2,
     group: 'Revenue Systems & Forecasting',
     status: 'Live',
     role: 'Architected and implemented',
     problem:
-      'A net-new channel program with no system of record, no funnel definition, and no way to see which partners were going cold.',
+      'A net-new channel program with no system of record, no funnel definition, and no way to see which accounts were going cold.',
     built:
-      'Four connected Monday.com boards — Agency Lead Pipeline, Active Partners, Outreach & Activities, and Partner Performance — with a ten-stage funnel, lead scoring, partner health scores, twelve automation recipes covering stale-lead alerts and stage-change logging, a KPI dashboard, and a fifty-seven agency import.',
+      'Four connected Monday.com boards — Agency Lead Pipeline, Active Accounts, Outreach & Activities, and Account Performance — with a ten-stage funnel, lead scoring, account health scores, twelve automation recipes covering stale-lead alerts and stage-change logging, a KPI dashboard, and a fifty-seven agency import.',
     changed:
-      'Gave a new channel program a working system of record and funnel definition from day one instead of improvising per partner.',
+      'Gave a new channel program a working system of record and funnel definition from day one instead of improvising per account.',
     stack: ['Monday.com', 'Workflow automation', 'Lead scoring', 'Excel'],
   },
   {
-    slug: 'partner-health-slack',
-    title: 'Partner Health Dashboard & Slack Workflow',
+    slug: 'channel-health-slack',
+    title: 'Channel Health Dashboard & Slack Workflow',
     org: 'Threecolts',
     tier: 2,
     group: 'Revenue Systems & Forecasting',
     status: 'In Progress',
     role: 'Designing and building',
     problem:
-      'Partner health signals lived across disconnected systems. Nobody saw a partner going quiet until it was a churn conversation instead of a save.',
+      'Channel health signals lived across disconnected systems. Nobody saw an account going quiet until it was a churn conversation instead of a save.',
     built:
-      'A dashboard surfacing partner health and engagement metrics in one view, wired into the partner Slack channel so status changes reach the team where they already work rather than waiting to be looked up.',
+      'A dashboard surfacing account health and engagement metrics in one view, wired into the team Slack channel so status changes reach the team where they already work rather than waiting to be looked up.',
     changed:
-      'Shifts partner management from reactive to monitored — the signal finds the team.',
+      'Shifts channel management from reactive to monitored — the signal finds the team.',
     stack: ['React', 'Supabase', 'Slack API', 'Automated workflows'],
   },
   {
@@ -408,7 +408,7 @@ export const projects: Project[] = [
     problem:
       'Amazon sellers looking for agency help have no reliable way to find one that fits, and good agencies waste enormous effort on leads that were never a match. Both sides are searching blind.',
     built:
-      'A two-sided lead generation and matching platform connecting Amazon sellers with vetted agency partners — seller intake capturing category, revenue band, and service need, matched against agency profiles and specialisations. Built as a working prototype and deployed to preview.',
+      'A two-sided lead generation and matching platform connecting Amazon sellers with vetted agencies — seller intake capturing category, revenue band, and service need, matched against agency profiles and specialisations. Built as a working prototype and deployed to preview.',
     changed:
       'Takes the matching problem I spent years solving manually inside agencies and makes it a product surface.',
     stack: ['HTML', 'JavaScript', 'Vercel'],
@@ -470,15 +470,15 @@ export const projects: Project[] = [
     stack: ['Claude', 'Market research synthesis', 'Competitive analysis'],
   },
   {
-    slug: 'partner-enablement-system',
-    title: 'Partner Enablement System',
+    slug: 'sales-enablement-system',
+    title: 'Sales Enablement System',
     org: 'Threecolts',
     tier: 3,
     group: 'Strategy & Enablement',
     status: 'Live',
     role: 'Built and deployed',
-    problem: 'A new channel program with no enablement assets, no outreach standard, and no onboarding path — every partner conversation starting from a blank page.',
-    built: 'The CedCommerce partner enablement deck, a master multi-channel outreach playbook covering email, LinkedIn, text, and phone, segment-specific Dripify sequences, and programmatically generated PPTX decks for internal all-hands.',
+    problem: 'A new channel program with no enablement assets, no outreach standard, and no onboarding path — every new-business conversation starting from a blank page.',
+    built: 'The CedCommerce enablement deck, a master multi-channel outreach playbook covering email, LinkedIn, text, and phone, segment-specific Dripify sequences, and programmatically generated PPTX decks for internal all-hands.',
     changed: 'Gave a net-new channel program a repeatable enablement and outreach standard from day one.',
     stack: ['Claude', 'Python', 'python-pptx', 'Dripify'],
   },

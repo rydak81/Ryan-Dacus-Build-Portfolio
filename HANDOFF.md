@@ -134,10 +134,30 @@ that gets probed in an interview costs more than every feature in this document.
 - LSTM, ARIMA, Croston, or AutoARIMA anywhere. Ryan has graduate EE coursework that
   *touched* these, but he did not implement them. AgencyForecast is a heuristic
   weighted ensemble and must always be described that way.
-- Real partner names, real ACV figures, or revenue-share terms.
+- Real company or partner names, real ACV figures, or revenue-share terms. (This
+  rule keeps the word "partner" deliberately — it is about what must never be
+  published, not about site vocabulary. See the naming note below.)
 - Any infrastructure not actually in use: FastAPI, Playwright, Redis, BullMQ,
   microservices, RAG, vector databases, GPT-4-in-production. The real stack is
   Next.js on Vercel with Supabase and Python. That's it.
+
+**Naming: avoid "partner" in project titles and copy.** Ryan works with real
+partners who could read a project called "Partner CRM" as a reference to work
+co-built with them. Every project title, description, and piece of UI copy now
+uses **Sales**, **Revenue** / **Revenue Ops**, **Channel**, **Account**, or
+**Client** instead. Pick whichever fits the subject; don't apply one word
+mechanically.
+
+Two deliberate exceptions:
+- **Ryan's own career history keeps "partnerships"** — the hero eyebrow, the
+  about narrative, the OG image, and the contact section. That is the role he
+  held and the role he is targeting, and it reads as biography, not as a
+  reference to any specific partner's project.
+- **The "never publish real partner names" rule above** keeps the word, because
+  the rule is about the risk itself.
+
+Four slugs were renamed with permanent redirects in `next.config.mjs`. If you
+rename another, add a redirect there too.
 
 **Status vocabulary** is defined at the top of `lib/projects.ts`. `Live` means
 deployed and reachable. `Built` means it runs but isn't hosted. Never promote a
@@ -145,7 +165,7 @@ project to a higher tier of claim than its status supports.
 
 **Blocked until Ryan clears it:**
 - The Recovery Calculator at `v0-recovery-calculator.vercel.app` must not be linked
-  from anywhere until a partner-economics panel is **deleted from its source** —
+  from anywhere until a revenue-share economics panel is **deleted from its source** —
   not toggled off, not hidden behind a flag. Deleted.
 - Marketplace Beta's repo README and an older portfolio PDF disagree on numbers
   (RSS source count, model roles, cron stages). `ArchitectureDiagram.tsx` currently
@@ -175,7 +195,7 @@ price.** That's counterintuitive and it's the thing worth demonstrating.
 Model it bottom-up the way the corrected engine does — units × manufacturing cost,
 matching Amazon's post-March-2025 reimbursement policy, *not* a percentage of
 revenue. The original estimate was ~2.5× overstated precisely because it was sized
-off revenue, and Ryan caught it himself before it reached a partner.
+off revenue, and Ryan caught it himself before it reached a client.
 
 Suggested controls: annual units, average selling price, COGS as % of retail,
 loss/damage rate. Suggested output: estimated recoverable value, plus a small
@@ -187,15 +207,15 @@ actual seller data.
 
 ### 3b. Bayesian updating widget
 
-Beta-conjugate updating on partner activation rate. Prior `Beta(α, β)`, observe `n`
-partners with `k` activations, posterior `Beta(α+k, β+n−k)`.
+Beta-conjugate updating on account activation rate. Prior `Beta(α, β)`, observe `n`
+accounts with `k` activations, posterior `Beta(α+k, β+n−k)`.
 
 Draw prior and posterior densities on the same axes — prior as a dashed ghost,
 matching how `CorrelationExplorer` renders its independence baseline. Let the
 visitor set observed data with sliders.
 
-The lesson to make unmissable: **a partner that activated 1 of 2 times is not a 50%
-partner.** Small samples get pulled toward the prior. Show the naive rate and the
+The lesson to make unmissable: **an account that activated 1 of 2 times is not a 50%
+account.** Small samples get pulled toward the prior. Show the naive rate and the
 posterior mean side by side so the gap is visible. That is the entire argument for
 Bayesian shrinkage in a QBR, in one screen.
 
@@ -274,4 +294,4 @@ Rate-limit it. It's a public endpoint calling a paid API.
   Analyzer is actually hosted.
 - Fix the "Private repository. All rights reserved." line on the public
   `margin-intel-hub` repo; add a profile README and pinned repos.
-- Strip the partner-economics panel from the Recovery Calculator source.
+- Strip the revenue-share economics panel from the Recovery Calculator source.
