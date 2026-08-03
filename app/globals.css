@@ -571,6 +571,20 @@ h4 {
   }
 
   /*
+    Five 460px frames cannot fit between 768px and 1279px — flex-shrink
+    crushes them to ~190px, at which point a dashboard screenshot is an
+    unreadable smudge. So the two furthest-back frames are dropped from
+    the stack until there is room, holding every visible frame at a
+    legible ~320px. They return at xl.
+
+    display:none rather than visibility/opacity: a hidden frame must also
+    give up its flex basis, or the remaining three shrink anyway.
+  */
+  .mosaic-frame[data-depth='2'] {
+    display: none;
+  }
+
+  /*
     The depth ladder. Nearer frames are sharper, brighter, larger, and sit
     above their neighbours; farther frames recede on every axis at once,
     which is what makes the stack read as depth rather than as overlap.
@@ -605,6 +619,14 @@ h4 {
 
   .mosaic-shot {
     max-height: 300px;
+  }
+}
+
+/* Room for the full five-frame stack. Restores the two furthest-back
+   frames hidden in the md range above. */
+@media (min-width: 1280px) {
+  .mosaic-frame[data-depth='2'] {
+    display: block;
   }
 }
 

@@ -49,41 +49,68 @@ export interface Shot {
 }
 
 /**
- * Empty until real screenshots are committed to public/screenshots/.
- * The mosaic is fully built and waiting — it renders as soon as this has
- * entries, and renders nothing while it does not.
+ * Live manifest — five frames from the recovery wizard.
+ *
+ * ORDERING IS DELIBERATE, on two axes at once:
+ *
+ * a) Composition. Frames render left-to-right, so depth runs 2 → 1 → 0 →
+ *    1 → 2. The sharpest frame lands dead centre and the stack recedes
+ *    symmetrically either side of it, which reads as a considered
+ *    arrangement rather than a lean.
+ *
+ * b) Legibility of former-employer branding. Three of these screenshots
+ *    have "Threecolts Fee" / "3T Fee" baked into the pixels, which cannot
+ *    be edited out of a PNG. Those are parked at depth 2 where the ladder
+ *    dims to 66% brightness and blurs 1.6px, so the label is present but
+ *    not readable at a glance. The three frames with no such label take
+ *    depth 0 and 1.
+ *
+ * Widths/heights below are the real intrinsic pixel dimensions, read from
+ * each PNG's IHDR header rather than eyeballed — these are 2x retina
+ * captures, hence the ~3000px widths.
  */
 export const shots: Shot[] = [
-  // Drop your PNGs into public/screenshots/, then uncomment and edit the
-  // entries below — one per image. The three slugs here are the projects
-  // whose accent colours are already wired up (see lib/accents.ts), so
-  // these are the strongest candidates for the three visible frames.
-  //
-  // Set `depth` deliberately: put your best-looking screenshot at 0 (it
-  // renders sharp and centre-stage) and the two supporting ones at 1 and 2.
-  //
-  // {
-  //   src: '/screenshots/YOUR-FILE.png',
-  //   alt: 'Recovery forecast dashboard with credible intervals',
-  //   width: 0,   // ← true intrinsic pixels, or you get layout shift
-  //   height: 0,
-  //   depth: 0,
-  //   slug: '3t-recovery-wizard',
-  // },
-  // {
-  //   src: '/screenshots/YOUR-FILE.png',
-  //   alt: 'Marketplace listing management interface',
-  //   width: 0,
-  //   height: 0,
-  //   depth: 1,
-  //   slug: 'marketplace-beta',
-  // },
-  // {
-  //   src: '/screenshots/YOUR-FILE.png',
-  //   alt: 'Pipeline funnel dashboard with stage conversion table',
-  //   width: 0,
-  //   height: 0,
-  //   depth: 2,
-  //   slug: 'qbr-funnel-command-center',
-  // },
+  {
+    src: '/screenshots/lighthouse-analysis.png',
+    alt: 'Recovery analysis view with channel contribution bar chart and scenario comparison',
+    width: 3010,
+    height: 1568,
+    // Carries a "Threecolts Fee" row — furthest back.
+    depth: 2,
+    slug: '3t-recovery-wizard',
+  },
+  {
+    src: '/screenshots/lighthouse-partners.png',
+    alt: 'Partnership enablement dashboard with a credible interval band',
+    width: 2380,
+    height: 1474,
+    depth: 1,
+    slug: '3t-recovery-wizard',
+  },
+  {
+    src: '/screenshots/lighthouse-forecast.png',
+    // Centre frame: the strongest composition and no former-employer label.
+    alt: 'Multi-year recovery forecast with confidence bands and seasonality',
+    width: 2380,
+    height: 1474,
+    depth: 0,
+    slug: '3t-recovery-wizard',
+  },
+  {
+    src: '/screenshots/lighthouse-channel-posterior.png',
+    alt: 'Channel view showing a posterior distribution and uncertainty drivers',
+    width: 3010,
+    height: 1568,
+    depth: 1,
+    slug: '3t-recovery-wizard',
+  },
+  {
+    src: '/screenshots/lighthouse-recovery-flow.png',
+    alt: 'Sankey diagram tracing exposure through the recovery pipeline',
+    width: 3010,
+    height: 1568,
+    // Also carries a "Threecolts Fee" node — furthest back.
+    depth: 2,
+    slug: '3t-recovery-wizard',
+  },
 ];

@@ -24,6 +24,18 @@ import { accentFor } from '@/lib/accents';
 export default function HeroMosaic() {
   if (shots.length === 0) return null;
 
+  /*
+    The LCP candidate is the nearest, sharpest frame — not necessarily the
+    first one in the DOM. Depth 0 sits centre-stage at full brightness, so
+    that is the image worth preloading; the receded frames are dimmed and
+    blurred and can load lazily. Falling back to 0 keeps this safe for a
+    manifest that happens to have no depth-0 entry.
+  */
+  const lcpIndex = Math.max(
+    0,
+    shots.findIndex((s) => s.depth === 0),
+  );
+
   return (
     <section
       aria-labelledby="mosaic-label"
@@ -47,7 +59,7 @@ export default function HeroMosaic() {
         */}
         <div className="mosaic relative mt-7">
           {shots.map((shot, i) => (
-            <Frame key={shot.src} shot={shot} index={i} />
+            <Frame key={shot.src} shot={shot} index={i} isLcp={i === lcpIndex} />
           ))}
         </div>
       </div>
@@ -55,7 +67,15 @@ export default function HeroMosaic() {
   );
 }
 
-function Frame({ shot, index }: { shot: Shot; index: number }) {
+function Frame({
+  shot,
+  index,
+  isLcp,
+}: {
+  shot: Shot;
+  index: number;
+  isLcp: boolean;
+}) {
   const accent = accentFor(shot.slug);
 
   return (
@@ -84,12 +104,11 @@ function Frame({ shot, index }: { shot: Shot; index: number }) {
           width={shot.width}
           height={shot.height}
           /*
-            Only the nearest, first frame is eager — it is the one most
-            likely to be in the initial viewport and is the LCP candidate
-            worth prioritising. Everything behind it loads lazily.
+            Only the sharp, centre-stage frame is eager — it is the LCP
+            candidate. Everything receded behind it loads lazily.
           */
-          priority={index === 0}
-          loading={index === 0 ? 'eager' : 'lazy'}
+          priority={isLcp}
+          loading={isLcp ? 'eager' : 'lazy'}
           /*
             Frames are ~78vw on a phone (one band, slight peek at the next),
             and cap out around 460px once the stack goes horizontal.
