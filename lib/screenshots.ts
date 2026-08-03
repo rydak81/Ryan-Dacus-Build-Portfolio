@@ -46,44 +46,99 @@ export interface Shot {
   depth: 0 | 1 | 2;
   /** Must match a slug in lib/projects.ts. Drives the frame's accent. */
   slug: string;
+  /**
+   * Set to 'light' for a predominantly white screenshot. The depth ladder is
+   * calibrated for dark dashboards, so a white capture at the same depth
+   * reads brighter than its darker neighbours and steals focus from the
+   * centre frame. This applies extra damping. Omit for dark shots.
+   */
+  tone?: 'light';
 }
 
 /**
- * Empty until real screenshots are committed to public/screenshots/.
- * The mosaic is fully built and waiting — it renders as soon as this has
- * entries, and renders nothing while it does not.
+ * Live manifest — five frames spanning three different projects.
+ *
+ * WHY A MIX AND NOT FIVE OF ONE APP: five views of the same dashboard reads
+ * as one screenshot taken five times. Three products — a Bayesian
+ * forecasting model, a public marketplace-intelligence site, and a
+ * production Postgres schema — reads as range, which is the point of a
+ * portfolio hero.
+ *
+ * ORDERING IS DELIBERATE, on three axes:
+ *
+ * a) Composition. Frames render left-to-right, so depth runs 2 → 1 → 0 →
+ *    1 → 2. The sharpest frame lands dead centre and the stack recedes
+ *    symmetrically either side of it.
+ *
+ * b) Variety of surface. Adjacent frames never show the same kind of thing.
+ *    The centre is a chart, flanked by a marketing site and a database
+ *    schema, with a second chart and site at the edges — so no two
+ *    neighbours look interchangeable at a glance.
+ *
+ * c) Legibility of former-employer branding. Two of the recovery-wizard
+ *    screenshots have "Threecolts Fee" / "3T Fee" baked into the pixels,
+ *    which cannot be edited out of a PNG. Those are parked at depth 2,
+ *    where the ladder dims to 66% brightness and blurs 1.6px.
+ *
+ * The three new frames are CROPPED from larger captures — dead gradient,
+ * console sidebar, and the v0 toolbar badge trimmed off — because each
+ * frame renders only ~310-330px wide, so cropping is what makes the content
+ * legible rather than a smudge. Widths/heights below are the true intrinsic
+ * dimensions of the cropped files.
  */
 export const shots: Shot[] = [
-  // Drop your PNGs into public/screenshots/, then uncomment and edit the
-  // entries below — one per image. The three slugs here are the projects
-  // whose accent colours are already wired up (see lib/accents.ts), so
-  // these are the strongest candidates for the three visible frames.
-  //
-  // Set `depth` deliberately: put your best-looking screenshot at 0 (it
-  // renders sharp and centre-stage) and the two supporting ones at 1 and 2.
-  //
-  // {
-  //   src: '/screenshots/YOUR-FILE.png',
-  //   alt: 'Recovery forecast dashboard with credible intervals',
-  //   width: 0,   // ← true intrinsic pixels, or you get layout shift
-  //   height: 0,
-  //   depth: 0,
-  //   slug: '3t-recovery-wizard',
-  // },
-  // {
-  //   src: '/screenshots/YOUR-FILE.png',
-  //   alt: 'Marketplace listing management interface',
-  //   width: 0,
-  //   height: 0,
-  //   depth: 1,
-  //   slug: 'marketplace-beta',
-  // },
-  // {
-  //   src: '/screenshots/YOUR-FILE.png',
-  //   alt: 'Pipeline funnel dashboard with stage conversion table',
-  //   width: 0,
-  //   height: 0,
-  //   depth: 2,
-  //   slug: 'qbr-funnel-command-center',
-  // },
+  {
+    src: '/screenshots/lighthouse-analysis.png',
+    alt: 'Recovery analysis view with channel contribution bar chart and scenario comparison',
+    width: 3010,
+    height: 1568,
+    // Carries a "Threecolts Fee" row — furthest back.
+    depth: 2,
+    slug: '3t-recovery-wizard',
+  },
+  {
+    src: '/screenshots/marketplacebeta-home.png',
+    alt: 'MarketplaceBeta home page with a live news ticker and coverage statistics',
+    width: 1600,
+    height: 829,
+    depth: 1,
+    slug: 'marketplace-beta',
+    // Light hero on a pale gradient.
+    tone: 'light',
+  },
+  {
+    src: '/screenshots/lighthouse-forecast.png',
+    // Centre frame: strongest composition, and no former-employer label.
+    alt: 'Multi-year recovery forecast with confidence bands and seasonality',
+    width: 2380,
+    height: 1474,
+    depth: 0,
+    slug: '3t-recovery-wizard',
+  },
+  {
+    src: '/screenshots/supabase-schema.png',
+    /*
+      Slugged to the QBR command centre: the visible tables — partners,
+      prospects, quarterly_targets with target_acv, recommendations, and a
+      model-version table — are that project's schema, and it is the
+      Supabase build in the catalogue.
+    */
+    alt: 'Postgres schema visualiser showing related partner, prospect and quarterly target tables',
+    width: 1600,
+    height: 1000,
+    depth: 1,
+    slug: 'qbr-funnel-command-center',
+    // Near-white schema canvas — the brightest of the five.
+    tone: 'light',
+  },
+  {
+    src: '/screenshots/marketplacebeta-newsletter.png',
+    alt: 'Daily marketplace brief signup page with subscriber statistics and a subscribe form',
+    width: 1542,
+    height: 964,
+    depth: 2,
+    slug: 'marketplace-beta',
+    // Split light/dark, but the left two-thirds is a white hero.
+    tone: 'light',
+  },
 ];

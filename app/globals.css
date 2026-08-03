@@ -571,6 +571,20 @@ h4 {
   }
 
   /*
+    Five 460px frames cannot fit between 768px and 1279px — flex-shrink
+    crushes them to ~190px, at which point a dashboard screenshot is an
+    unreadable smudge. So the two furthest-back frames are dropped from
+    the stack until there is room, holding every visible frame at a
+    legible ~320px. They return at xl.
+
+    display:none rather than visibility/opacity: a hidden frame must also
+    give up its flex basis, or the remaining three shrink anyway.
+  */
+  .mosaic-frame[data-depth='2'] {
+    display: none;
+  }
+
+  /*
     The depth ladder. Nearer frames are sharper, brighter, larger, and sit
     above their neighbours; farther frames recede on every axis at once,
     which is what makes the stack read as depth rather than as overlap.
@@ -595,6 +609,25 @@ h4 {
     filter: blur(1.6px) brightness(0.66) saturate(0.82);
   }
 
+  /*
+    The ladder above was calibrated against dark dashboard screenshots.
+    A predominantly WHITE capture (a light marketing page, a Postgres schema
+    canvas) at brightness(0.82) still reads brighter than the dark depth-0
+    frame beside it, which inverts the hierarchy — the eye goes to the
+    receded frame instead of the centre one.
+
+    So light shots get extra damping via an opt-in attribute rather than a
+    change to the shared ladder, which would over-darken every dark frame.
+    Values chosen so a white frame's perceived weight lands just under its
+    dark neighbour at the same depth.
+  */
+  .mosaic-frame[data-tone='light'][data-depth='1']:not(:hover) {
+    filter: blur(0.7px) brightness(0.62) saturate(0.9) contrast(0.95);
+  }
+  .mosaic-frame[data-tone='light'][data-depth='2']:not(:hover) {
+    filter: blur(1.6px) brightness(0.45) saturate(0.82) contrast(0.92);
+  }
+
   /* Hovering a receded frame brings it forward and clears it — the depth
      ladder becomes an affordance instead of just decoration. */
   .mosaic-frame:hover {
@@ -605,6 +638,14 @@ h4 {
 
   .mosaic-shot {
     max-height: 300px;
+  }
+}
+
+/* Room for the full five-frame stack. Restores the two furthest-back
+   frames hidden in the md range above. */
+@media (min-width: 1280px) {
+  .mosaic-frame[data-depth='2'] {
+    display: block;
   }
 }
 
