@@ -82,6 +82,9 @@ function Frame({
     <figure
       className="mosaic-frame"
       data-depth={shot.depth}
+      /* Undefined for dark shots, so the attribute is simply absent and the
+         standard depth ladder applies unmodified. */
+      data-tone={shot.tone}
       style={
         {
           '--tilt': `${TILTS[index % TILTS.length]}deg`,
