@@ -41,10 +41,10 @@ export default async function ProjectPage({
   const next = idx >= 0 && idx < tier1.length - 1 ? tier1[idx + 1] : null;
 
   return (
-    /* Case studies are long-form prose, so this page keeps a narrower
-       reading measure than the home page's full-bleed shell — widening it
-       to 1440px would hurt legibility. */
-    <main className="mx-auto max-w-4xl px-5 md:px-10">
+    /* Same .shell width system as the home page, so backgrounds, panels,
+       and diagrams span the full content width and the two page types feel
+       like one site. Prose keeps its own max-w-* reading measure inside. */
+    <main className="shell">
       <nav className="pt-8">
         <Link
           href="/#work"

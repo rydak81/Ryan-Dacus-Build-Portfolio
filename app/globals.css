@@ -323,7 +323,9 @@ h4 {
   transition: background-color 0.25s ease, border-color 0.25s ease;
 }
 .nav-shell[data-scrolled="true"] {
-  background: color-mix(in srgb, var(--color-ink) 72%, transparent);
+  /* Opaque enough to stay readable even where backdrop-filter is
+     unavailable (some GPUs/headless browsers render no blur). */
+  background: color-mix(in srgb, var(--color-ink) 92%, transparent);
   border-bottom-color: var(--color-line);
   backdrop-filter: blur(14px) saturate(150%);
   -webkit-backdrop-filter: blur(14px) saturate(150%);

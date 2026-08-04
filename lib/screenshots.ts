@@ -89,10 +89,12 @@ export interface Shot {
 export const shots: Shot[] = [
   {
     src: '/screenshots/lighthouse-analysis.png',
-    alt: 'Recovery analysis view with channel contribution bar chart and scenario comparison',
-    width: 3010,
-    height: 1568,
-    // Carries a "Threecolts Fee" row — furthest back.
+    alt: 'Recovery analysis view with a channel contribution bar chart',
+    width: 1332,
+    height: 770,
+    /* Cropped to the channel-contribution chart. The full capture carried
+       the app's fee-split panel; commercial terms stay off this site, so
+       that region does not ship. */
     depth: 2,
     slug: '3t-recovery-wizard',
   },
