@@ -6,6 +6,7 @@ import DeferredMount from '@/components/DeferredMount';
 import PrintResume from '@/components/PrintResume';
 import {
   capabilities,
+  careerResults,
   chapters,
   education,
   evidenceFor,
@@ -17,6 +18,16 @@ import {
   stats,
   type Proof,
 } from '@/lib/career';
+
+/** Public contact line. The phone is opt-in — see profile.publishPhone. */
+const CONTACT_LINE = [
+  profile.email,
+  profile.publishPhone ? profile.phone : null,
+  profile.linkedin.replace('https://', ''),
+  profile.github.replace('https://', ''),
+]
+  .filter(Boolean)
+  .join(' · ');
 
 export const metadata: Metadata = {
   title: 'About Ryan Dacus — profile, career, and capability ledger',
@@ -143,8 +154,7 @@ function ProfileHeader() {
 
           {/* Plain text in print, where a mailto: is useless. */}
           <p className="num hidden text-sm print:mt-4 print:block">
-            {profile.email} · {profile.linkedin.replace('https://', '')} ·{' '}
-            {profile.github.replace('https://', '')}
+            {CONTACT_LINE}
           </p>
         </div>
 
@@ -199,7 +209,9 @@ function AvailabilityChip() {
  */
 function IdentityBlock() {
   const cells: [string, string | number][] = [
-    ['Years carrying a number', '20'],
+    // Counted from CAREER_START at build time rather than typed, so it does
+    // not quietly become wrong next January.
+    ['Years carrying a number', stats.years],
     ['Systems shipped', stats.shipped],
     ['Of those, live', stats.live],
     ['On the shelf', stats.total],
@@ -397,9 +409,22 @@ function Results() {
       <SectionHead
         eyebrow="Selected results"
         title="Numbers I can defend in a room"
-        lede="Every value here is read from the project that produced it, not retyped — including the one where the finding was that my own first estimate was wrong."
+        lede="The commercial figures are carried by the role that produced them. The rest are read from the project that produced them rather than retyped — including the one where the finding was that my own first estimate was wrong."
       />
-      <dl className="grid-lines mt-9 grid sm:grid-cols-2 lg:grid-cols-3">
+
+      <p className="eyebrow mt-9">From the roles</p>
+      <dl className="grid-lines mt-3 grid sm:grid-cols-3">
+        {careerResults.map((r) => (
+          <div key={r.label} className="cell p-5">
+            <dd className="num text-2xl text-signal">{r.value}</dd>
+            <dt className="mt-2 text-sm leading-snug text-fg-2">{r.label}</dt>
+            <p className="label mt-3 text-[11px] text-fg-3">{r.chapter}</p>
+          </div>
+        ))}
+      </dl>
+
+      <p className="eyebrow mt-10">From the work</p>
+      <dl className="grid-lines mt-3 grid sm:grid-cols-2 lg:grid-cols-4">
         {results.map((r) => (
           <div key={`${r.project.slug}-${r.label}`} className="cell p-5">
             <dd className="num text-2xl text-signal">{r.value}</dd>
@@ -481,20 +506,27 @@ function ResumeSheet() {
               className="border-t border-line pt-6 first:border-t-0 first:pt-0"
             >
               <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1">
-                <h3 className="text-lg tracking-[-0.015em]">{c.title}</h3>
+                <h3 className="text-lg tracking-[-0.015em]">
+                  {c.org} — {c.title}
+                </h3>
                 {c.period && (
                   <span className="num text-sm text-fg-3">{c.period}</span>
                 )}
               </div>
-              <p className="eyebrow mt-1.5">{c.org}</p>
+              {(c.context || c.location) && (
+                <p className="mt-1.5 flex flex-wrap gap-x-3 text-sm text-fg-3">
+                  {c.context && <span>{c.context}</span>}
+                  {c.location && <span>{c.location}</span>}
+                </p>
+              )}
               <ul className="mt-4 space-y-2.5">
-                <Bullet>{c.mandate}</Bullet>
-                <Bullet>{c.build}</Bullet>
-                <Bullet>{c.lesson}</Bullet>
+                {c.bullets.map((b) => (
+                  <Bullet key={b.slice(0, 40)}>{b}</Bullet>
+                ))}
               </ul>
               {shipped.length > 0 && (
                 <p className="mt-3 text-sm leading-relaxed text-fg-3">
-                  <span className="label">Shipped:</span>{' '}
+                  <span className="label">Shipped, and on this site:</span>{' '}
                   {shipped.map((p) => p.title).join(' · ')}
                 </p>
               )}
@@ -504,13 +536,26 @@ function ResumeSheet() {
 
         {education.length > 0 && (
           <article className="border-t border-line pt-6">
-            <h3 className="text-lg tracking-[-0.015em]">Education</h3>
-            <ul className="mt-4 space-y-2.5">
+            <h3 className="text-lg tracking-[-0.015em]">
+              Education and continued development
+            </h3>
+            <ul className="mt-4 space-y-3">
               {education.map((e) => (
-                <Bullet key={e.credential}>
-                  {e.credential} — {e.org}
-                  {e.note ? `. ${e.note}` : ''}
-                </Bullet>
+                <li key={e.credential} className="flex gap-3">
+                  <span
+                    aria-hidden
+                    className="mt-2 h-1 w-1 shrink-0 rounded-full bg-signal-dim"
+                  />
+                  <div>
+                    <p className="text-sm leading-relaxed text-fg">
+                      {e.credential}
+                    </p>
+                    <p className="text-sm leading-relaxed text-fg-3">
+                      {e.org}
+                      {e.note ? ` — ${e.note}` : ''}
+                    </p>
+                  </div>
+                </li>
               ))}
             </ul>
           </article>
