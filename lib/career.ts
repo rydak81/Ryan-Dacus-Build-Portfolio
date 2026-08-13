@@ -62,8 +62,14 @@ export interface Profile {
 
 export const profile: Profile = {
   name: 'Ryan Dacus',
+  /*
+    Commercially led, deliberately. The building is the differentiator, not
+    the identity — the roles being targeted are Director/Manager of Business
+    Development, Sales, Partnerships, and Alliances, and a headline that
+    reads as an engineer's disqualifies him from the shortlist he wants.
+  */
   headline:
-    'Twenty years opening markets and carrying a revenue number — and a working portfolio of the systems I built rather than waited for.',
+    'Twenty years in B2B revenue — founding sales hire, $1M+ in annual contract value closed, teams hired and led to quota. I also build the systems the number depends on.',
   location: 'Greenville, SC',
   email: 'ryandacus@gmail.com',
   phone: '(864) 915-3193',
@@ -89,15 +95,103 @@ export const CAREER_START = 2005;
  * on all four targeted résumés.
  */
 export const mission = {
-  eyebrow: 'Operating thesis',
+  eyebrow: 'How I work',
   title:
-    'The gap between the people who sell software and the people who build it is the whole opportunity.',
+    'I carry the number first. The building is what makes the number easier to hit.',
   body: [
-    'Twenty years opening markets and originating revenue. I was the founding sales hire at an Amazon brand growth agency and built the commercial function from nothing — ICP, outbound motion, service packaging, pricing — grew personal production past $1M in annual contract value, and hired and led a team of six. Then I did the same thing again from zero, building a net-new channel program at a commerce SaaS portfolio.',
-    'What is unusual is the second half. I build the tooling I run the business on: the forecasting engine, the QBR dashboard, the prospecting console, the enablement library. Production multi-model AI pipelines, React on Supabase, probabilistic forecasting done from first principles. Everything on this site came out of a problem inside my own revenue work, and most of it went live against real accounts while I was still carrying a quota.',
-    'What I want next is a seat where both halves are load-bearing: close enough to customers that I feel the friction first, and trusted enough to go build the answer rather than file a request for it. Partnerships, go-to-market engineering, solutions consulting, revenue operations — the titles vary, the job does not.',
+    'Twenty years of B2B selling and sales management. Founding sales hire at a high-growth Amazon agency, where I built the commercial function from zero — ICP, outbound motion, service packaging, pricing — closed $1M+ in annual contract value at peak, and hired, ramped, and led a team of six to consistent quota attainment. Then I did it again from nothing, opening a net-new channel revenue stream at a commerce SaaS portfolio, where I carry a quarterly number for channel-sourced ACV and new agreements today.',
+    'What is unusual is what happens after I find the friction. Most sellers file a request for the CRM, the forecast, the enablement library, the prospecting console — and wait two quarters. I build them, ship them, and sell on them the same month. Everything on this site came out of a problem inside my own revenue motion, and most of it went live against real accounts while I was carrying a quota.',
+    'That is the offer: a commercial leader who sources, qualifies, negotiates, and closes — who also removes the operational drag on the team behind him instead of escalating it. What I want next is to run business development, partnerships, or a sales team where both halves count.',
   ],
 };
+
+/* ── how I sell ─────────────────────────────────────────────────────── */
+
+/**
+ * The revenue motion, stage by stage — and the system built for each one.
+ *
+ * This is the section that does the repositioning work. A hiring manager
+ * for a business development or partnerships role does not need to be
+ * convinced that a Gaussian copula is impressive; they need to see that
+ * the building serves the selling. So every stage leads with the
+ * commercial job and cites the tools underneath it, pulled from
+ * lib/projects.ts by slug so the links can never point at nothing.
+ */
+export interface MotionStage {
+  /** The commercial verb. Two words at most — these set as a rail. */
+  stage: string;
+  /** What the job actually is at this stage. */
+  job: string;
+  /** What most teams do instead, and why it costs them. */
+  friction: string;
+  /** Project slugs built to serve this stage. */
+  systems: string[];
+}
+
+export const motion: MotionStage[] = [
+  {
+    stage: 'Source',
+    job: 'Define the ICP from evidence rather than convention, then build the target list against it. At Threecolts I authored a 1P market strategy report that repositioned the company ICP toward enterprise Vendor Central agencies and redirected outbound targeting.',
+    friction:
+      'Most teams buy a list and work it broadly, because writing a tight query is nobody’s job. Volume goes up, conversations go down.',
+    systems: [
+      'prospecting-command-center',
+      'leadprompter',
+      '1p-market-strategy',
+      'monday-revenue-crm',
+    ],
+  },
+  {
+    stage: 'Qualify',
+    job: 'Size the opportunity on the customer’s economics, not the vendor’s pitch. I built the discovery and qualification frameworks the whole team sold on, and I evaluate every account on margin profile, sell-through, and risk before committing to it.',
+    friction:
+      'An oversized estimate wins the first meeting and loses the account. I caught my own recovery model overstating by 2.5× and rebuilt it bottom-up before it reached a client.',
+    systems: [
+      'recovery-profitability-suite',
+      'fba-deal-analyzer',
+      'carrier-spend-analysis',
+    ],
+  },
+  {
+    stage: 'Prove',
+    job: 'Long-cycle, multi-stakeholder deals get won by the person who brings the working model instead of the deck. I bring one — with the uncertainty shown, and a reliability score that says when the number is defensible and when it is directional.',
+    friction:
+      'A single-point estimate invites the buyer to argue with the number. A range with an honest confidence band moves the conversation to what to do about it.',
+    systems: ['3t-recovery-wizard', 'acv-forecast-engine', 'pricescope'],
+  },
+  {
+    stage: 'Close',
+    job: 'Negotiate terms, structure, and performance expectations. I built the hybrid retainer-plus-performance commercial model at an agency and the deal-desk practice governing commercial exceptions, then negotiated channel terms across three product lines.',
+    friction:
+      'Pricing invented per deal is how margin leaks and how reps stall. A structure with a documented exception path lets the team move without escalating everything.',
+    systems: ['sales-enablement-system'],
+  },
+  {
+    stage: 'Activate',
+    job: 'A signature is not revenue. I own the lifecycle after it — enablement, onboarding, activation, co-sell — and built the portal that does the account’s work for them so the gap between intent and first referral collapses.',
+    friction:
+      'Channel accounts sign excited and go quiet. Time-to-first-referral ran about ninety days, and the standard answer — more check-in calls — treats the symptom.',
+    systems: ['channel-enablement-portal', 'channel-health-slack'],
+  },
+  {
+    stage: 'Forecast',
+    job: 'Own the number leadership plans on. I ran departmental forecasting, pipeline hygiene, and CRM operations for a team of six, and I built the reporting that replaced a manual quarterly cycle with a live view and a forward projection.',
+    friction:
+      'A forecast that is one confident number understates risk in both directions. Showing the distribution is what makes the commitment credible.',
+    systems: [
+      'qbr-funnel-command-center',
+      'voadera-bd-crm',
+      'weekly-growth-brief-engine',
+    ],
+  },
+];
+
+/** Projects behind a motion stage, in shelf order. Unknown slugs drop out. */
+export function systemsFor(m: MotionStage): Project[] {
+  return m.systems
+    .map((slug) => published.find((p) => p.slug === slug))
+    .filter((p): p is Project => Boolean(p));
+}
 
 /* ── career chapters ────────────────────────────────────────────────── */
 
@@ -161,7 +255,8 @@ export const chapters: Chapter[] = [
     lesson:
       'Seeing a category-leading revenue org run properly is what made the gaps in every subsequent one obvious.',
     bullets: [
-      'Sold the full product suite to Amazon sellers, agencies, and consumer brands inside a mature, metrics-driven revenue stack and reporting cadence.',
+      'Sold the full SaaS product suite to Amazon sellers, agencies, and consumer brands, running full-cycle from prospecting through demo, negotiation, and close.',
+      'Operated a high-velocity, demo-led SaaS cycle across SMB and mid-market seller segments inside a mature revenue stack and reporting cadence.',
       'Built territory strategy and outbound approach for underpenetrated agency and brand segments.',
       'Agency accounts required a multi-client, ecosystem-style relationship model rather than single-account selling — the first version of the channel motion I would later build from zero.',
     ],
@@ -181,12 +276,13 @@ export const chapters: Chapter[] = [
     lesson:
       'Three years of rebuilding the same reports by hand is what made the cost of waiting for tooling finally exceed the cost of learning to build it.',
     bullets: [
-      'Founding sales hire at a hybrid Amazon brand growth agency; built the commercial function from zero — ICP definition, outbound motion, service packaging, and pricing model — and progressed to Sales Team Lead over three years of category-leading growth.',
-      'Grew personal production to $1M+ in annual contract value at peak across a multi-service portfolio requiring long-cycle, multi-stakeholder negotiation.',
-      'Hired, ramped, and led a team of 6+ representatives to consistent quota attainment; owned forecasting, pipeline hygiene, and Monday.com as the department’s primary CRM and source of truth.',
+      'Founding sales hire at a hybrid Amazon brand growth agency; built the commercial function from zero — ICP definition, outbound motion, service packaging, and pricing model — and progressed to Senior Sales Executive and Sales Team Lead across three years of category-leading growth.',
+      'Personally closed $1M+ in annual contract value at peak production, selling multi-service brand growth engagements to Amazon sellers and consumer brands.',
+      'Hired, ramped, and led a team of 6+ sales representatives to consistent quota attainment through structured coaching, call reviews, and performance management.',
+      'Built the outbound playbook, discovery and qualification frameworks, and pricing strategy the entire team sold on.',
+      'Owned departmental forecasting, pipeline hygiene, and CRM operations — administering Monday.com as the department’s single source of truth — giving leadership a reliable monthly and quarterly revenue picture.',
       'Structured the hybrid retainer-plus-performance commercial model and the deal-desk practice governing commercial exceptions.',
-      'Designed onboarding and ramp programs for new sales hires, compressing time to first close.',
-      'Identified and developed new market segments and service lines as the agency expanded its category footprint.',
+      'Designed onboarding and ramp programs for new sales hires, compressing time to first close, and developed new market segments and service lines as the agency expanded its footprint.',
     ],
     orgs: [],
   },
@@ -204,7 +300,8 @@ export const chapters: Chapter[] = [
     lesson:
       'A forecast is not a number, it is a distribution — and the people reading it can handle that if you show them the range.',
     bullets: [
-      'Sourced, developed, and negotiated brand and supplier partnerships for an Amazon-focused wholesale and resale operation, owning terms, margin structure, and performance expectations.',
+      'Sourced, negotiated, and closed brand and supplier agreements for an Amazon FBA wholesale and resale operation, owning terms, margin structure, and performance expectations.',
+      'Evaluated every account on margin profile, sell-through velocity, and inventory risk before commitment.',
       'Architected the business development CRM in Monday.com — a large lead and prospect database integrated with the company ERP to automate pipeline, BDR outreach status, opportunity scoring, and estimated ACV.',
       // RESUME DIVERGENCE (1): résumés say "machine learning models" here.
       // Nothing in the shipped engine is a trained model, and HANDOFF.md
@@ -231,9 +328,11 @@ export const chapters: Chapter[] = [
     lesson:
       'Presented one of these internally as the company case study in applied AI — which is when it became clear the building was not a side activity.',
     bullets: [
+      'Carry a quarterly revenue number for channel-sourced ACV and net-new agreements, running full-cycle from cold outbound through multi-stakeholder negotiation and co-sell close.',
       'Opened a net-new channel revenue stream from zero — defined the ICP, segmentation model, and value proposition across the MarginPro, CedCommerce, and Seller Directories product lines.',
-      'Serve as primary relationship owner for the agency channel, managing multiple high-visibility organisations simultaneously against quarterly targets for channel-sourced revenue and new agreements.',
-      'Negotiate terms, commercial structures, and performance expectations; own the full lifecycle post-signature through enablement, onboarding, activation, and ongoing co-sell expansion.',
+      'Sourced and closed the program’s foundational agency agreements and advanced an active pipeline behind them; serve as primary relationship owner, managing multiple high-visibility organisations simultaneously.',
+      'Run co-sell motions alongside channel-side sellers, jointly working end-customer opportunities across three product lines while maintaining clear account ownership where both sides work the same market.',
+      'Negotiate terms, commercial structures, and performance expectations; own the full lifecycle post-signature through enablement, onboarding, activation, and ongoing expansion.',
       'Built the program’s reporting infrastructure — a React and Supabase QBR dashboard applying Bayesian updating and OLS regression — replacing a manual quarterly reporting process with live channel-sourced ACV trends and forward forecasts for leadership.',
       'Built a prospecting command center consolidating Salesforce, Apollo, LinkedIn Sales Navigator, and Dripify into one workflow, scaling outbound capacity without added headcount.',
       'Authored a 1P market strategy report identifying enterprise Vendor Central agencies as an underpenetrated segment; findings redirected go-to-market targeting.',
@@ -345,34 +444,61 @@ export interface CapabilityGroup {
 
 export const capabilities: CapabilityGroup[] = [
   {
-    label: 'Commercial',
+    label: 'Sales leadership',
     items: [
+      {
+        name: 'Full-cycle B2B new business, sourcing through close',
+        claim: 'working',
+        evidence: [],
+        note: 'Twenty years of it, most recently carrying a quarterly number for channel-sourced ACV — cold outbound through multi-stakeholder negotiation and co-sell close. Evidenced by the record below, not by a repo.',
+      },
       {
         name: 'Building a revenue function from zero',
         claim: 'working',
         evidence: [],
-        note: 'Twice: founding sales hire at an agency, then a net-new channel program at a commerce SaaS portfolio. Evidenced by the roles below, not by a repo.',
+        note: 'Twice. Founding sales hire at an agency, then a net-new channel revenue stream at a commerce SaaS portfolio.',
       },
       {
-        name: 'Team hiring, ramping, and coaching',
+        name: 'Hiring, ramping, coaching, and performance management',
         claim: 'working',
         evidence: [],
-        note: 'Hired, ramped, and led a team of six to consistent quota attainment, including the onboarding curriculum they ramped on.',
+        note: 'Led a team of six to consistent quota attainment through structured coaching and call reviews, including the onboarding curriculum they ramped on.',
       },
       {
-        name: 'Contract, pricing, and program structure',
+        name: 'Pricing, contract structure, and deal desk',
         claim: 'working',
         evidence: [],
-        note: 'Hybrid retainer-plus-performance agency model and the deal-desk practice governing commercial exceptions; channel terms and performance expectations across three product lines.',
+        note: 'Built the hybrid retainer-plus-performance agency model and the exception path governing it; negotiated channel terms and performance expectations across three product lines.',
       },
       {
-        name: 'Channel and partnership programs',
+        name: 'Playbooks, qualification frameworks, and enablement',
+        claim: 'shipped',
+        evidence: ['sales-enablement-system', 'channel-enablement-portal'],
+      },
+      {
+        name: 'Forecasting discipline and pipeline hygiene',
+        claim: 'shipped',
+        evidence: ['qbr-funnel-command-center', 'acv-forecast-engine'],
+      },
+    ],
+  },
+  {
+    label: 'Partnerships, channel, and alliances',
+    items: [
+      {
+        name: 'Channel program design and partner recruitment',
         claim: 'shipped',
         evidence: [
           'channel-enablement-portal',
           'monday-revenue-crm',
           'sales-enablement-system',
         ],
+      },
+      {
+        name: 'Co-sell motions and account-conflict resolution',
+        claim: 'working',
+        evidence: [],
+        note: 'Joint end-customer opportunities worked alongside channel-side sellers across three product lines, with clear ownership where both sides sell into the same market.',
       },
       {
         name: 'CRM architecture and revenue operations',
@@ -391,7 +517,37 @@ export const capabilities: CapabilityGroup[] = [
     ],
   },
   {
-    label: 'Quantitative',
+    label: 'Marketplace and financial domain',
+    items: [
+      {
+        name: 'Marketplace domain — Amazon 1P/3P/FBA, Walmart, TikTok Shop',
+        claim: 'shipped',
+        evidence: [
+          'recovery-profitability-suite',
+          'weekly-growth-brief-engine',
+          'fba-deal-analyzer',
+        ],
+      },
+      {
+        name: 'Acquisition screening, SDE normalisation, SBA 7(a) structuring',
+        claim: 'shipped',
+        evidence: ['acquisition-analyzer', 'acquisition-deal-pipeline'],
+      },
+      {
+        name: 'Margin, unit economics, and spend analysis',
+        claim: 'shipped',
+        evidence: ['carrier-spend-analysis', 'recovery-profitability-suite'],
+      },
+      {
+        name: 'Amazon and eBay seller operations',
+        claim: 'working',
+        evidence: [],
+        note: 'Sourced, listed, priced, and scaled my own catalogues with my own capital at risk. The operator experience underneath every model on this site.',
+      },
+    ],
+  },
+  {
+    label: 'Forecasting and analysis',
     items: [
       {
         name: 'Monte Carlo simulation',
@@ -462,7 +618,7 @@ export const capabilities: CapabilityGroup[] = [
     ],
   },
   {
-    label: 'Product engineering',
+    label: 'Systems I build',
     items: [
       {
         name: 'Next.js, React, TypeScript',
@@ -494,36 +650,6 @@ export const capabilities: CapabilityGroup[] = [
       },
     ],
   },
-  {
-    label: 'Domain and finance',
-    items: [
-      {
-        name: 'Marketplace domain — Amazon 1P/3P/FBA, Walmart, TikTok Shop',
-        claim: 'shipped',
-        evidence: [
-          'recovery-profitability-suite',
-          'weekly-growth-brief-engine',
-          'fba-deal-analyzer',
-        ],
-      },
-      {
-        name: 'Acquisition screening, SDE normalisation, SBA 7(a) structuring',
-        claim: 'shipped',
-        evidence: ['acquisition-analyzer', 'acquisition-deal-pipeline'],
-      },
-      {
-        name: 'Margin, unit economics, and spend analysis',
-        claim: 'shipped',
-        evidence: ['carrier-spend-analysis', 'recovery-profitability-suite'],
-      },
-      {
-        name: 'Amazon and eBay seller operations',
-        claim: 'working',
-        evidence: [],
-        note: 'Sourced, listed, priced, and scaled my own catalogues with my own capital at risk. The operator experience underneath every model on this site.',
-      },
-    ],
-  },
 ];
 
 /* ── what I'm looking for ───────────────────────────────────────────── */
@@ -535,21 +661,21 @@ export const capabilities: CapabilityGroup[] = [
  */
 export const lookingFor: { label: string; lines: string[] }[] = [
   {
-    label: 'Roles',
+    label: 'Titles',
     lines: [
-      'Partnerships, channel, and ecosystem revenue',
-      'Business development and new market entry',
-      'Go-to-market engineering and solutions consulting',
-      'Revenue operations and sales enablement',
+      'Director of Business Development · Director of Sales',
+      'Manager of Sales, Business Development, or Partnerships',
+      'Partnerships / Alliances Manager or Director',
+      'Also a fit: solutions consulting, sales engineering, GTM engineering',
     ],
   },
   {
     label: 'Companies',
     lines: [
-      'Commerce, retail, and logistics software',
-      'B2B SaaS and AI tooling with a real integration story',
+      'B2B SaaS, commerce, retail, and logistics software',
+      'AI tooling where the buyer asks technical questions',
       'Where marketplace domain knowledge pays off on day one',
-      'Technical enough that a working model beats a deck',
+      'Agency, channel, and reseller ecosystems',
     ],
   },
   {
@@ -563,9 +689,9 @@ export const lookingFor: { label: string; lines: string[] }[] = [
   {
     label: 'What I need',
     lines: [
-      'Access to the customer conversation',
-      'Permission to build the answer, not just file the request',
       'A number to carry — I do better work with one',
+      'Ownership of the customer conversation end to end',
+      'Permission to build the answer, not just file the request',
     ],
   },
 ];

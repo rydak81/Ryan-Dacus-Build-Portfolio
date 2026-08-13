@@ -1,10 +1,21 @@
 import Link from 'next/link';
+import CareerTrace, { type TraceChapter } from '@/components/CareerTrace';
 import CorrelationExplorer from '@/components/CorrelationExplorer';
 import DeferredMount from '@/components/DeferredMount';
 import HeroMosaic from '@/components/HeroMosaic';
 import RoleLens, { type LensProject } from '@/components/RoleLens';
+import SalesMotion from '@/components/SalesMotion';
 import { published, tier1, tier2, tier3, groups, byGroup, type Project } from '@/lib/projects';
 import { accentFor } from '@/lib/accents';
+import {
+  careerResults,
+  chapters,
+  evidenceFor,
+  lookingFor,
+  mission,
+  profile,
+  stats,
+} from '@/lib/career';
 
 /** The compact slice of lib/projects.ts the Role Lens renders from. */
 const LENS_DATA: LensProject[] = published.map((p) => ({
@@ -16,9 +27,27 @@ const LENS_DATA: LensProject[] = published.map((p) => ({
   stack: p.stack,
 }));
 
-const EMAIL = 'ryandacus@gmail.com';
-const LINKEDIN = 'https://linkedin.com/in/ryandacus-sbc';
-const GITHUB = 'https://github.com/rydak81';
+/* Same derivation as /about — the trace reads its dots out of
+   lib/projects.ts, so both pages draw the identical chart. */
+const TRACE: TraceChapter[] = chapters.map((c) => ({
+  id: c.id,
+  label: c.label,
+  title: c.title,
+  org: c.org,
+  period: c.period,
+  mandate: c.mandate,
+  build: c.build,
+  lesson: c.lesson,
+  projects: evidenceFor(c).map((p) => ({
+    slug: p.slug,
+    title: p.title,
+    status: p.status,
+  })),
+}));
+
+const EMAIL = profile.email;
+const LINKEDIN = profile.linkedin;
+const GITHUB = profile.github;
 
 export default function Home() {
   return (
@@ -26,18 +55,28 @@ export default function Home() {
       Full-bleed. The width constraint moved down into each section's
       .shell so background graphics (hero glow, grid, panel washes) can
       reach the viewport edges instead of stopping at a centred column.
+
+      Section order is the pitch order, and it is deliberately commercial
+      first: the record, then the motion, then the career, and only then
+      the models. A hiring manager for a business development or
+      partnerships role needs to know I carry a number before they care
+      that I can derive a copula.
     */
     <main className="overflow-x-clip">
       <Hero />
+      <Record />
       <HeroMosaic />
+      <Motion />
+      <Career />
       <Proof />
-      <Method />
       <RoleLens data={LENS_DATA}>
         <SelectedWork />
         <EverythingElse />
       </RoleLens>
+      <Method />
       <Stack />
       <ThroughLine />
+      <Looking />
       <Contact />
       <Footer />
     </main>
@@ -48,7 +87,9 @@ export default function Home() {
 
 function Hero() {
   return (
-    <header className="relative overflow-x-clip pt-20 pb-16 md:pt-32 md:pb-24">
+    /* Bottom padding is tighter than it was: the record strip below is the
+       thing that has to be reachable in the first screen, not decoration. */
+    <header className="relative overflow-x-clip pt-16 pb-12 md:pt-24 md:pb-14">
       {/* Both layers are inset-0 on a full-bleed header, so they now span
           the entire viewport width rather than a centred column. */}
       <div
@@ -60,7 +101,10 @@ function Hero() {
         className="hero-grid pointer-events-none absolute inset-x-0 -top-10 bottom-0"
       />
       <div className="shell relative">
-        <p className="rise eyebrow">Greenville, SC · Partnerships &amp; revenue systems</p>
+        <p className="rise eyebrow">
+          Greenville, SC · Business development, partnerships &amp; sales
+          leadership
+        </p>
         {/*
           Fluid display size via clamp() rather than a single md: jump —
           at 900 weight a fixed 4.25rem crowded the shell padding at
@@ -72,18 +116,21 @@ function Hero() {
           I sell technology I know how to build.
         </h1>
         <p className="rise rise-2 mt-8 max-w-2xl text-pretty text-lg leading-relaxed text-fg-2">
-          Twenty years in sales, business development, and partnerships taught me
-          exactly where revenue work breaks — manual reporting, dead pipeline data,
-          enablement that never gets built. I stopped filing requests for those
-          tools and started building them. Everything below is a solution and came
-          out of a problem within my own work.
+          {/* Deliberately short. The numbers live in the strip directly
+              below, so repeating them here only pushed that strip off a
+              phone screen. This paragraph does one job: the differentiator. */}
+          Twenty years of B2B selling and sales management — founding sales
+          hire, sales team lead, now partnerships. What makes me different is
+          what happens after I find the friction: most sellers file a request
+          for the CRM, the forecast, the enablement, and wait two quarters. I
+          ship them, and sell on them the same month.
         </p>
         <div className="rise rise-3 mt-10 flex flex-wrap items-center gap-x-3 gap-y-3">
           <a
-            href="#work"
+            href="#record"
             className="rounded-card bg-signal px-6 py-3 text-sm font-bold text-ink shadow-[0_8px_24px_-14px_rgba(255,191,92,0.5)] transition-opacity hover:opacity-90"
           >
-            See the work
+            See the record
           </a>
           <a
             href={`mailto:${EMAIL}`}
@@ -91,15 +138,100 @@ function Hero() {
           >
             Get in touch
           </a>
-          <a
-            href={GITHUB}
-            className="num rounded-card px-3 py-3 text-sm text-fg-3 underline decoration-line-bright underline-offset-4 transition-colors hover:text-fg-2"
+          <Link
+            href="/about"
+            className="label rounded-card px-3 py-3 text-sm text-fg-3 underline decoration-line-bright underline-offset-4 transition-colors hover:text-fg-2"
           >
-            github.com/rydak81
-          </a>
+            Full profile &amp; résumé
+          </Link>
         </div>
       </div>
     </header>
+  );
+}
+
+/* ─────────────────────────── the record ─────────────────────────── */
+
+/**
+ * The headline numbers, immediately under the hero — the moment a hiring
+ * manager decides whether to keep scrolling. Commercial figures come from
+ * `careerResults` and carry the role that produced them; the systems count
+ * is derived from lib/projects.ts so it cannot be inflated by hand.
+ */
+function Record() {
+  return (
+    <section id="record" className="shell pb-20 md:pb-28">
+      <dl className="grid-lines grid grid-cols-2 lg:grid-cols-5">
+        <div className="cell p-5">
+          <dd className="num text-3xl text-signal">{stats.years}</dd>
+          <dt className="mt-2 text-[11px] leading-snug text-fg-3">
+            Years in B2B revenue
+          </dt>
+        </div>
+        {careerResults.map((r) => (
+          <div key={r.label} className="cell p-5">
+            <dd className="num text-3xl text-signal">{r.value}</dd>
+            <dt className="mt-2 text-[11px] leading-snug text-fg-3">
+              {r.label}
+            </dt>
+          </div>
+        ))}
+        <div className="cell p-5">
+          <dd className="num text-3xl text-signal">{stats.live}</dd>
+          <dt className="mt-2 text-[11px] leading-snug text-fg-3">
+            Systems live in production
+          </dt>
+        </div>
+      </dl>
+    </section>
+  );
+}
+
+/* ─────────────────────────── how I sell ─────────────────────────── */
+
+function Motion() {
+  return (
+    <section id="motion" className="shell fade-in pb-24 md:pb-32">
+      <SectionHead
+        eyebrow="How I sell"
+        title="The motion, and what I built for each stage of it"
+        lede="Every tool on this site came out of a specific point in my own revenue motion where something was slow, manual, or wrong. This is where each one sits — the commercial job first, the system underneath it second."
+      />
+      <div className="mt-9">
+        <SalesMotion />
+      </div>
+    </section>
+  );
+}
+
+/* ─────────────────────────── the career ─────────────────────────── */
+
+function Career() {
+  return (
+    <section id="career" className="shell fade-in pb-24 md:pb-32">
+      <SectionHead
+        eyebrow="The record — live, from the work data"
+        title="Two tracks, twenty years, one of them starting empty"
+        lede="The top line is the commercial job and it never breaks — every chapter carried a number. The bottom line is one dot per system on the shelf, read out of the same file that renders the work below. Pick a chapter."
+      />
+      <div className="stage mt-9">
+        <div className="stage-frame">
+          <DeferredMount minHeight={760}>
+            <CareerTrace chapters={TRACE} />
+          </DeferredMount>
+        </div>
+      </div>
+      <p className="mt-6 text-sm text-fg-3">
+        The full profile, capability ledger, and printable résumé live on the{' '}
+        <Link
+          href="/about"
+          className="text-model underline decoration-model-dim underline-offset-4 transition-colors hover:decoration-model"
+        >
+          about page
+        </Link>
+        .
+      </p>
+    </section>
   );
 }
 
@@ -109,9 +241,9 @@ function Proof() {
   return (
     <section className="shell fade-in pb-24 md:pb-32">
       <SectionHead
-        eyebrow="Live model — not a screenshot"
-        title="Your pipeline forecast is lying to you about risk"
-        lede="Standard forecasting treats every deal as independent. They aren't — quarter-end pressure, budget cycles, and shared activation capacity make them move together. This is the copula model from my forecasting engine, running in your browser."
+        eyebrow="One of them, running right here"
+        title="The forecast I built because mine was lying to me about risk"
+        lede="Standard pipeline forecasting treats every deal as independent. They aren't — quarter-end pressure, budget cycles, and shared activation capacity make them move together, which is why a confident-looking number understates real risk in both directions. This is the model from my own forecast engine, running in your browser. Drag the correlation."
       />
       <div className="stage mt-9">
         <div className="stage-frame">
@@ -148,9 +280,12 @@ const STEPS: [string, string][] = [
 function Method() {
   return (
     <section id="method" className="shell fade-in pb-24 md:pb-32">
+      {/* Secondary by design. The commercial method is "How I sell" above;
+          this is the build method, which matters to a technical interviewer
+          and to nobody else on the first pass. */}
       <SectionHead
-        eyebrow="Method"
-        title="How every one of these got built"
+        eyebrow="Build method"
+        title="And how each one actually got built"
       />
       <ol className="grid-lines mt-9 grid md:grid-cols-4">
         {STEPS.map(([title, body], i) => (
@@ -178,8 +313,8 @@ function SelectedWork() {
     <section className="shell fade-in pb-24 md:pb-32">
       <SectionHead
         eyebrow="Selected work"
-        title="Five that carry the most weight"
-        lede="Status labels mean what they say. Live is deployed and reachable. Built runs but isn't hosted. Nothing here is inflated to the next tier up."
+        title="The five that changed how the number got hit"
+        lede="Status labels mean what they say. Live is deployed and reachable. Built runs but isn't hosted. Nothing here is inflated to the next tier up — including the case study where the finding was that my own first estimate was 2.5× too high."
       />
       <div className="mt-9 flex flex-col gap-4">
         {tier1.map((p) => (
@@ -432,37 +567,68 @@ function ThroughLine() {
         aria-hidden
         className="hero-glow pointer-events-none absolute inset-0 opacity-70"
       />
+      {/* Copy comes from lib/career.ts so the home page and /about make the
+          same argument in the same words — one file to change, not two. */}
       <div className="relative">
-        <p className="eyebrow">The through line</p>
-        <p
-          className="mt-7 max-w-4xl text-pretty text-2xl leading-relaxed md:text-3xl"
-        >
-          None of these came from a roadmap, a ticket, or an assignment. Each one
-          started the same way: I hit a problem inside my own revenue work and
-          decided the cost of waiting was higher than the cost of building.
+        <p className="eyebrow">{mission.eyebrow}</p>
+        <p className="mt-7 max-w-4xl text-pretty text-2xl leading-relaxed md:text-3xl">
+          {mission.title}
         </p>
-        <p className="mt-6 max-w-3xl text-pretty leading-relaxed text-fg-2">
-          That is the actual skill on offer — not React, and not any particular
-          model. It&rsquo;s the judgment to recognise which problems are worth
-          solving with software, the range to structure and ship the solution, and
-          the commercial instinct to know when a spreadsheet was already the right
-          answer. Twenty years carrying a number is what makes the first and third
-          parts work. The building is what makes them count.
-        </p>
+        <div className="mt-8 grid max-w-5xl gap-6 md:grid-cols-3">
+          {mission.body.map((para) => (
+            <p
+              key={para.slice(0, 32)}
+              className="text-pretty text-sm leading-relaxed text-fg-2"
+            >
+              {para}
+            </p>
+          ))}
+        </div>
         <div className="mt-9 flex flex-wrap items-center gap-x-3 gap-y-3">
           <Link
             href="/about"
             className="cell rounded-card border border-line-bright px-5 py-2.5 text-sm font-semibold text-fg transition-colors hover:border-signal hover:text-signal"
           >
-            The twenty years behind it
+            Full profile &amp; résumé
           </Link>
           <span className="text-sm text-fg-3">
-            career trace, capability ledger, and what I&rsquo;m looking for
+            the whole record, a capability ledger, and a version that prints
           </span>
         </div>
       </div>
       </section>
     </div>
+  );
+}
+
+/* ────────────────────── what I'm looking for ────────────────────── */
+
+function Looking() {
+  return (
+    <section id="looking" className="shell fade-in pt-24 md:pt-32">
+      <SectionHead
+        eyebrow="What I'm looking for"
+        title="Specific enough to disqualify a bad fit"
+        lede="Being vague here wastes both of our time. If three of these four columns are wrong for your role, it is probably not the role."
+      />
+      <div className="grid-lines mt-9 grid sm:grid-cols-2 lg:grid-cols-4">
+        {lookingFor.map((col) => (
+          <div key={col.label} className="cell p-5">
+            <h3 className="eyebrow">{col.label}</h3>
+            <ul className="mt-3 space-y-2">
+              {col.lines.map((line) => (
+                <li
+                  key={line}
+                  className="border-l border-line-bright pl-3 text-sm leading-relaxed text-fg-2"
+                >
+                  {line}
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+    </section>
   );
 }
 
@@ -477,10 +643,11 @@ function Contact() {
         Open to a conversation.
       </h2>
       <p className="mt-5 max-w-2xl text-pretty leading-relaxed text-fg-2">
-        Partnerships and business development, go-to-market engineering,
-        solutions consulting — particularly at companies building for commerce,
-        retail, or logistics, where twenty years of domain knowledge is worth
-        something on day one.
+        Business development, sales, partnerships, and alliances — particularly
+        at companies building for commerce, retail, or logistics, where twenty
+        years of domain knowledge is worth something on day one. Paste a job
+        description into the Role Lens above and it will reorder the whole shelf
+        against it before we ever speak.
       </p>
       <div className="mt-8 flex flex-wrap gap-x-8 gap-y-3">
         <a
