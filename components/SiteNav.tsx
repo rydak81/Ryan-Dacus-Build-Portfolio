@@ -9,7 +9,10 @@ import Link from 'next/link';
  * same nav works from a case-study page.
  */
 
+/* About is a real route, not an anchor — it is the page a recruiter lands
+   on from a search or a LinkedIn profile link, so it sits first. */
 const LINKS: [string, string][] = [
+  ['About', '/about'],
   ['Work', '/#work'],
   ['Method', '/#method'],
   ['Stack', '/#stack'],

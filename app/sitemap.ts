@@ -6,6 +6,8 @@ const BASE = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://ryandacus.com';
 export default function sitemap(): MetadataRoute.Sitemap {
   return [
     { url: BASE, changeFrequency: 'monthly', priority: 1 },
+    // The profile page. Second only to the home page for a name search.
+    { url: `${BASE}/about`, changeFrequency: 'monthly', priority: 0.9 },
     // `published` only — a draft has no route, so it must not be advertised.
     ...published.map((p) => ({
       url: `${BASE}/projects/${p.slug}`,
