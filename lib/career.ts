@@ -77,11 +77,18 @@ export const profile: Profile = {
   linkedin: 'https://linkedin.com/in/ryandacus-sbc',
   github: 'https://github.com/rydak81',
   // portrait: '/ryan.jpg',   // TODO(ryan): add the file, then uncomment.
-  availability: {
-    open: true,
-    line: 'Open to partnerships, GTM engineering, and solutions roles',
-  },
+  /* Short on purpose — this sets inside a chip on the profile card, and the
+     long version wrapped to two lines and read as a paragraph. The titles
+     being targeted live in `openTo` below and in lookingFor. */
+  availability: { open: true, line: 'Open to new roles' },
 };
+
+/** The chapter the profile card shows as "Now". */
+export const CURRENT_CHAPTER_ID = 'threecolts';
+
+/** Target titles, condensed to one line for the card. */
+export const openTo =
+  'Director or Manager — business development, sales, partnerships, alliances';
 
 /** Career start year. Drives the counted "years" stat so it never goes stale. */
 export const CAREER_START = 2005;
@@ -370,6 +377,10 @@ export const chapters: Chapter[] = [
     ],
   },
 ];
+
+/** The role rendered as "Now" on the profile card. */
+export const currentChapter =
+  chapters.find((c) => c.id === CURRENT_CHAPTER_ID) ?? chapters[chapters.length - 1];
 
 /** Every published project belonging to a chapter, in shelf order. */
 export function evidenceFor(c: Chapter): Project[] {

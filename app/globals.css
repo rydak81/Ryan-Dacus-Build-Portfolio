@@ -726,6 +726,131 @@ input[type="range"]::-moz-range-thumb {
   }
 }
 
+/* ── page rhythm ──────────────────────────────────────────────────────
+   A long single-column page on one flat ground reads as a document. The
+   band gives the page chapters: a full-bleed ground change with hairlines
+   top and bottom, so scrolling feels like moving between rooms rather
+   than through one corridor. Full-bleed via the margin trick because the
+   shell lives inside, not outside.
+*/
+.band {
+  position: relative;
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--color-surface) 55%, var(--color-ink)) 0%,
+      var(--color-ink) 100%
+    );
+  border-block: 1px solid var(--color-line);
+}
+
+/* A single soft indigo wash pinned to the top of a band, so the ground
+   change is felt before it is noticed. */
+.band::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 340px;
+  pointer-events: none;
+  background: radial-gradient(
+    60% 100% at 50% 0%,
+    color-mix(in srgb, var(--color-glow) 13%, transparent),
+    transparent 72%
+  );
+}
+.band > * {
+  position: relative;
+}
+
+/* ── raised, clickable cards ──────────────────────────────────────────
+   The feature cards are the most link-like objects on the page and were
+   reading as static panels. A real lift plus a warming border on hover is
+   the cue that says "this opens".
+*/
+.card-lift {
+  transition:
+    transform 0.25s cubic-bezier(0.2, 0.7, 0.3, 1),
+    border-color 0.25s ease,
+    box-shadow 0.25s ease;
+}
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .card-lift:hover {
+    transform: translateY(-3px);
+    border-color: color-mix(in srgb, var(--color-signal) 32%, var(--color-line));
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.09),
+      0 2px 2px rgb(0 0 0 / 0.5),
+      0 18px 34px -16px rgb(0 0 0 / 0.7),
+      0 34px 64px -30px rgb(0 0 0 / 0.6);
+  }
+}
+
+/* ── scroll progress ──────────────────────────────────────────────────
+   A hairline of amber across the bottom of the nav, driven by a scroll
+   timeline. Pure CSS — no listener, no JS, and browsers without support
+   simply never draw it. Amber is legitimate here: it measures something
+   real, which is the entire palette rule.
+*/
+@keyframes progress-grow {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+.scroll-progress {
+  transform-origin: 0 50%;
+  transform: scaleX(0);
+}
+@supports (animation-timeline: scroll()) {
+  .scroll-progress {
+    animation: progress-grow linear;
+    animation-timeline: scroll(root block);
+  }
+}
+
+/* ── hero profile card ────────────────────────────────────────────────
+   The identity block, when no portrait is set. Not a placeholder for a
+   missing image — a designed object: the nav's own bar mark at scale,
+   over the same indigo wash the hero uses.
+*/
+.identity-mark {
+  background:
+    radial-gradient(
+      70% 70% at 30% 12%,
+      color-mix(in srgb, var(--color-glow) 34%, transparent),
+      transparent 72%
+    ),
+    linear-gradient(180deg, var(--color-surface-2), var(--color-surface));
+}
+
+/* ── entrance stagger ─────────────────────────────────────────────────
+   Used on the record strip so the numbers arrive in sequence rather than
+   all at once. Same scroll timeline as .fade-in, six steps.
+*/
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .stagger > * {
+      animation: rise linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 40%;
+    }
+    .stagger > *:nth-child(2) {
+      animation-range: entry 4% entry 44%;
+    }
+    .stagger > *:nth-child(3) {
+      animation-range: entry 8% entry 48%;
+    }
+    .stagger > *:nth-child(4) {
+      animation-range: entry 12% entry 52%;
+    }
+    .stagger > *:nth-child(5) {
+      animation-range: entry 16% entry 56%;
+    }
+  }
+}
+
 /* ── career trace ─────────────────────────────────────────────────────
    SVG text does not inherit the utility classes the rest of the site uses,
    so the three label roles inside CareerTrace get real classes. Sizes are

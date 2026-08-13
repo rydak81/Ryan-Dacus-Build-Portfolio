@@ -3,6 +3,7 @@ import CareerTrace, { type TraceChapter } from '@/components/CareerTrace';
 import CorrelationExplorer from '@/components/CorrelationExplorer';
 import DeferredMount from '@/components/DeferredMount';
 import HeroMosaic from '@/components/HeroMosaic';
+import ProfileCard from '@/components/ProfileCard';
 import RoleLens, { type LensProject } from '@/components/RoleLens';
 import SalesMotion from '@/components/SalesMotion';
 import { published, tier1, tier2, tier3, groups, byGroup, type Project } from '@/lib/projects';
@@ -73,8 +74,10 @@ export default function Home() {
         <SelectedWork />
         <EverythingElse />
       </RoleLens>
-      <Method />
-      <Stack />
+      <div className="band py-24 md:py-32">
+        <Method />
+        <Stack />
+      </div>
       <ThroughLine />
       <Looking />
       <Contact />
@@ -100,7 +103,15 @@ function Hero() {
         aria-hidden
         className="hero-grid pointer-events-none absolute inset-x-0 -top-10 bottom-0"
       />
-      <div className="shell relative">
+      {/*
+        Two columns from lg up: the pitch on the left, the identity card on
+        the right. The card is the thing a LinkedIn profile leads with and
+        this hero did not have — a face, a status, a location, and a way to
+        make contact, all above the fold. Below lg it stacks under the copy
+        rather than competing with the headline for the first screen.
+      */}
+      <div className="shell relative grid items-start gap-12 lg:grid-cols-[minmax(0,1fr)_340px] lg:gap-16">
+      <div>
         <p className="rise eyebrow">
           Greenville, SC · Business development, partnerships &amp; sales
           leadership
@@ -146,6 +157,11 @@ function Hero() {
           </Link>
         </div>
       </div>
+
+      <div className="rise rise-2 w-full max-w-sm lg:max-w-none">
+        <ProfileCard />
+      </div>
+      </div>
     </header>
   );
 }
@@ -161,7 +177,7 @@ function Hero() {
 function Record() {
   return (
     <section id="record" className="shell pb-20 md:pb-28">
-      <dl className="grid-lines grid grid-cols-2 lg:grid-cols-5">
+      <dl className="grid-lines stagger grid grid-cols-2 lg:grid-cols-5">
         <div className="cell p-5">
           <dd className="num text-3xl text-signal">{stats.years}</dd>
           <dt className="mt-2 text-[11px] leading-snug text-fg-3">
@@ -191,16 +207,21 @@ function Record() {
 
 function Motion() {
   return (
-    <section id="motion" className="shell fade-in pb-24 md:pb-32">
-      <SectionHead
-        eyebrow="How I sell"
-        title="The motion, and what I built for each stage of it"
-        lede="Every tool on this site came out of a specific point in my own revenue motion where something was slow, manual, or wrong. This is where each one sits — the commercial job first, the system underneath it second."
-      />
-      <div className="mt-9">
-        <SalesMotion />
-      </div>
-    </section>
+    /* Banded: this is the argument the page is built around, and giving it
+       its own ground is what stops the scroll from reading as one long
+       column of identical sections. */
+    <div className="band py-24 md:py-32">
+      <section id="motion" className="shell fade-in">
+        <SectionHead
+          eyebrow="How I sell"
+          title="The motion, and what I built for each stage of it"
+          lede="Every tool on this site came out of a specific point in my own revenue motion where something was slow, manual, or wrong. This is where each one sits — the commercial job first, the system underneath it second."
+        />
+        <div className="mt-9">
+          <SalesMotion />
+        </div>
+      </section>
+    </div>
   );
 }
 
@@ -279,7 +300,7 @@ const STEPS: [string, string][] = [
 
 function Method() {
   return (
-    <section id="method" className="shell fade-in pb-24 md:pb-32">
+    <section id="method" className="shell fade-in pb-16 md:pb-20">
       {/* Secondary by design. The commercial method is "How I sell" above;
           this is the build method, which matters to a technical interviewer
           and to nobody else on the first pass. */}
@@ -335,7 +356,7 @@ function FeatureCard({ p }: { p: Project }) {
 
   return (
     <article
-      className={`panel relative overflow-hidden p-6 md:p-9 ${
+      className={`panel card-lift relative overflow-hidden p-6 md:p-9 ${
         accent ? 'card-accent' : ''
       }`}
       style={
@@ -533,7 +554,7 @@ const STACK: [string, string[]][] = [
 
 function Stack() {
   return (
-    <section id="stack" className="shell fade-in pb-24 md:pb-32">
+    <section id="stack" className="shell fade-in">
       <SectionHead eyebrow="Stack" title="What I actually work in" />
       <dl className="panel mt-9 divide-y divide-line">
         {STACK.map(([label, items]) => (
@@ -634,42 +655,96 @@ function Looking() {
 
 /* ─────────────────────────── contact ─────────────────────────── */
 
+/**
+ * The close. A page built to generate inbound should end by asking for the
+ * meeting, not by trailing off into three plain links — so this is a real
+ * panel with the availability status on it, one primary action, and the
+ * alternatives underneath.
+ */
 function Contact() {
   return (
-    <section className="shell fade-in py-24 md:py-32">
-      <h2
-        className="text-4xl tracking-[-0.03em] md:text-5xl"
-      >
-        Open to a conversation.
-      </h2>
-      <p className="mt-5 max-w-2xl text-pretty leading-relaxed text-fg-2">
-        Business development, sales, partnerships, and alliances — particularly
-        at companies building for commerce, retail, or logistics, where twenty
-        years of domain knowledge is worth something on day one. Paste a job
-        description into the Role Lens above and it will reorder the whole shelf
-        against it before we ever speak.
-      </p>
-      <div className="mt-8 flex flex-wrap gap-x-8 gap-y-3">
-        <a
-          href={`mailto:${EMAIL}`}
-          className="num text-signal underline decoration-signal-dim underline-offset-4 transition-colors hover:decoration-signal"
-        >
-          {EMAIL}
-        </a>
-        <a
-          href={LINKEDIN}
-          className="num text-model underline decoration-model-dim underline-offset-4 transition-colors hover:decoration-model"
-        >
-          linkedin.com/in/ryandacus-sbc
-        </a>
-        <a
-          href={GITHUB}
-          className="num text-model underline decoration-model-dim underline-offset-4 transition-colors hover:decoration-model"
-        >
-          github.com/rydak81
-        </a>
-      </div>
-    </section>
+    <div className="shell py-24 md:py-32">
+      <section className="fade-in panel relative overflow-hidden px-6 py-14 text-center md:px-12 md:py-20">
+        <div
+          aria-hidden
+          className="hero-glow pointer-events-none absolute inset-0"
+        />
+        <div
+          aria-hidden
+          className="hero-grid pointer-events-none absolute inset-0 opacity-40"
+        />
+        <div className="relative mx-auto max-w-3xl">
+          <span
+            className="label inline-flex items-center gap-2 rounded-chip border px-3 py-1 text-[11px]"
+            style={{
+              color: 'var(--color-signal)',
+              borderColor: 'var(--color-signal-dim)',
+              background:
+                'color-mix(in srgb, var(--color-signal) 10%, transparent)',
+            }}
+          >
+            <span
+              aria-hidden
+              className="inline-block h-1.5 w-1.5 rounded-full"
+              style={{ background: 'var(--color-signal)' }}
+            />
+            {profile.availability.line}
+          </span>
+
+          <h2 className="mt-7 text-balance text-4xl tracking-[-0.03em] md:text-5xl">
+            Let&rsquo;s talk about the number you need hit.
+          </h2>
+          <p className="mx-auto mt-6 max-w-2xl text-pretty leading-relaxed text-fg-2">
+            Business development, sales, partnerships, and alliances —
+            particularly at companies building for commerce, retail, or
+            logistics, where twenty years of domain knowledge is worth
+            something on day one.
+          </p>
+
+          <div className="mt-9 flex flex-wrap items-center justify-center gap-3">
+            <a
+              href={`mailto:${EMAIL}`}
+              className="rounded-card bg-signal px-7 py-3.5 text-sm font-bold text-ink shadow-[0_8px_24px_-14px_rgba(255,191,92,0.5)] transition-opacity hover:opacity-90"
+            >
+              Email me
+            </a>
+            <a
+              href={LINKEDIN}
+              className="cell rounded-card border border-line-bright px-7 py-3.5 text-sm font-semibold text-fg transition-colors hover:border-fg-3"
+            >
+              Connect on LinkedIn
+            </a>
+          </div>
+
+          <p className="mt-8 text-sm text-fg-3">
+            Or paste a job description into the{' '}
+            <a
+              href="#work"
+              className="text-model underline decoration-model-dim underline-offset-4 transition-colors hover:decoration-model"
+            >
+              Role Lens
+            </a>{' '}
+            above and it will reorder the whole shelf against that role before
+            we ever speak.
+          </p>
+
+          <div className="mt-8 flex flex-wrap items-center justify-center gap-x-7 gap-y-2 text-sm">
+            <a
+              href={`mailto:${EMAIL}`}
+              className="num text-fg-3 underline decoration-line-bright underline-offset-4 transition-colors hover:text-fg-2"
+            >
+              {EMAIL}
+            </a>
+            <a
+              href={GITHUB}
+              className="num text-fg-3 underline decoration-line-bright underline-offset-4 transition-colors hover:text-fg-2"
+            >
+              {GITHUB.replace('https://', '')}
+            </a>
+          </div>
+        </div>
+      </section>
+    </div>
   );
 }
 
