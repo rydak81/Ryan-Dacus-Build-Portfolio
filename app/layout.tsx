@@ -32,13 +32,18 @@ export const metadata: Metadata = {
   metadataBase: new URL(
     process.env.NEXT_PUBLIC_SITE_URL ?? 'https://ryandacus.com'
   ),
-  title: 'Ryan Dacus — Revenue systems, forecasting, applied AI',
+  /*
+    Titled for the search a recruiter actually runs. Commercial terms lead;
+    the building is the differentiator in the description, not the label.
+  */
+  title:
+    'Ryan Dacus — Business development, partnerships & sales leadership',
   description:
-    'Twenty years in e-commerce revenue, and a working portfolio of the systems I built rather than waited for: AI pipelines, probabilistic forecasting engines, and revenue infrastructure.',
+    'Twenty years in B2B revenue: founding sales hire, $1M+ in annual contract value closed, teams hired and led to quota, and two revenue functions built from zero — plus the forecasting, CRM, and enablement systems I built to hit the number.',
   openGraph: {
-    title: 'Ryan Dacus',
+    title: 'Ryan Dacus — Business development & partnerships',
     description:
-      'Revenue leader who ships the systems instead of waiting for them.',
+      'A revenue leader who closes, and builds the systems the number depends on.',
     type: 'website',
   },
 };

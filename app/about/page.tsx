@@ -280,8 +280,8 @@ function Trace() {
 /* ─────────────────────────── ledger ─────────────────────────── */
 
 const PROOF_COPY: Record<Proof, string> = {
-  shipped: 'In production or in a running artifact',
-  working: 'Used for real, not in anything shipped here',
+  shipped: 'Proven by something on this site you can open',
+  working: 'Done for real in the roles below — no repo to point at',
   studied: 'Coursework or reading — stated as such',
 };
 
@@ -290,8 +290,8 @@ function Ledger() {
     <section id="capabilities" className="shell fade-in pb-24 md:pb-32">
       <SectionHead
         eyebrow="Capability ledger"
-        title="Every warm claim links to the thing that proves it"
-        lede="A skills list nobody can check is decoration. Each line below cites the projects behind it, and the colour is decided by their status — a claim of “shipped” that cites no Live or Built project is demoted in code, not by good intentions."
+        title="Every claim says what kind of proof it has"
+        lede="A skills list nobody can check is decoration. Commercial work is proven by the record; software is proven by something you can open, and those lines cite it. A claim of “shipped” that cites no Live or Built project is demoted in code, not by good intentions."
       />
 
       <ul className="mt-8 flex flex-wrap gap-x-6 gap-y-2 text-xs text-fg-3">
@@ -377,8 +377,18 @@ function Ledger() {
                         ))}
                       </ul>
                     ) : (
+                      /*
+                        Was a blanket "no shipped evidence on this site",
+                        which read as a demerit on exactly the commercial
+                        claims that matter most to the roles being targeted.
+                        The absence of a repo is not a weakness for "led a
+                        team to quota" — it is the wrong kind of proof, and
+                        the label now says which kind applies.
+                      */
                       <p className="mt-3 text-[11px] uppercase tracking-wider text-fg-3">
-                        No shipped evidence on this site
+                        {c.proof === 'studied'
+                          ? 'Not used in production'
+                          : 'Evidenced by the record, not by a repo'}
                       </p>
                     )}
 

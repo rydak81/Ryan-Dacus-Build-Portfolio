@@ -9,13 +9,18 @@ import Link from 'next/link';
  * same nav works from a case-study page.
  */
 
-/* About is a real route, not an anchor — it is the page a recruiter lands
-   on from a search or a LinkedIn profile link, so it sits first. */
+/*
+   Ordered the way the page argues: the sales motion, then the record, then
+   the work, then the full profile. "Method" and "Stack" came out — they are
+   build-side sections, still reachable by scrolling, and giving them nav
+   real estate made the site read as an engineer's portfolio in the first
+   two seconds. About is a real route, not an anchor.
+*/
 const LINKS: [string, string][] = [
-  ['About', '/about'],
+  ['How I sell', '/#motion'],
+  ['Career', '/#career'],
   ['Work', '/#work'],
-  ['Method', '/#method'],
-  ['Stack', '/#stack'],
+  ['About', '/about'],
 ];
 
 export default function SiteNav({ email }: { email: string }) {
@@ -50,9 +55,14 @@ export default function SiteNav({ email }: { email: string }) {
         </Link>
 
         <div className="flex items-center gap-1 sm:gap-2">
-          <ul className="hidden items-center gap-1 sm:flex">
+          {/*
+            The anchors collapse on a phone, but About must not — it is a
+            separate route, and without it the only way to reach the résumé
+            on mobile was to scroll the entire home page to the footer.
+          */}
+          <ul className="flex items-center gap-1">
             {LINKS.map(([label, href]) => (
-              <li key={label}>
+              <li key={label} className={href === '/about' ? '' : 'hidden sm:block'}>
                 <Link
                   href={href}
                   className="rounded-chip px-3 py-1.5 text-sm font-semibold text-fg-2 transition-colors hover:bg-surface-2 hover:text-fg"
