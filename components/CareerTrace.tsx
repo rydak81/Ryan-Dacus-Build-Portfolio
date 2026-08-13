@@ -43,12 +43,18 @@ export interface TraceChapter {
 
 /* ── geometry ───────────────────────────────────────────────────────── */
 
-const VW = 840;
 const PAD = 30;
+/**
+ * Each chapter gets a fixed band rather than a share of a fixed canvas, so
+ * adding a chapter widens the drawing instead of crushing every existing
+ * one. 180 units holds the longest axis label ("Seller Interactive") plus
+ * a five-wide dot row without either touching a separator.
+ */
+const BAND_W = 180;
 const LANE_COMMERCIAL = 62;
 const DOTS_TOP = 122;
 const DOT_GAP = 19;
-const DOTS_PER_ROW = 6;
+const DOTS_PER_ROW = 5;
 const AXIS = 236;
 /** The wash and the chapter separators stop at the axis rule. */
 const BAND_TOP = 22;
@@ -76,8 +82,17 @@ export default function CareerTrace({
   const tabs = useRef<(HTMLButtonElement | null)[]>([]);
   const scroller = useRef<HTMLDivElement | null>(null);
 
-  const bw = (VW - PAD * 2) / chapters.length;
+  const bw = BAND_W;
+  const VW = PAD * 2 + bw * chapters.length;
   const centerOf = (i: number) => PAD + bw * i + bw / 2;
+
+  /*
+    The legibility floor. Below roughly 118 real pixels per band the axis
+    labels stop being readable, so the SVG refuses to scale under that and
+    the container scrolls instead — capped at VW so it never demands more
+    width than it draws.
+  */
+  const minWidth = Math.min(VW, 118 * chapters.length + PAD * 2);
 
   /* The axis grows a second row only if lib/career.ts actually carries
      periods. Reserving the space unconditionally would leave a visible gap
@@ -158,17 +173,18 @@ export default function CareerTrace({
       {/* ── the trace ───────────────────────────────────────────────── */}
       <div className="py-5">
         {/*
-          Below roughly 620px the 840-unit viewBox scales the axis labels
-          down to about five real pixels, which is not a small chart — it is
-          an unreadable one. So the trace keeps a legible floor and the
-          container scrolls instead, the same trade the hero mosaic makes on
-          a phone. The tablist underneath is the accessible path to every
-          chapter, so nothing is reachable only by dragging.
+          Squeezed into a phone the viewBox would scale the axis labels down
+          to a few real pixels, which is not a small chart — it is an
+          unreadable one. So the trace holds the legibility floor computed
+          above and the container scrolls instead, the same trade the hero
+          mosaic makes on a phone. The tablist underneath is the accessible
+          path to every chapter, so nothing is reachable only by dragging.
         */}
         <div ref={scroller} className="overflow-x-auto px-3 md:px-5">
           <svg
             viewBox={`0 0 ${VW} ${VH}`}
-            className="h-auto w-full min-w-[620px]"
+            style={{ minWidth }}
+            className="h-auto w-full"
             role="img"
           aria-label={`Career trace. ${chapters.length} chapters. The commercial track runs unbroken across all of them; shipped systems appear only from the ${
             converge >= 0 ? chapters[converge].label : 'later'
@@ -341,7 +357,7 @@ export default function CareerTrace({
         role="tablist"
         aria-label="Career chapters"
         onKeyDown={onKey}
-        className="grid grid-cols-2 gap-px border-y border-line bg-line md:grid-cols-4"
+        className="grid grid-cols-2 gap-px border-y border-line bg-line sm:grid-cols-3 lg:grid-cols-6"
       >
         {chapters.map((c, i) => (
           <button
@@ -370,8 +386,10 @@ export default function CareerTrace({
             <span className="mt-1 block text-sm font-bold tracking-[-0.015em]">
               {c.label}
             </span>
+            {/* Period, not org — for most chapters the label already is the
+                org, and repeating it wasted the only line the tab has. */}
             <span className="mt-0.5 block truncate text-[11px] text-fg-3">
-              {c.org}
+              {c.period ?? c.org}
             </span>
           </button>
         ))}
@@ -452,9 +470,9 @@ export default function CareerTrace({
       <p className="border-t border-line px-5 py-4 text-xs leading-relaxed text-fg-3 md:px-7">
         Every dot is a row in the same file that renders the work shelf —
         nothing on this chart is typed in by hand. The top line never breaks
-        because the commercial job never stopped; the bottom one starts empty
-        because for the first chapter there was nothing to show, and that is
-        the honest version of the story.
+        because the commercial job never stopped; the bottom one is empty for
+        the early chapters because there was genuinely nothing to show, and
+        that is the honest version of the story.
       </p>
     </div>
   );
