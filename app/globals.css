@@ -725,3 +725,136 @@ input[type="range"]::-moz-range-thumb {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* ── career trace ─────────────────────────────────────────────────────
+   SVG text does not inherit the utility classes the rest of the site uses,
+   so the three label roles inside CareerTrace get real classes. Sizes are
+   in user units against a 840-wide viewBox, which is why they look large
+   next to the rem values above.
+*/
+.trace-lane {
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+}
+.trace-tick {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: -0.005em;
+}
+.trace-empty {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-style: italic;
+  letter-spacing: 0.02em;
+}
+
+/* ── print ────────────────────────────────────────────────────────────
+   /about is the résumé, so ⌘P has to produce a document rather than a
+   screenshot of a dark website. No PDF is checked into the repo on
+   purpose — one would start disagreeing with the page the first time
+   either was edited — so this stylesheet is the deliverable.
+
+   Everything on the site draws its colour through the tokens declared in
+   @theme, which means re-declaring those tokens here converts the whole
+   page to ink-on-paper in one place. This block must stay last in the
+   file: it wins on source order, not on specificity.
+*/
+@media print {
+  :root {
+    --color-ink: #ffffff;
+    --color-surface: #ffffff;
+    --color-surface-2: #ffffff;
+    --color-line: #d7d9e0;
+    --color-line-bright: #a8adbb;
+
+    --color-fg: #000000;
+    --color-fg-2: #23262e;
+    --color-fg-3: #55596a;
+
+    /* Amber is unreadable on paper; the epistemic split survives as a warm
+       brown against a cool indigo, which still prints legibly in greyscale. */
+    --color-signal: #7a4a06;
+    --color-signal-dim: #c9963f;
+    --color-model: #2f3a8f;
+    --color-model-dim: #9aa3d8;
+    --color-risk: #a11d22;
+    --color-glow: transparent;
+  }
+
+  html,
+  body {
+    background: #ffffff;
+  }
+
+  /* Chrome, ambience, and anything interactive: all off. */
+  .nav-shell,
+  .hero-glow,
+  .hero-grid,
+  .stage::before,
+  .mosaic-wash {
+    display: none !important;
+  }
+
+  /* Raised surfaces flatten to plain rules — gradients and drop shadows
+     cost toner and buy nothing on paper. */
+  .panel,
+  .cell,
+  .grid-lines,
+  .stage-frame {
+    background: #ffffff !important;
+    box-shadow: none !important;
+  }
+  .panel,
+  .grid-lines {
+    border: 1px solid var(--color-line) !important;
+  }
+
+  .shell {
+    max-width: none;
+    padding-inline: 0;
+  }
+
+  /*
+    Screen rhythm is 6–8rem between sections. On paper that is most of a
+    page of nothing, so `.doc` (the /about page) collapses to document
+    spacing. !important because the utilities being overridden sit at the
+    same specificity and win on source order otherwise.
+  */
+  .doc {
+    font-size: 10.5pt;
+    line-height: 1.45;
+  }
+  .doc > section,
+  .doc > header,
+  .doc > div > section {
+    padding-block: 0 !important;
+    margin: 0 0 8mm !important;
+  }
+  .doc .rule {
+    margin-bottom: 4mm !important;
+  }
+
+  /* Keep a heading with the entry it introduces. */
+  h1,
+  h2,
+  h3,
+  h4 {
+    break-after: avoid;
+  }
+  article,
+  li {
+    break-inside: avoid;
+  }
+
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
+
+  @page {
+    margin: 14mm;
+  }
+}

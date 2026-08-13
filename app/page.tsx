@@ -449,6 +449,17 @@ function ThroughLine() {
           answer. Twenty years carrying a number is what makes the first and third
           parts work. The building is what makes them count.
         </p>
+        <div className="mt-9 flex flex-wrap items-center gap-x-3 gap-y-3">
+          <Link
+            href="/about"
+            className="cell rounded-card border border-line-bright px-5 py-2.5 text-sm font-semibold text-fg transition-colors hover:border-signal hover:text-signal"
+          >
+            The twenty years behind it
+          </Link>
+          <span className="text-sm text-fg-3">
+            career trace, capability ledger, and what I&rsquo;m looking for
+          </span>
+        </div>
       </div>
       </section>
     </div>
