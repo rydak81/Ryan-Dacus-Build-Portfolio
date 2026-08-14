@@ -80,6 +80,17 @@ export default function SiteNav({ email }: { email: string }) {
           </a>
         </div>
       </nav>
+
+      {/*
+        Read-position hairline. Driven by a scroll timeline in globals.css —
+        no listener, no state, and browsers without support just never draw
+        it. Amber is legitimate here under the palette rule: it is measuring
+        something real.
+      */}
+      <div
+        aria-hidden
+        className="scroll-progress absolute inset-x-0 bottom-0 h-px bg-signal"
+      />
     </div>
   );
 }

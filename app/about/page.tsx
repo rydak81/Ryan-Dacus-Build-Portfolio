@@ -1,9 +1,9 @@
 import type { Metadata } from 'next';
-import Image from 'next/image';
 import Link from 'next/link';
 import CareerTrace, { type TraceChapter } from '@/components/CareerTrace';
 import DeferredMount from '@/components/DeferredMount';
 import PrintResume from '@/components/PrintResume';
+import ProfileCard from '@/components/ProfileCard';
 import {
   capabilities,
   careerResults,
@@ -125,7 +125,6 @@ function ProfileHeader() {
       />
       <div className="shell relative grid gap-10 md:grid-cols-[minmax(0,1fr)_auto] md:items-end">
         <div>
-          <AvailabilityChip />
           <h1 className="rise mt-6 max-w-[16ch] text-balance text-[clamp(2.5rem,6vw,4.25rem)] leading-[1.04]">
             {profile.name}
           </h1>
@@ -158,73 +157,14 @@ function ProfileHeader() {
           </p>
         </div>
 
-        {profile.portrait ? (
-          <Image
-            src={profile.portrait}
-            alt={`${profile.name}, portrait`}
-            width={220}
-            height={220}
-            priority
-            className="rounded-panel border border-line object-cover"
-          />
-        ) : (
-          <IdentityBlock />
-        )}
+        {/* The same identity card the home page hero uses, so both entry
+            points introduce Ryan identically. Hidden in print, where the
+            plain contact line above already carries everything on it. */}
+        <div className="w-full max-w-sm print:hidden md:w-[320px]">
+          <ProfileCard />
+        </div>
       </div>
     </header>
-  );
-}
-
-function AvailabilityChip() {
-  const { open, line } = profile.availability;
-  return (
-    <span
-      className="label inline-flex items-center gap-2 rounded-chip border px-2.5 py-1 text-[11px]"
-      style={{
-        color: open ? 'var(--color-signal)' : 'var(--color-fg-2)',
-        borderColor: open
-          ? 'var(--color-signal-dim)'
-          : 'var(--color-line-bright)',
-        background: open
-          ? 'color-mix(in srgb, var(--color-signal) 10%, transparent)'
-          : 'var(--color-surface-2)',
-      }}
-    >
-      {open && (
-        <span
-          aria-hidden
-          className="inline-block h-1.5 w-1.5 rounded-full"
-          style={{ background: 'var(--color-signal)' }}
-        />
-      )}
-      {line}
-    </span>
-  );
-}
-
-/**
- * Standing in for a portrait: four counted numbers rather than four claimed
- * ones. `stats` derives every value from lib/projects.ts, so this block
- * cannot drift from the shelf either.
- */
-function IdentityBlock() {
-  const cells: [string, string | number][] = [
-    // Counted from CAREER_START at build time rather than typed, so it does
-    // not quietly become wrong next January.
-    ['Years carrying a number', stats.years],
-    ['Systems shipped', stats.shipped],
-    ['Of those, live', stats.live],
-    ['On the shelf', stats.total],
-  ];
-  return (
-    <dl className="grid-lines grid w-full grid-cols-2 md:w-[300px] print:hidden">
-      {cells.map(([label, value]) => (
-        <div key={label} className="cell px-4 py-4">
-          <dd className="num text-2xl text-signal">{value}</dd>
-          <dt className="mt-1 text-[11px] leading-snug text-fg-3">{label}</dt>
-        </div>
-      ))}
-    </dl>
   );
 }
 
