@@ -811,9 +811,80 @@ input[type="range"]::-moz-range-thumb {
 }
 
 /* ── hero profile card ────────────────────────────────────────────────
-   The identity block, when no portrait is set. Not a placeholder for a
-   missing image — a designed object: the nav's own bar mark at scale,
-   over the same indigo wash the hero uses.
+   The identity card. Its background is deliberately FLAT rather than the
+   .panel top-lit gradient, because the portrait dissolves into it through
+   a scrim (.profile-scrim below) and a gradient ground would leave a seam
+   exactly where the image ends. One colour on both sides of the fade is
+   what makes the blend read as a single object.
+*/
+.profile-card {
+  position: relative;
+  background: var(--color-surface-2);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-panel);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.08),
+    0 1px 1px rgb(0 0 0 / 0.5),
+    0 12px 28px -12px rgb(0 0 0 / 0.7),
+    0 30px 60px -28px rgb(0 0 0 / 0.6);
+}
+
+/* A soft indigo bloom behind the card, so it sits above the hero field
+   rather than on it. Sits on a wrapper because the card itself clips. */
+.profile-halo {
+  position: relative;
+}
+.profile-halo::before {
+  content: "";
+  position: absolute;
+  inset: -14% -10%;
+  pointer-events: none;
+  background: radial-gradient(
+    54% 46% at 50% 22%,
+    color-mix(in srgb, var(--color-glow) 30%, transparent),
+    transparent 70%
+  );
+}
+.profile-halo > * {
+  position: relative;
+}
+
+/*
+  The scrim. Fades the portrait into the card's own colour so the image has
+  no bottom edge — the single move that separates a designed card from an
+  image with text underneath it. Terminates on exactly the card background,
+  which is why that background had to stop being a gradient.
+*/
+.profile-scrim {
+  background: linear-gradient(
+    180deg,
+    transparent 20%,
+    color-mix(in srgb, var(--color-surface-2) 30%, transparent) 46%,
+    color-mix(in srgb, var(--color-surface-2) 78%, transparent) 72%,
+    color-mix(in srgb, var(--color-surface-2) 96%, transparent) 90%,
+    var(--color-surface-2) 100%
+  );
+}
+
+/* The glass edge: a hairline of light on the inside of the image frame,
+   which is what stops a full-bleed photo from looking pasted on. */
+.profile-frame {
+  position: relative;
+}
+.profile-frame::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.12),
+    inset 0 0 0 1px rgb(255 255 255 / 0.04);
+}
+
+/*
+  The identity mark, when no portrait is set. Not a placeholder for a
+  missing image — a designed object: the nav's own bar mark at scale, over
+  the same indigo wash the hero uses.
 */
 .identity-mark {
   background:

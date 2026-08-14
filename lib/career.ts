@@ -51,9 +51,11 @@ export interface Profile {
   linkedin: string;
   github: string;
   /**
-   * Optional portrait. Drop a square image in `public/` and set the path
-   * (e.g. '/ryan.jpg'). Absent, the header renders a stat block instead —
-   * which is deliberately not a worse outcome, just a different one.
+   * Optional portrait, rendered full-bleed at 4:5 in the profile card and
+   * faded into it by a scrim. Produce it with scripts/prepare-portrait.py
+   * rather than by hand — the framing rules matter, and the script encodes
+   * them. Absent, the card renders the site's own mark instead, which is a
+   * different outcome rather than a worse-looking one.
    */
   portrait?: string;
   /** Shown as a live status chip. Set `open: false` when the search closes. */
@@ -76,7 +78,14 @@ export const profile: Profile = {
   publishPhone: false,
   linkedin: 'https://linkedin.com/in/ryandacus-sbc',
   github: 'https://github.com/rydak81',
-  // portrait: '/ryan.jpg',   // TODO(ryan): add the file, then uncomment.
+  /*
+    TODO(ryan): drop the portrait in and this line is the only change.
+      python3 scripts/prepare-portrait.py <your-image>
+    writes public/portrait.jpg trimmed of its matte and cropped 4:5 with the
+    face in the upper third — the card's scrim and name plate occupy the
+    bottom of the frame. Then uncomment:
+  */
+  // portrait: '/portrait.jpg',
   /* Short on purpose — this sets inside a chip on the profile card, and the
      long version wrapped to two lines and read as a paragraph. The titles
      being targeted live in `openTo` below and in lookingFor. */
