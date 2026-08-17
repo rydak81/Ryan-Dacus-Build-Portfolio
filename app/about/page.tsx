@@ -183,9 +183,19 @@ function Mission() {
           <h2 className="mt-6 max-w-4xl text-balance text-2xl leading-snug md:text-3xl">
             {mission.title}
           </h2>
-          <div className="mt-7 grid max-w-5xl gap-5 md:grid-cols-3">
-            {mission.body.map((para) => (
-              <p key={para.slice(0, 32)} className="text-pretty text-sm leading-relaxed text-fg-2">
+          {/* Same 2×2 as the home page — see the note there. The second
+              paragraph is the self-sourced distinction and takes the accent
+              rail so it is not skimmed as more summary copy. */}
+          <div className="mt-7 grid max-w-5xl gap-5 md:grid-cols-2">
+            {mission.body.map((para, i) => (
+              <p
+                key={para.slice(0, 32)}
+                className={
+                  i === 1
+                    ? 'text-pretty border-l-2 border-signal-dim pl-4 text-sm leading-relaxed text-fg'
+                    : 'text-pretty text-sm leading-relaxed text-fg-2'
+                }
+              >
                 {para}
               </p>
             ))}
@@ -363,10 +373,18 @@ function Results() {
       />
 
       <p className="eyebrow mt-9">From the roles</p>
-      <dl className="grid-lines mt-3 grid sm:grid-cols-3">
+      <dl className="grid-lines mt-3 grid sm:grid-cols-2 lg:grid-cols-4">
         {careerResults.map((r) => (
           <div key={r.label} className="cell p-5">
-            <dd className="num text-2xl text-signal">{r.value}</dd>
+            {/* Same rule as the home record strip: word-length values step
+                down a size so they never wrap inside a cell. */}
+            <dd
+              className={`num text-signal ${
+                r.value.length > 5 ? 'text-xl' : 'text-2xl'
+              }`}
+            >
+              {r.value}
+            </dd>
             <dt className="mt-2 text-sm leading-snug text-fg-2">{r.label}</dt>
             <p className="label mt-3 text-[11px] text-fg-3">{r.chapter}</p>
           </div>

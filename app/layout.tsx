@@ -39,7 +39,7 @@ export const metadata: Metadata = {
   title:
     'Ryan Dacus — Business development, partnerships & sales leadership',
   description:
-    'Twenty years in B2B revenue: founding sales hire, $1M+ in annual contract value closed, teams hired and led to quota, and two revenue functions built from zero — plus the forecasting, CRM, and enablement systems I built to hit the number.',
+    'Twenty years in B2B revenue: founding sales hire, millions in annual contract value closed with over 80% of it self-sourced, teams hired and led to quota, and two revenue functions built from zero — plus the forecasting, CRM, and enablement systems I built to hit the number.',
   openGraph: {
     title: 'Ryan Dacus — Business development & partnerships',
     description:

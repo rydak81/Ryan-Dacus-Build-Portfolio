@@ -69,7 +69,7 @@ export const profile: Profile = {
     reads as an engineer's disqualifies him from the shortlist he wants.
   */
   headline:
-    'Twenty years in B2B revenue — founding sales hire, $1M+ in annual contract value closed, teams hired and led to quota. I also build the systems the number depends on.',
+    'Twenty years in B2B revenue — founding sales hire, millions in ACV closed with 80%+ of it self-sourced, teams hired and led to quota. I also build the systems the number depends on.',
   location: 'Greenville, SC',
   email: 'ryandacus@gmail.com',
   phone: '(864) 915-3193',
@@ -96,19 +96,25 @@ export const CAREER_START = 2005;
 /* ── the operating thesis ───────────────────────────────────────────── */
 
 /**
- * The "about me" that isn't a summary of the résumé below it. Three
- * paragraphs, each doing a different job: what I do, why it's unusual,
- * what I'm optimising for next. Synthesised from the professional summary
- * on all four targeted résumés.
+ * The "about me" that isn't a summary of the résumé below it. Four
+ * paragraphs, each doing a different job: what I do, where the revenue
+ * actually came from, why it's unusual, what I'm optimising for next.
+ * Synthesised from the professional summary on all four targeted résumés.
+ *
+ * Paragraph two is the self-sourced distinction and it sits second on
+ * purpose. It is the claim most likely to be skimmed past as boilerplate
+ * and the one that separates this record from a quota hit on inherited
+ * pipeline, so it gets read before the building does.
  */
 export const mission = {
   eyebrow: 'How I work',
   title:
     'I carry the number first. The building is what makes the number easier to hit.',
   body: [
-    'Twenty years of B2B selling and sales management. Founding sales hire at a high-growth Amazon agency, where I built the commercial function from zero — ICP, outbound motion, service packaging, pricing — closed $1M+ in annual contract value at peak, and hired, ramped, and led a team of six to consistent quota attainment. Then I did it again from nothing, opening a net-new channel revenue stream at a commerce SaaS portfolio, where I carry a quarterly number for channel-sourced ACV and new agreements today.',
+    'Twenty years of B2B selling and sales management, and millions in annual contract value sourced and closed across it. Founding sales hire at a high-growth Amazon agency, where I built the commercial function from zero — ICP, outbound motion, service packaging, pricing — and hired, ramped, and led a team of six to consistent quota attainment. Then I did it again from nothing, opening a net-new channel revenue stream at a commerce SaaS portfolio, where I carry a quarterly number for channel-sourced ACV and new agreements today.',
+    'The number underneath that number is the one I would look at first: across my last three roles, more than 80% of what I closed was self-sourced. Not routed from marketing, not inherited from an SDR queue, not a lead-gen list handed over at the top of the funnel — territory I mapped, accounts I identified, conversations I opened cold. It is a different job than working pipeline someone else filled, and it is the half of the résumé that transfers to a role where the pipeline does not exist yet.',
     'What is unusual is what happens after I find the friction. Most sellers file a request for the CRM, the forecast, the enablement library, the prospecting console — and wait two quarters. I build them, ship them, and sell on them the same month. Everything on this site came out of a problem inside my own revenue motion, and most of it went live against real accounts while I was carrying a quota.',
-    'That is the offer: a commercial leader who sources, qualifies, negotiates, and closes — who also removes the operational drag on the team behind him instead of escalating it. What I want next is to run business development, partnerships, or a sales team where both halves count.',
+    'That is the offer: a commercial leader who sources his own pipeline, qualifies, negotiates, and closes — who also removes the operational drag on the team behind him instead of escalating it. What I want next is to run business development, partnerships, or a sales team where both halves count.',
   ],
 };
 
@@ -138,9 +144,9 @@ export interface MotionStage {
 export const motion: MotionStage[] = [
   {
     stage: 'Source',
-    job: 'Define the ICP from evidence rather than convention, then build the target list against it. At Threecolts I authored a 1P market strategy report that repositioned the company ICP toward enterprise Vendor Central agencies and redirected outbound targeting.',
+    job: 'Originate the pipeline rather than receive it. Across my last three roles more than 80% of what I closed was self-sourced — territory I mapped, accounts I identified, conversations I opened cold. That starts with defining the ICP from evidence rather than convention and building the target list against it: at Threecolts I authored a 1P market strategy report that repositioned the company ICP toward enterprise Vendor Central agencies and redirected outbound targeting.',
     friction:
-      'Most teams buy a list and work it broadly, because writing a tight query is nobody’s job. Volume goes up, conversations go down.',
+      'Most teams buy a list and work it broadly, because writing a tight query is nobody’s job. Volume goes up, conversations go down. The deeper version of the same problem is a seller whose number depends entirely on someone else filling the funnel — when marketing spend moves, so does their quota attainment.',
     systems: [
       'prospecting-command-center',
       'leadprompter',
@@ -277,7 +283,7 @@ export const chapters: Chapter[] = [
     context: 'Hybrid Amazon brand growth agency — founding sales hire',
     period: 'Feb 2022 – Mar 2025',
     mandate:
-      'Founding sales hire. Built the commercial function from zero — ICP definition, outbound motion, service packaging, pricing model — grew personal production past $1M in annual contract value at peak, and hired, ramped, and led a team of six representatives to consistent quota attainment.',
+      'Founding sales hire. Built the commercial function from zero — ICP definition, outbound motion, service packaging, pricing model — grew personal production past $1M in annual contract value at peak against no inbound pipeline whatsoever, and hired, ramped, and led a team of six representatives to consistent quota attainment.',
     build:
       'Systems, not software. The playbooks, qualification frameworks, pricing structure, deal-desk practice, and onboarding curriculum the department ran on, with Monday.com administered as its CRM and source of truth. This is the chapter where it became clear that the thing I was actually good at was building the operating system, not just working inside it.',
     lesson:
@@ -285,6 +291,7 @@ export const chapters: Chapter[] = [
     bullets: [
       'Founding sales hire at a hybrid Amazon brand growth agency; built the commercial function from zero — ICP definition, outbound motion, service packaging, and pricing model — and progressed to Senior Sales Executive and Sales Team Lead across three years of category-leading growth.',
       'Personally closed $1M+ in annual contract value at peak production, selling multi-service brand growth engagements to Amazon sellers and consumer brands.',
+      'Self-sourced the large majority of that production — over 80% — as a founding hire with no marketing-generated pipeline, no SDR team, and no inherited book to work.',
       'Hired, ramped, and led a team of 6+ sales representatives to consistent quota attainment through structured coaching, call reviews, and performance management.',
       'Built the outbound playbook, discovery and qualification frameworks, and pricing strategy the entire team sold on.',
       'Owned departmental forecasting, pipeline hygiene, and CRM operations — administering Monday.com as the department’s single source of truth — giving leadership a reliable monthly and quarterly revenue picture.',
@@ -308,6 +315,7 @@ export const chapters: Chapter[] = [
       'A forecast is not a number, it is a distribution — and the people reading it can handle that if you show them the range.',
     bullets: [
       'Sourced, negotiated, and closed brand and supplier agreements for an Amazon FBA wholesale and resale operation, owning terms, margin structure, and performance expectations.',
+      'Originated over 80% of that volume myself through cold outbound and direct market mapping rather than inbound enquiry or a purchased lead list.',
       'Evaluated every account on margin profile, sell-through velocity, and inventory risk before commitment.',
       'Architected the business development CRM in Monday.com — a large lead and prospect database integrated with the company ERP to automate pipeline, BDR outreach status, opportunity scoring, and estimated ACV.',
       // RESUME DIVERGENCE (1): résumés say "machine learning models" here.
@@ -336,6 +344,7 @@ export const chapters: Chapter[] = [
       'Presented one of these internally as the company case study in applied AI — which is when it became clear the building was not a side activity.',
     bullets: [
       'Carry a quarterly revenue number for channel-sourced ACV and net-new agreements, running full-cycle from cold outbound through multi-stakeholder negotiation and co-sell close.',
+      'Self-source over 80% of that pipeline — the program launched with no partner list, no inbound applications, and no lead-generation function behind it, so every foundational agreement began as an account I identified and approached cold.',
       'Opened a net-new channel revenue stream from zero — defined the ICP, segmentation model, and value proposition across the MarginPro, CedCommerce, and Seller Directories product lines.',
       'Sourced and closed the program’s foundational agency agreements and advanced an active pipeline behind them; serve as primary relationship owner, managing multiple high-visibility organisations simultaneously.',
       'Run co-sell motions alongside channel-side sellers, jointly working end-customer opportunities across three product lines while maintaining clear account ownership where both sides work the same market.',
@@ -457,6 +466,23 @@ export const capabilities: CapabilityGroup[] = [
   {
     label: 'Sales leadership',
     items: [
+      {
+        /*
+          Listed first, and deliberately separate from the full-cycle entry
+          below it. "Full-cycle" is a claim almost every seller makes and
+          it says nothing about where the pipeline came from; this one does,
+          and it is the distinction that decides whether the record
+          transfers to a territory with no lead flow in it.
+        */
+        name: 'Self-sourced pipeline origination — cold, not inherited',
+        claim: 'shipped',
+        evidence: [
+          'prospecting-command-center',
+          'leadprompter',
+          'monday-revenue-crm',
+        ],
+        note: 'Over 80% of closed revenue across my last three roles was self-sourced — not routed from marketing, not handed over by an SDR queue, not a purchased lead list. The systems cited here are the ones I built to do it at volume without adding headcount.',
+      },
       {
         name: 'Full-cycle B2B new business, sourcing through close',
         claim: 'working',
@@ -755,9 +781,20 @@ export function selectedResults(): ResolvedResult[] {
 export const careerResults: { value: string; label: string; chapter: string }[] =
   [
     {
-      value: '$1M+',
-      label: 'Personal annual contract value at peak',
-      chapter: 'Seller Interactive',
+      value: 'Millions',
+      label: 'In ACV sourced and closed across the career',
+      chapter: 'Twenty years · Seller Interactive · Voadera · Threecolts',
+    },
+    {
+      /*
+        The distinction the rest of the strip cannot make on its own. A
+        quota hit on marketing-generated pipeline and a quota hit on
+        pipeline you originated yourself are different jobs, and only one
+        of them transfers to a role with no lead flow waiting for it.
+      */
+      value: '80%+',
+      label: 'Of closed revenue self-sourced, last three roles',
+      chapter: 'Seller Interactive · Voadera · Threecolts',
     },
     {
       value: '6+',

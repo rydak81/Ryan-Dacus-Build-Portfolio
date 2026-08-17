@@ -177,7 +177,9 @@ function Hero() {
 function Record() {
   return (
     <section id="record" className="shell pb-20 md:pb-28">
-      <dl className="grid-lines stagger grid grid-cols-2 lg:grid-cols-5">
+      {/* Six cells since the self-sourced share joined the strip: two up on
+          a phone, three at md, all six on one line at lg. */}
+      <dl className="grid-lines stagger grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6">
         <div className="cell p-5">
           <dd className="num text-3xl text-signal">{stats.years}</dd>
           <dt className="mt-2 text-[11px] leading-snug text-fg-3">
@@ -186,7 +188,16 @@ function Record() {
         </div>
         {careerResults.map((r) => (
           <div key={r.label} className="cell p-5">
-            <dd className="num text-3xl text-signal">{r.value}</dd>
+            {/* A word-length value ("Millions") overflows a two-up cell at
+                375px where "80%+" does not, so long values step down one
+                size rather than wrapping mid-word. */}
+            <dd
+              className={`num text-signal ${
+                r.value.length > 5 ? 'text-2xl' : 'text-3xl'
+              }`}
+            >
+              {r.value}
+            </dd>
             <dt className="mt-2 text-[11px] leading-snug text-fg-3">
               {r.label}
             </dt>
@@ -595,11 +606,20 @@ function ThroughLine() {
         <p className="mt-7 max-w-4xl text-pretty text-2xl leading-relaxed md:text-3xl">
           {mission.title}
         </p>
-        <div className="mt-8 grid max-w-5xl gap-6 md:grid-cols-3">
-          {mission.body.map((para) => (
+        {/* Two-up rather than three-up since the self-sourced paragraph
+            joined: four columns at this measure crushed the lines, and the
+            2×2 keeps that paragraph on the first row where it is read. It
+            carries the accent rail — same rule as everywhere else, the
+            warm colour goes on the claim that has a number behind it. */}
+        <div className="mt-8 grid max-w-5xl gap-6 md:grid-cols-2">
+          {mission.body.map((para, i) => (
             <p
               key={para.slice(0, 32)}
-              className="text-pretty text-sm leading-relaxed text-fg-2"
+              className={
+                i === 1
+                  ? 'text-pretty border-l-2 border-signal-dim pl-4 text-sm leading-relaxed text-fg'
+                  : 'text-pretty text-sm leading-relaxed text-fg-2'
+              }
             >
               {para}
             </p>
