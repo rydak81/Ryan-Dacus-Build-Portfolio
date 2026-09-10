@@ -11,9 +11,14 @@ scrim and the name plate.
 Usage:
     python3 scripts/prepare-portrait.py <source-image> [options]
 
-    --focus    Vertical centre of the crop as a fraction of the source
-               (0 = top, 1 = bottom). Lower values keep more headroom and
-               push the face higher in the frame. Default 0.40.
+    --focus    Vertical centre of the CROP WINDOW as a fraction of the
+               source (0 = top, 1 = bottom). Note the direction, which is
+               the opposite of the intuition: RAISING focus walks the
+               window down the source, so a fixed subject ends up HIGHER in
+               the output. Lowering it keeps more of the source above the
+               subject, which pushes the subject down toward the scrim and
+               the name plate. Default 0.40; clamped to the source, so any
+               value low enough simply pins the window to the top edge.
     --zoom     >1 crops tighter around the focus point. Default 1.0.
     --no-trim  Skip matte removal. Use this for a studio photograph: its
                backdrop reaches every edge, so trimming would crop to the
@@ -22,8 +27,8 @@ Usage:
     --no-vignette
                Skip the edge falloff. On by default because a photograph
                with a light studio backdrop otherwise glares against the
-               dark card; the falloff is what lets the image sit in the UI
-               rather than on top of it.
+               card's navy ground; the falloff is what lets the image sit
+               in the UI rather than on top of it.
 
 Writes public/portrait.jpg at 800x1000. Then set `portrait: '/portrait.jpg'`
 on `profile` in lib/career.ts.
@@ -35,7 +40,7 @@ import argparse
 import sys
 from pathlib import Path
 
-from PIL import Image, ImageChops, ImageDraw, ImageFilter
+from PIL import Image, ImageChops, ImageDraw, ImageFilter, ImageOps
 
 TARGET_W, TARGET_H = 800, 1000  # 4:5, matches the card
 OUT = Path(__file__).resolve().parent.parent / "public" / "portrait.jpg"
@@ -56,7 +61,14 @@ def trim_border(im: Image.Image, tolerance: int = 12) -> Image.Image:
 
 
 def crop_to_aspect(im: Image.Image, focus: float, zoom: float) -> Image.Image:
-    """Crop to 4:5 around a vertical focus point, clamped to the image."""
+    """
+    Crop to 4:5 around a vertical focus point, clamped to the image.
+
+    `focus` positions the crop WINDOW, not the subject: top = h*focus -
+    crop_h/2, so a larger focus moves the window down the source and a
+    fixed subject rises in the output. See the --focus note in the module
+    docstring.
+    """
     w, h = im.size
     crop_w = min(w, int(w / max(zoom, 1.0)))
     crop_h = int(crop_w * TARGET_H / TARGET_W)
@@ -141,6 +153,11 @@ def main() -> int:
         return 1
 
     im = Image.open(src)
+    # Pillow does not apply EXIF orientation on open, so a phone photo whose
+    # pixels are landscape but whose tag says portrait would be cropped
+    # against the wrong axis and saved sideways — the tag is dropped on
+    # write. Normalise before anything reads .size.
+    im = ImageOps.exif_transpose(im)
     print(f"source      {im.size[0]}x{im.size[1]}")
 
     if args.trim:

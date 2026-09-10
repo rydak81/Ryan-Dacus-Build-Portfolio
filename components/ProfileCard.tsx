@@ -121,7 +121,7 @@ function Portrait() {
     return (
       <Image
         src={profile.portrait}
-        alt={`${profile.name}, illustrated portrait`}
+        alt={`${profile.name}, portrait`}
         width={800}
         height={1000}
         priority
