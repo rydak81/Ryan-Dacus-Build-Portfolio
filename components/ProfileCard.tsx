@@ -18,14 +18,14 @@ export default function ProfileCard() {
   return (
     <div className="profile-halo">
       <aside className="profile-card overflow-hidden">
-        {/* Amber hairline along the very top — the same "measured, verified"
+        {/* Warm hairline along the very top — the same "measured, verified"
             accent the rest of the site reserves for true things. */}
         <div
           aria-hidden
           className="pointer-events-none absolute inset-x-0 top-0 z-20 h-px"
           style={{
             background:
-              'linear-gradient(90deg, transparent, var(--color-signal), transparent)',
+              'linear-gradient(90deg, transparent, var(--color-signal-fill), transparent)',
           }}
         />
 
@@ -49,7 +49,7 @@ export default function ProfileCard() {
               {profile.name}
             </p>
             <p className="mt-1 text-sm leading-snug text-fg-2">
-              Business development · Partnerships · Sales leadership
+              Revenue systems · Analytics · Business development
             </p>
             <p className="mt-2 flex items-center gap-1.5 text-sm text-fg-3">
               <PinIcon />

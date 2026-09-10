@@ -14,14 +14,24 @@ export const alt =
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
 
-const INK = '#0b0c14';
-const SURFACE_2 = '#191c2b';
-const LINE = '#252a3d';
-const FG = '#e9ecf5';
-const FG_2 = '#a0a7bd';
-const FG_3 = '#7e87a3';
-const SIGNAL = '#ffbf5c';
-const MODEL = '#7c8cff';
+/*
+  The card stays dark, and that is not a leftover from the old build: the
+  hero it advertises is a navy mesh, so a dark OG image is the honest
+  preview of what a click actually lands on. What changed is the palette
+  under it — the near-black indigo and amber became the mesh navy and the
+  brand orange, matching `.bg-mesh` and `.on-dark` in globals.css.
+
+  Hex rather than oklch: Satori renders this at build time and does not
+  support oklch, so these are the sRGB equivalents of the tokens.
+*/
+const INK = '#131a3a';        // oklch(0.17 0.07 268) — the mesh base
+const BLOOM = '#26346e';      // the blue bloom, used for the grid lines
+const LINE = '#2f3c73';
+const FG = '#ffffff';
+const FG_2 = '#c3cae8';
+const FG_3 = '#8f9bc4';
+const SIGNAL = '#ffa95c';     // orange, lightened for a navy ground
+const MODEL = '#a5aefc';      // royal blue, lightened the same way
 
 export default async function OpengraphImage() {
   const [display, mono] = await Promise.all([
@@ -38,7 +48,7 @@ export default async function OpengraphImage() {
           display: 'flex',
           flexDirection: 'column',
           backgroundColor: INK,
-          backgroundImage: `linear-gradient(${SURFACE_2} 1px, transparent 1px), linear-gradient(90deg, ${SURFACE_2} 1px, transparent 1px)`,
+          backgroundImage: `linear-gradient(${BLOOM} 1px, transparent 1px), linear-gradient(90deg, ${BLOOM} 1px, transparent 1px)`,
           backgroundSize: '56px 56px',
           padding: '64px 72px',
           fontFamily: 'Space Grotesk',
@@ -57,7 +67,7 @@ export default async function OpengraphImage() {
           }}
         >
           <div style={{ display: 'flex' }}>
-            GREENVILLE, SC · PARTNERSHIPS &amp; REVENUE SYSTEMS
+            GREENVILLE, SC · REVENUE OPS · ANALYTICS · SYSTEMS
           </div>
           <div
             style={{
@@ -94,8 +104,10 @@ export default async function OpengraphImage() {
             color: FG,
           }}
         >
-          <div style={{ display: 'flex' }}>I sell technology</div>
-          <div style={{ display: 'flex' }}>I know how to build.</div>
+          <div style={{ display: 'flex' }}>I build the systems</div>
+          <div style={{ display: 'flex', color: SIGNAL }}>
+            that find the revenue.
+          </div>
         </div>
 
         {/* Sub line */}

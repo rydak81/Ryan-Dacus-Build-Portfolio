@@ -73,7 +73,11 @@ def crop_to_aspect(im: Image.Image, focus: float, zoom: float) -> Image.Image:
     return im.crop((left, top, left + crop_w, top + crop_h))
 
 
-def vignette(im: Image.Image, strength: float = 0.72) -> Image.Image:
+def vignette(
+    im: Image.Image,
+    strength: float = 0.72,
+    tint: tuple[int, int, int] = (24, 32, 70),
+) -> Image.Image:
     """
     Darken the edges so the picture falls off into the card instead of
     ending at a hard rectangle.
@@ -84,10 +88,14 @@ def vignette(im: Image.Image, strength: float = 0.72) -> Image.Image:
     what lets the photograph hand off to the card's scrim without a visible
     change of slope — the two fades read as one.
 
-    Compositing against a darkened copy of the image rather than against
-    black keeps skin tone intact while the studio backdrop loses its glare;
-    a light-grey seamless is the whole problem this solves, since untreated
-    it reads as a lit rectangle pasted onto a dark UI.
+    The dark end is pulled toward `tint`, the card's navy ground
+    (--profile-ground, oklch(0.2 0.07 268)), rather than toward neutral
+    black. A neutral falloff was right when the card sat on near-black; on
+    navy it reads as a grey halo around the subject. Compositing against a
+    darkened, tinted copy of the image rather than against a flat colour
+    keeps skin tone intact while the studio backdrop loses its glare — a
+    light-grey seamless is the whole problem this solves, since untreated
+    it reads as a lit rectangle pasted onto a coloured UI.
     """
     w, h = im.size
 
@@ -98,7 +106,7 @@ def vignette(im: Image.Image, strength: float = 0.72) -> Image.Image:
     radial = radial.filter(ImageFilter.GaussianBlur(radius=min(w, h) * 0.26))
 
     # Brightest across the face, falling off both ways: a gentle ramp above
-    # 14% so the top of the card does not glare against a dark page, and a
+    # 14% so the top of the card does not glare against the ground, and a
     # hard one below 45% that hands off to the scrim.
     vertical = Image.new("L", (w, h), 255)
     vd = ImageDraw.Draw(vertical)
@@ -114,6 +122,7 @@ def vignette(im: Image.Image, strength: float = 0.72) -> Image.Image:
 
     mask = ImageChops.multiply(radial, vertical)
     dark = Image.eval(im, lambda v: int(v * (1.0 - strength)))
+    dark = Image.blend(dark, Image.new("RGB", (w, h), tint), 0.55)
     return Image.composite(im, dark, mask)
 
 
