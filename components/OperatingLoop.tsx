@@ -1,36 +1,36 @@
 import Link from 'next/link';
-import { motion, systemsFor } from '@/lib/career';
+import { loop, systemsForStage } from '@/lib/career';
 
 /**
- * The revenue motion, stage by stage, with the system built for each one.
+ * The operating loop, stage by stage, with the systems built for each one.
  *
- * This was the spine of the home page and is now one section inside it,
- * sitting below the career trace. OperatingLoop took its place at the top.
+ * This replaced SalesMotion as the spine of the home page. The old section
+ * framed everything on this site as a stage of a sales funnel, which was
+ * the right answer to the wrong question: it kept a shelf of ingestion,
+ * measurement, diagnosis and optimisation work filed under "how I sell",
+ * where nobody hiring for performance analysis or revenue operations would
+ * look for it.
  *
- * It is kept rather than deleted because the commercial motion is real,
- * and it is what a business development, partnerships, or sales leadership
- * reader came for — the six stages, and the systems that made each one
- * cheaper. What changed is only its altitude. The site no longer argues
- * that the building exists to serve the selling, because that framing
- * filed twenty projects about ingestion, measurement and diagnosis under
- * "how I sell", where nobody hiring for those would look for them.
- *
- * Left rail carries the stage, right column carries the job, the friction
- * it removes, and links to the projects underneath. Server component —
- * there is nothing to interact with, and the page already spends its one
- * interactive moment on the career trace.
+ * Left rail carries the stage and its index; right column carries the job,
+ * the friction it removes, and links to the projects underneath. Server
+ * component — there is nothing to interact with, and the page already
+ * spends its interactive moments on the three live models.
  */
-export default function SalesMotion() {
+export default function OperatingLoop() {
   return (
     <ol className="grid-lines grid">
-      {motion.map((m, i) => {
-        const systems = systemsFor(m);
+      {loop.map((m, i) => {
+        const systems = systemsForStage(m);
         return (
           <li
             key={m.stage}
-            className="cell grid gap-x-8 gap-y-4 p-6 md:grid-cols-[190px_1fr] md:p-8"
+            className="cell grid gap-x-8 gap-y-4 p-6 md:grid-cols-[210px_1fr] md:p-8"
           >
             <div className="flex items-baseline gap-3 md:block">
+              {/* The index is a real sequence — the stages run in this
+                  order and each one depends on the one before it — so it
+                  earns the mono treatment the rest of the site reserves
+                  for genuine numerics. */}
               <span className="num text-xs font-semibold text-model">
                 {String(i + 1).padStart(2, '0')}
               </span>
@@ -43,7 +43,12 @@ export default function SalesMotion() {
               <p className="max-w-3xl text-pretty leading-relaxed text-fg-2">
                 {m.job}
               </p>
-              <p className="mt-4 max-w-3xl border-l-2 border-line-bright pl-4 text-pretty text-sm leading-relaxed text-fg-3">
+              {/* The friction line is the argument, not a caption, so it
+                  gets a rail rather than being set smaller and grey until
+                  it reads as boilerplate. The rail is neutral on purpose:
+                  under the palette rule warm means verified and cool means
+                  modelled, and "what most teams do instead" is neither. */}
+              <p className="mt-4 max-w-3xl rounded-r-chip border-l-2 border-line-bright bg-surface-2 py-3 pl-4 pr-4 text-pretty text-sm leading-relaxed text-fg-2">
                 {m.friction}
               </p>
 
@@ -57,7 +62,7 @@ export default function SalesMotion() {
                       <li key={p.slug}>
                         <Link
                           href={`/projects/${p.slug}`}
-                          className="label inline-flex items-center gap-2 rounded-chip border border-line bg-surface-2 px-2.5 py-1 text-[11px] text-fg-2 transition-colors hover:border-model-dim hover:text-model"
+                          className="label inline-flex items-center gap-2 rounded-chip border border-line bg-surface px-2.5 py-1.5 text-[11px] text-fg-2 transition-colors hover:border-model-dim hover:text-model"
                         >
                           {/* Filled dot means it is deployed and reachable —
                               same status vocabulary as the rest of the site. */}

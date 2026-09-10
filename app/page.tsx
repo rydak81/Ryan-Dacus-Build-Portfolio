@@ -3,6 +3,7 @@ import CareerTrace, { type TraceChapter } from '@/components/CareerTrace';
 import CorrelationExplorer from '@/components/CorrelationExplorer';
 import DeferredMount from '@/components/DeferredMount';
 import HeroMosaic from '@/components/HeroMosaic';
+import OperatingLoop from '@/components/OperatingLoop';
 import ProfileCard from '@/components/ProfileCard';
 import RoleLens, { type LensProject } from '@/components/RoleLens';
 import SalesMotion from '@/components/SalesMotion';
@@ -15,6 +16,7 @@ import {
   lookingFor,
   mission,
   profile,
+  recordStrip,
   stats,
 } from '@/lib/career';
 
@@ -57,18 +59,24 @@ export default function Home() {
       .shell so background graphics (hero glow, grid, panel washes) can
       reach the viewport edges instead of stopping at a centred column.
 
-      Section order is the pitch order, and it is deliberately commercial
-      first: the record, then the motion, then the career, and only then
-      the models. A hiring manager for a business development or
-      partnerships role needs to know I carry a number before they care
-      that I can derive a copula.
+      Section order is the pitch order, and it inverted with the
+      repositioning. It used to run commercial-first — the record, then the
+      sales motion, then the career, and only then the models — on the
+      reasoning that a business development hiring manager needs to know I
+      carry a number before they care that I can derive a copula.
+
+      That is still true of a business development hiring manager, and it
+      is exactly backwards for everyone else reading this. So the loop now
+      leads: what the work is, then the shelf it produced, then the live
+      models, then the career that paid for all of it. The sales motion
+      survives further down as one chapter of that career rather than as
+      the frame the whole site hangs on.
     */
     <main className="overflow-x-clip">
       <Hero />
       <Record />
       <HeroMosaic />
-      <Motion />
-      <Career />
+      <Loop />
       <Proof />
       <RoleLens data={LENS_DATA}>
         <SelectedWork />
@@ -78,6 +86,8 @@ export default function Home() {
         <Method />
         <Stack />
       </div>
+      <Career />
+      <Motion />
       <ThroughLine />
       <Looking />
       <Contact />
@@ -90,77 +100,85 @@ export default function Home() {
 
 function Hero() {
   return (
-    /* Bottom padding is tighter than it was: the record strip below is the
-       thing that has to be reachable in the first screen, not decoration. */
-    <header className="relative overflow-x-clip pt-16 pb-12 md:pt-24 md:pb-14">
-      {/* Both layers are inset-0 on a full-bleed header, so they now span
-          the entire viewport width rather than a centred column. */}
+    /*
+      The hero is the one full-bleed dark surface on the page, and every
+      other dark surface on the site — the nav above it, the closing band
+      at the foot — is the same mesh. `on-dark` redefines the colour tokens
+      for this subtree rather than restyling each element, so `text-fg-2`
+      still means "the quieter body colour" here; it just resolves to white
+      at 76% instead of navy.
+    */
+    <header className="on-dark bg-mesh relative overflow-hidden pt-16 pb-16 md:pt-24 md:pb-24">
+      {/* A faint plotting grid over the mesh: the surface reads as a space
+          you could put a chart on, which is what the work is. */}
       <div
         aria-hidden
-        className="hero-glow pointer-events-none absolute inset-x-0 -top-24 bottom-0"
-      />
-      <div
-        aria-hidden
-        className="hero-grid pointer-events-none absolute inset-x-0 -top-10 bottom-0"
+        className="hero-grid pointer-events-none absolute inset-0"
       />
       {/*
         Two columns from lg up: the pitch on the left, the identity card on
-        the right. The card is the thing a LinkedIn profile leads with and
-        this hero did not have — a face, a status, a location, and a way to
-        make contact, all above the fold. Below lg it stacks under the copy
-        rather than competing with the headline for the first screen.
+        the right. Below lg it stacks under the copy rather than competing
+        with the headline for the first screen.
       */}
       <div className="shell relative grid items-start gap-12 lg:grid-cols-[minmax(0,1fr)_340px] lg:gap-16">
-      <div>
-        <p className="rise eyebrow">
-          Greenville, SC · Business development, partnerships &amp; sales
-          leadership
-        </p>
-        {/*
-          Fluid display size via clamp() rather than a single md: jump —
-          at 900 weight a fixed 4.25rem crowded the shell padding at
-          mid-range widths (~800px). text-balance handles the line breaks,
-          so the old hard <br /> is gone; it was forcing a bad break once
-          the type got heavier.
-        */}
-        <h1 className="rise rise-1 mt-7 max-w-[19ch] text-balance text-[clamp(2.5rem,7vw,5rem)] leading-[1.03]">
-          I sell technology I know how to build.
-        </h1>
-        <p className="rise rise-2 mt-8 max-w-2xl text-pretty text-lg leading-relaxed text-fg-2">
-          {/* Deliberately short. The numbers live in the strip directly
-              below, so repeating them here only pushed that strip off a
-              phone screen. This paragraph does one job: the differentiator. */}
-          Twenty years of B2B selling and sales management — founding sales
-          hire, sales team lead, now partnerships. What makes me different is
-          what happens after I find the friction: most sellers file a request
-          for the CRM, the forecast, the enablement, and wait two quarters. I
-          ship them, and sell on them the same month.
-        </p>
-        <div className="rise rise-3 mt-10 flex flex-wrap items-center gap-x-3 gap-y-3">
-          <a
-            href="#record"
-            className="rounded-card bg-signal px-6 py-3 text-sm font-bold text-ink shadow-[0_8px_24px_-14px_rgba(255,191,92,0.5)] transition-opacity hover:opacity-90"
-          >
-            See the record
-          </a>
-          <a
-            href={`mailto:${EMAIL}`}
-            className="cell rounded-card border border-line-bright px-6 py-3 text-sm font-semibold text-fg transition-colors hover:border-fg-3"
-          >
-            Get in touch
-          </a>
-          <Link
-            href="/about"
-            className="label rounded-card px-3 py-3 text-sm text-fg-3 underline decoration-line-bright underline-offset-4 transition-colors hover:text-fg-2"
-          >
-            Full profile &amp; résumé
-          </Link>
+        <div>
+          <p className="rise glass-dark inline-flex w-fit items-center gap-2.5 rounded-full px-4 py-1.5 text-sm font-medium text-white/85">
+            <span aria-hidden className="relative flex h-2 w-2">
+              <span className="absolute inline-flex h-full w-full rounded-full bg-[oklch(0.72_0.17_50)] opacity-60" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-[oklch(0.72_0.17_50)]" />
+            </span>
+            Greenville, SC · Revenue operations, analytics &amp; systems
+          </p>
+          {/*
+            Fluid display size via clamp() rather than a single md: jump —
+            at 800 weight a fixed size crowds the shell padding at
+            mid-range widths. text-balance handles the line breaks.
+          */}
+          <h1 className="rise rise-1 mt-7 max-w-[20ch] text-balance text-[clamp(2.5rem,6.6vw,4.75rem)] leading-[1.04] text-white">
+            I build the systems that{' '}
+            <span className="text-gradient-brand">find the revenue.</span>
+          </h1>
+          <p className="rise rise-2 mt-8 max-w-2xl text-pretty text-lg leading-relaxed text-white/75">
+            {/* One job: say what the work is, and say why the commercial
+                record is the reason to trust it rather than a separate
+                career that happens to sit on the same résumé. */}
+            Ingestion and data pipelines, performance dashboards, forecast
+            and simulation engines, and the tooling that acts on what they
+            surface — built against a live operation, most of it while I was
+            carrying the number it served. Twenty years in B2B revenue is
+            why the models are built around the operator’s economics rather
+            than a textbook’s.
+          </p>
+          <div className="rise rise-3 mt-10 flex flex-wrap items-center gap-x-3 gap-y-3">
+            <a
+              href="#loop"
+              className="glow-brand rounded-chip bg-signal-cta px-6 py-3 text-sm font-semibold text-white transition-opacity hover:opacity-90"
+            >
+              See how the loop runs
+            </a>
+            <a
+              href={`mailto:${EMAIL}`}
+              className="glass-dark rounded-chip px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-white/15"
+            >
+              Get in touch
+            </a>
+            <Link
+              href="/about"
+              className="label rounded-chip px-3 py-3 text-sm text-white/65 underline decoration-white/30 underline-offset-4 transition-colors hover:text-white/90"
+            >
+              Full profile &amp; résumé
+            </Link>
+          </div>
+          <p className="rise rise-3 mt-7 max-w-xl text-sm leading-relaxed text-white/60">
+            Every model on this site runs live in your browser rather than
+            being pictured. The claims that no project can evidence are
+            marked as claims.
+          </p>
         </div>
-      </div>
 
-      <div className="rise rise-2 w-full max-w-sm lg:max-w-none">
-        <ProfileCard />
-      </div>
+        <div className="rise rise-2 w-full max-w-sm lg:max-w-none">
+          <ProfileCard />
+        </div>
       </div>
     </header>
   );
@@ -176,52 +194,100 @@ function Hero() {
  */
 function Record() {
   return (
-    <section id="record" className="shell pb-20 md:pb-28">
-      <dl className="grid-lines stagger grid grid-cols-2 lg:grid-cols-5">
-        <div className="cell p-5">
-          <dd className="num text-3xl text-signal">{stats.years}</dd>
-          <dt className="mt-2 text-[11px] leading-snug text-fg-3">
-            Years in B2B revenue
-          </dt>
-        </div>
-        {careerResults.map((r) => (
+    /*
+      Pulled up so the slab straddles the edge of the mesh hero. A white
+      card overlapping a dark band is the strongest "this is an instrument"
+      cue the page has, and it costs one negative margin — the hero's own
+      bottom padding leaves the clearance for it.
+    */
+    <section
+      id="record"
+      className="shell relative z-10 -mt-10 pb-20 md:-mt-14 md:pb-28"
+    >
+      <dl className="grid-lines stagger grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6">
+        {recordStrip().map((r, i) => (
           <div key={r.label} className="cell p-5">
-            <dd className="num text-3xl text-signal">{r.value}</dd>
-            <dt className="mt-2 text-[11px] leading-snug text-fg-3">
+            {/*
+              On paper the default state of a number is navy ink, not
+              colour — the same restraint the analytics app shows, where a
+              stat tile takes a tone only when the tone means something.
+              The first cell is the exception and earns it under the
+              palette rule: a count of systems deployed and reachable is
+              the most literally verified figure on the page.
+
+              A word-length value ("Millions") overflows a two-up cell at
+              375px where "80%+" does not, so long values step down one
+              size rather than wrapping mid-word.
+            */}
+            <dd
+              className={`num font-semibold ${i === 0 ? 'text-signal' : 'text-fg'} ${
+                r.value.length > 5 ? 'text-2xl' : 'text-3xl'
+              }`}
+            >
+              {r.value}
+            </dd>
+            <dt className="mt-2 text-xs font-medium leading-snug text-fg-2">
               {r.label}
             </dt>
+            {/* Provenance. Hidden on a phone, where six cells with three
+                lines each push the whole first screen off. */}
+            <p className="mt-2 hidden text-[11px] leading-snug text-fg-3 md:block">
+              {r.note}
+            </p>
           </div>
         ))}
-        <div className="cell p-5">
-          <dd className="num text-3xl text-signal">{stats.live}</dd>
-          <dt className="mt-2 text-[11px] leading-snug text-fg-3">
-            Systems live in production
-          </dt>
-        </div>
       </dl>
     </section>
   );
 }
 
-/* ─────────────────────────── how I sell ─────────────────────────── */
+/* ─────────────────────────── the loop ─────────────────────────── */
 
-function Motion() {
+function Loop() {
   return (
     /* Banded: this is the argument the page is built around, and giving it
        its own ground is what stops the scroll from reading as one long
        column of identical sections. */
     <div className="band py-24 md:py-32">
-      <section id="motion" className="shell fade-in">
+      <section id="loop" className="shell fade-in">
         <SectionHead
-          eyebrow="How I sell"
-          title="The motion, and what I built for each stage of it"
-          lede="Every tool on this site came out of a specific point in my own revenue motion where something was slow, manual, or wrong. This is where each one sits — the commercial job first, the system underneath it second."
+          eyebrow="How I work"
+          title="Instrument it, find what is underperforming, prove why, then ship the fix"
+          lede="Every tool on this site came out of a specific point in a real operation where something was unmeasured, slow, or wrong. This is the loop they sit in — the job at each stage first, what most teams do instead second, and the systems underneath it third."
         />
         <div className="mt-9">
-          <SalesMotion />
+          <OperatingLoop />
         </div>
       </section>
     </div>
+  );
+}
+
+/* ──────────────────── the commercial motion ──────────────────── */
+
+/**
+ * The sales motion, kept but demoted.
+ *
+ * This used to be the spine of the page, directly under the record. It now
+ * sits below the career trace as one chapter of that career: the same six
+ * stages, the same systems hung off them, introduced as the commercial
+ * half of the loop above rather than as the frame the whole site hangs on.
+ * Nothing was deleted — a hiring manager for a business development or
+ * partnerships role still gets the section they came for, further down the
+ * page than they used to.
+ */
+function Motion() {
+  return (
+    <section id="motion" className="shell fade-in pb-24 md:pb-32">
+      <SectionHead
+        eyebrow="The commercial half"
+        title="And the revenue motion the loop was built inside"
+        lede="The loop above is not abstract — it ran inside a quota. This is the commercial motion it served, stage by stage, with the same systems mapped against it. It is also the part of the record that transfers directly to a business development, partnerships, or sales leadership role."
+      />
+      <div className="mt-9">
+        <SalesMotion />
+      </div>
+    </section>
   );
 }
 
@@ -301,9 +367,9 @@ const STEPS: [string, string][] = [
 function Method() {
   return (
     <section id="method" className="shell fade-in pb-16 md:pb-20">
-      {/* Secondary by design. The commercial method is "How I sell" above;
-          this is the build method, which matters to a technical interviewer
-          and to nobody else on the first pass. */}
+      {/* Secondary by design. "How I work" above is the loop; this is how
+          an individual system inside it actually gets built, which matters
+          to a technical interviewer and to nobody else on the first pass. */}
       <SectionHead
         eyebrow="Build method"
         title="And how each one actually got built"
@@ -311,7 +377,7 @@ function Method() {
       <ol className="grid-lines mt-9 grid md:grid-cols-4">
         {STEPS.map(([title, body], i) => (
           <li key={title} className="cell p-5">
-            <span className="num text-xs text-signal">
+            <span className="num text-xs font-semibold text-model">
               {String(i + 1).padStart(2, '0')}
             </span>
             {/* No font-medium here — a utility class outranks the element-level
@@ -584,10 +650,6 @@ function ThroughLine() {
        inside the card's own border. */
     <div className="shell">
       <section className="fade-in panel relative overflow-hidden px-6 py-16 md:px-12 md:py-20">
-      <div
-        aria-hidden
-        className="hero-glow pointer-events-none absolute inset-0 opacity-70"
-      />
       {/* Copy comes from lib/career.ts so the home page and /about make the
           same argument in the same words — one file to change, not two. */}
       <div className="relative">
@@ -595,11 +657,21 @@ function ThroughLine() {
         <p className="mt-7 max-w-4xl text-pretty text-2xl leading-relaxed md:text-3xl">
           {mission.title}
         </p>
-        <div className="mt-8 grid max-w-5xl gap-6 md:grid-cols-3">
-          {mission.body.map((para) => (
+        {/* Two-up rather than three-up: four columns at this measure
+            crushed the lines, and the 2×2 keeps the second paragraph on
+            the first row where it gets read. That one carries the accent
+            rail — it is the three specific times the honest answer cost
+            something, which is the only real evidence that the honesty
+            here is not decorative. */}
+        <div className="mt-8 grid max-w-5xl gap-6 md:grid-cols-2">
+          {mission.body.map((para, i) => (
             <p
               key={para.slice(0, 32)}
-              className="text-pretty text-sm leading-relaxed text-fg-2"
+              className={
+                i === 1
+                  ? 'text-pretty border-l-2 border-signal-dim pl-4 text-sm leading-relaxed text-fg'
+                  : 'text-pretty text-sm leading-relaxed text-fg-2'
+              }
             >
               {para}
             </p>
@@ -608,7 +680,7 @@ function ThroughLine() {
         <div className="mt-9 flex flex-wrap items-center gap-x-3 gap-y-3">
           <Link
             href="/about"
-            className="cell rounded-card border border-line-bright px-5 py-2.5 text-sm font-semibold text-fg transition-colors hover:border-signal hover:text-signal"
+            className="cell rounded-chip border border-line-bright px-5 py-2.5 text-sm font-semibold text-fg transition-colors hover:border-model hover:text-model"
           >
             Full profile &amp; résumé
           </Link>
@@ -663,64 +735,61 @@ function Looking() {
  */
 function Contact() {
   return (
-    <div className="shell py-24 md:py-32">
-      <section className="fade-in panel relative overflow-hidden px-6 py-14 text-center md:px-12 md:py-20">
-        <div
-          aria-hidden
-          className="hero-glow pointer-events-none absolute inset-0"
-        />
-        <div
-          aria-hidden
-          className="hero-grid pointer-events-none absolute inset-0 opacity-40"
-        />
-        <div className="relative mx-auto max-w-3xl">
-          <span
-            className="label inline-flex items-center gap-2 rounded-chip border px-3 py-1 text-[11px]"
-            style={{
-              color: 'var(--color-signal)',
-              borderColor: 'var(--color-signal-dim)',
-              background:
-                'color-mix(in srgb, var(--color-signal) 10%, transparent)',
-            }}
-          >
+    /*
+      The closing band, on the same mesh as the hero. The page opens and
+      shuts on brand colour and everything between them is the work — the
+      analytics app's structure, and the reason a visitor who scrolls the
+      whole thing never loses the thread back to the top.
+    */
+    <div className="band-dark on-dark bg-mesh relative overflow-hidden py-24 md:py-32">
+      <div
+        aria-hidden
+        className="hero-grid pointer-events-none absolute inset-0"
+      />
+      <section className="shell relative text-center">
+        <div className="mx-auto max-w-3xl">
+          <span className="glass-dark label inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 text-[11px] text-white/85">
             <span
               aria-hidden
-              className="inline-block h-1.5 w-1.5 rounded-full"
-              style={{ background: 'var(--color-signal)' }}
+              className="inline-block h-1.5 w-1.5 rounded-full bg-[oklch(0.72_0.17_50)]"
             />
             {profile.availability.line}
           </span>
 
-          <h2 className="mt-7 text-balance text-4xl tracking-[-0.03em] md:text-5xl">
-            Let&rsquo;s talk about the number you need hit.
+          <h2 className="mt-7 text-balance text-4xl tracking-[-0.03em] text-white md:text-5xl">
+            Show me the data and the decision hanging on it.
           </h2>
-          <p className="mx-auto mt-6 max-w-2xl text-pretty leading-relaxed text-fg-2">
-            Business development, sales, partnerships, and alliances —
+          <p className="mx-auto mt-6 max-w-2xl text-pretty leading-relaxed text-white/75">
+            {/* Titles in the order the site now argues them, and the domain
+                line kept — twenty years of marketplace knowledge is the
+                thing that is genuinely hard to hire for. */}
+            Revenue operations, performance and data analysis, or a
+            commercial role with real ownership of the systems behind it —
             particularly at companies building for commerce, retail, or
-            logistics, where twenty years of domain knowledge is worth
-            something on day one.
+            logistics, where the domain knowledge is worth something on day
+            one.
           </p>
 
           <div className="mt-9 flex flex-wrap items-center justify-center gap-3">
             <a
               href={`mailto:${EMAIL}`}
-              className="rounded-card bg-signal px-7 py-3.5 text-sm font-bold text-ink shadow-[0_8px_24px_-14px_rgba(255,191,92,0.5)] transition-opacity hover:opacity-90"
+              className="glow-brand rounded-chip bg-signal-cta px-7 py-3.5 text-sm font-semibold text-white transition-opacity hover:opacity-90"
             >
               Email me
             </a>
             <a
               href={LINKEDIN}
-              className="cell rounded-card border border-line-bright px-7 py-3.5 text-sm font-semibold text-fg transition-colors hover:border-fg-3"
+              className="glass-dark rounded-chip px-7 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-white/15"
             >
               Connect on LinkedIn
             </a>
           </div>
 
-          <p className="mt-8 text-sm text-fg-3">
+          <p className="mt-8 text-sm text-white/65">
             Or paste a job description into the{' '}
             <a
               href="#work"
-              className="text-model underline decoration-model-dim underline-offset-4 transition-colors hover:decoration-model"
+              className="text-white underline decoration-white/40 underline-offset-4 transition-colors hover:decoration-white"
             >
               Role Lens
             </a>{' '}
@@ -731,13 +800,13 @@ function Contact() {
           <div className="mt-8 flex flex-wrap items-center justify-center gap-x-7 gap-y-2 text-sm">
             <a
               href={`mailto:${EMAIL}`}
-              className="num text-fg-3 underline decoration-line-bright underline-offset-4 transition-colors hover:text-fg-2"
+              className="num text-white/60 underline decoration-white/25 underline-offset-4 transition-colors hover:text-white/85"
             >
               {EMAIL}
             </a>
             <a
               href={GITHUB}
-              className="num text-fg-3 underline decoration-line-bright underline-offset-4 transition-colors hover:text-fg-2"
+              className="num text-white/60 underline decoration-white/25 underline-offset-4 transition-colors hover:text-white/85"
             >
               {GITHUB.replace('https://', '')}
             </a>

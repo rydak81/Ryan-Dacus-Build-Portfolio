@@ -1,60 +1,137 @@
 @import "tailwindcss";
 
 /*
-  Palette rule, and the one idea the whole site is built on:
-  colour encodes epistemic status.
+  ── the palette ───────────────────────────────────────────────────────
 
-  --signal (warm)  a measured, verified, defensible number
-  --model  (cool)  something a model produced — an estimate, a simulation
-  --risk   (red)   downside, floor breach
+  Direction: "Instrument, in daylight". This is the design system built for
+  the FilamentIQ analytics app, brought over so the two properties read as
+  one body of work — a light cool-paper ground with navy ink, royal blue as
+  the brand voice, burnt orange reserved for emphasis, and colour saved for
+  the places it carries meaning.
 
-  Nothing on this site is warm unless it is true.
+  The site's original idea survives the move intact: colour encodes
+  epistemic status.
 
-  Direction: "Indigo Instrument". Near-black with an indigo cast, tuned to
-  share a brand with the 3TRecovery Wizard (indigo #6366f1 field, amber
-  verification). Amber remains the only warm thing on screen.
+    --signal (burnt orange)  a measured, verified, defensible number;
+                             something live. The one warm thing on screen.
+    --model  (royal blue)    something a model produced — an estimate, a
+                             simulation, a projection.
+    --risk   (red)           downside, floor breach.
+    --success / --warning    tiering, where a result sorts into bands.
+
+  "Nothing on this site is warm unless it is true" carried over from the
+  dark build word for word. What changed is the ground under it: on paper
+  the default state of a number is navy ink, not colour, so most figures
+  now set in --fg and only the ones making a claim take a hue. That is the
+  same restraint the analytics app shows — its stat tiles are plain
+  foreground by default and take a tone only when the tone means something.
 
   Contrast, measured against the two surfaces text ever sits on
-  (--surface #12141f, L=0.0073 · --surface-2 #191c2b, L=0.0121):
-    fg-3  #7e87a3 → 5.14:1 on surface · 4.74:1 on surface-2
-    signal #ffbf5c → 11.2:1 · 10.4:1
-    model  #7c8cff → 6.16:1 · 5.68:1
-    risk   #f2666b → 6.02:1 · 5.55:1
-  All ≥ 4.5:1. Any change to these four must be re-checked.
+  (--surface white, L=1.0 · --page oklch(0.975), L≈0.947):
+    fg    oklch(0.20 0.045 268) → 13.7:1 on white · 13.0:1 on paper
+    fg-2  oklch(0.38 0.040 268) →  7.1:1 · 6.7:1
+    fg-3  oklch(0.48 0.038 268) →  4.8:1 · 4.6:1
+    signal oklch(0.50 0.16 42)  →  5.4:1 · 5.1:1
+    model  oklch(0.44 0.20 268) →  6.6:1 · 6.2:1
+  All ≥ 4.5:1. Any change to these five must be re-checked.
+
+  The -fill variants exist because a colour that is legible as text is too
+  dark to be a good fill, and a colour that is a good fill is too light to
+  be legible as text. Splitting them is what stops the compromise where
+  neither job is done properly. -fill is for bars, dots, gradient stops and
+  glows, where nothing has to be read on top of it. The -dim variants are
+  hairlines: underline decorations, left rails, chart gridlines.
 */
 
 @theme {
-  --color-ink: #0b0c14;
-  --color-surface: #12141f;
-  --color-surface-2: #191c2b;
-  --color-line: #252a3d;
-  --color-line-bright: #38405c;
+  /* Grounds. --page is the ground the page sits on; --surface is a card
+     raised off it; --surface-2 is a tint inside a card. */
+  --color-page: oklch(0.975 0.007 262);
+  --color-surface: oklch(1 0 0);
+  --color-surface-2: oklch(0.955 0.014 262);
 
-  --color-fg: #e9ecf5;
-  --color-fg-2: #a0a7bd;
-  --color-fg-3: #7e87a3;
+  /* The dark ground. Used by the mesh hero, the sticky nav and the closing
+     band, so every dark surface on the site is the same dark surface. */
+  --color-ink: oklch(0.17 0.07 268);
+  --color-ink-2: oklch(0.2 0.07 268);
 
-  --color-signal: #ffbf5c;
-  --color-signal-dim: #8a6229;
-  --color-model: #7c8cff;
-  --color-model-dim: #414a99;
-  --color-risk: #f2666b;
+  --color-line: oklch(0.905 0.012 262);
+  --color-line-bright: oklch(0.84 0.022 262);
+
+  --color-fg: oklch(0.2 0.045 268);
+  --color-fg-2: oklch(0.38 0.04 268);
+  --color-fg-3: oklch(0.48 0.038 268);
+
+  --color-signal: oklch(0.5 0.16 42);
+  --color-signal-fill: oklch(0.66 0.17 48);
+  --color-signal-dim: oklch(0.8 0.12 52);
+  /*
+    The filled-button orange, and a third value rather than a reuse of
+    either neighbour for a measured reason. --signal-fill is the analytics
+    app's brand orange exactly, and white 15px semibold on it comes out at
+    3.31:1 — under AA for body-sized text, which every button label here
+    is. Darkening to 0.56 lifts that to 4.97:1 while keeping the button
+    4.72:1 against the paper behind it, so it still reads as a button.
+    --signal itself would pass too, at 6.4:1, but it is dark enough to
+    read as brown rather than as a call to action.
+  */
+  --color-signal-cta: oklch(0.56 0.17 48);
+
+  --color-model: oklch(0.44 0.2 268);
+  --color-model-fill: oklch(0.55 0.2 268);
+  --color-model-dim: oklch(0.78 0.09 268);
+
+  --color-risk: oklch(0.55 0.2 25);
+  --color-success: oklch(0.5 0.13 162);
+  --color-warning: oklch(0.52 0.15 55);
 
   /* Ambient depth only — never used to carry meaning. */
-  --color-glow: #4c4fd6;
+  --color-glow: oklch(0.47 0.19 268);
 
-  --radius-chip: 6px;
-  --radius-card: 10px;
-  --radius-panel: 12px;
+  /* Radius. One step family off a 12px base, matching the analytics app —
+     the single most visible difference from the old zero-radius build. */
+  --radius-chip: 8px;
+  --radius-card: 12px;
+  --radius-panel: 16px;
 
   /*
-    One family, Inter, for both display and body — matching
-    marketplacebeta.com. Weight and tracking do the differentiating, which
-    is why --font-display and --font-sans resolve to the same stack.
+    Plus Jakarta Sans for everything a person reads, JetBrains Mono for
+    every figure — the analytics app's pairing. Jakarta is geometric enough
+    to carry an 80px headline and quiet enough at 15px in a dense table,
+    and its wide counters are what keeps the small caveat copy legible.
+    That copy is the half of this site that must not get skipped.
   */
-  --font-display: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-mono-num), ui-monospace, monospace;
+
+  /*
+    Type scale, lifted wholesale from the analytics app. Tailwind's default
+    steps were built for marketing pages and this site leans hard on the
+    two smallest of them — metric labels, capability notes, the caveat under
+    every widget. At the stock 12px those are the sentences a reader most
+    needs and least wants to squint at.
+  */
+  --text-xs: 0.8125rem;
+  --text-xs--line-height: 1.125rem;
+  --text-sm: 0.9375rem;
+  --text-sm--line-height: 1.375rem;
+  --text-base: 1.0625rem;
+  --text-base--line-height: 1.625rem;
+  --text-lg: 1.1875rem;
+  --text-lg--line-height: 1.75rem;
+  --text-xl: 1.375rem;
+  --text-xl--line-height: 1.875rem;
+  --text-2xl: 1.75rem;
+  --text-2xl--line-height: 2.25rem;
+  --text-3xl: 2.25rem;
+  --text-3xl--line-height: 2.625rem;
+  --text-4xl: 3rem;
+  --text-4xl--line-height: 1.08;
+  --text-5xl: 3.75rem;
+  --text-5xl--line-height: 1.04;
+  --text-6xl: 4.75rem;
+  --text-6xl--line-height: 1;
 
   /* Content column. Wide enough to feel like a product, capped so long
      measures never get unreadable. */
@@ -62,30 +139,32 @@
 }
 
 html {
-  background: var(--color-ink);
+  background: var(--color-page);
   -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
 body {
   color: var(--color-fg);
   font-family: var(--font-sans);
-  /* Inter's default 400 reads thin on a dark field; 420 via variable weight
-     restores the density lost to the dark background. */
-  font-weight: 420;
+  /* Jakarta's 400 has enough weight on a light ground that the old 420
+     compensation for a dark field is no longer needed and reads heavy. */
+  font-weight: 400;
+  font-feature-settings: "ss01";
 }
 
 /*
-  Headings carry the weight, matching marketplacebeta: 800–900 at display
-  sizes with tight negative tracking, stepping down to 700 for section
-  heads. This is the single biggest change in how the page reads.
+  Headings carry the weight. On paper the display sizes do not need the
+  900 the dark build used to hold their own against the field — 800 at
+  display, 700 at section heads, with tight negative tracking.
 */
 h1 {
-  font-weight: 900;
-  letter-spacing: -0.035em;
+  font-weight: 800;
+  letter-spacing: -0.032em;
 }
 h2 {
-  font-weight: 800;
-  letter-spacing: -0.028em;
+  font-weight: 700;
+  letter-spacing: -0.026em;
 }
 h3,
 h4 {
@@ -94,56 +173,51 @@ h4 {
 }
 
 ::selection {
-  background: var(--color-signal);
-  color: var(--color-ink);
+  background: color-mix(in srgb, var(--color-model) 22%, transparent);
+  color: var(--color-fg);
 }
 
 :focus-visible {
-  outline: 2px solid var(--color-signal);
+  outline: 2px solid var(--color-model);
   outline-offset: 3px;
-  border-radius: 2px;
+  border-radius: 4px;
 }
 
 /* Sticky nav clearance for anchor jumps. */
 [id] {
-  scroll-margin-top: 84px;
+  scroll-margin-top: 92px;
 }
 
 /*
-  Numbers are instruments. They always set in mono, always tabular — this
-  is now reserved for genuine numerics (metric values, step indices, chart
-  ticks, literal URLs) where column alignment is functional.
+  Numbers are instruments. They always set in mono, always tabular —
+  reserved for genuine numerics (metric values, step indices, chart ticks,
+  literal URLs) where column alignment is functional.
 */
 .num {
   font-family: var(--font-mono);
   font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum", "zero";
   letter-spacing: -0.01em;
 }
 
-/*
-  UI text that was previously wearing .num purely for flavour — tag chips,
-  status badges, back-links. These are words, not measurements, so mono
-  bought nothing and cost legibility. Semibold Inter instead.
-*/
+/* UI text that is words rather than measurements — tag chips, status
+   badges, back-links. Semibold Jakarta, not mono. */
 .label {
   font-family: var(--font-sans);
   font-weight: 600;
   letter-spacing: 0.005em;
 }
 
-/*
-  Eyebrows are now Inter, not mono. The old wide-tracked monospace was the
-  main source of the dated teletype look — especially in the hero, where it
-  was the first thing read. Semibold with restrained tracking keeps the
-  label function without the typewriter costume.
-*/
+/* Eyebrows. Small, uppercase, tracked — and blue rather than grey, which
+   is how the analytics app marks a section label as brand chrome instead
+   of as more body copy. */
 .eyebrow {
   font-family: var(--font-sans);
   font-size: 0.75rem;
   font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--color-fg-3);
+  color: var(--color-model);
 }
 
 .rule {
@@ -159,8 +233,7 @@ h4 {
 /* ── layout shell ─────────────────────────────────────────────────────
    The content column. `main` itself is full-bleed so background graphics
    can reach the viewport edges; each section wraps its own content in a
-   .shell instead. This is what lets the hero glow and grid span the whole
-   screen while the copy stays in a readable measure.
+   .shell instead.
 */
 .shell {
   width: 100%;
@@ -179,96 +252,206 @@ h4 {
   }
 }
 
+/* ── dark surfaces ────────────────────────────────────────────────────
+   The hero, the nav and the closing band sit on navy. Rather than giving
+   every element inside them a second set of utility classes, .on-dark
+   redefines the tokens for its subtree — Tailwind v4 utilities compile to
+   `var(--color-*)`, so a local redefinition cascades and `text-fg-2`
+   keeps meaning "the quieter body colour" on either ground.
+
+   This is the same mechanism the print block at the foot of this file
+   uses, and it is why the whole site could change ground in one place.
+*/
+.on-dark {
+  --color-page: oklch(0.17 0.07 268);
+  --color-surface: oklch(1 0 0 / 0.07);
+  --color-surface-2: oklch(1 0 0 / 0.11);
+  --color-line: oklch(1 0 0 / 0.14);
+  --color-line-bright: oklch(1 0 0 / 0.26);
+
+  --color-fg: oklch(0.99 0 0);
+  --color-fg-2: oklch(1 0 0 / 0.76);
+  --color-fg-3: oklch(1 0 0 / 0.6);
+
+  /* Both hues lighten on navy — the text-safe values tuned for white are
+     too dark here to clear 4.5:1 the other way. */
+  --color-signal: oklch(0.82 0.14 55);
+  --color-signal-dim: oklch(0.62 0.15 50);
+  --color-model: oklch(0.8 0.11 268);
+  --color-model-dim: oklch(0.55 0.14 268);
+
+  color: var(--color-fg);
+}
+
+/* ── brand grounds ────────────────────────────────────────────────────
+   Navy with a blue bloom, an orange bloom, and a violet one at the foot.
+   Used for the hero, the nav and the closing call to action, so every
+   colourful surface on the site is the same surface.
+*/
+.bg-mesh {
+  background-color: oklch(0.17 0.07 268);
+  background-image:
+    radial-gradient(60% 55% at 12% 8%, oklch(0.46 0.2 268 / 0.6), transparent 62%),
+    radial-gradient(42% 42% at 88% 18%, oklch(0.66 0.17 48 / 0.42), transparent 62%),
+    radial-gradient(55% 50% at 55% 100%, oklch(0.52 0.2 300 / 0.35), transparent 62%);
+}
+.bg-mesh-soft {
+  background-color: oklch(0.2 0.07 268);
+  background-image:
+    radial-gradient(70% 50% at 0% 0%, oklch(0.4 0.18 268 / 0.55), transparent 65%),
+    radial-gradient(50% 40% at 100% 100%, oklch(0.66 0.17 48 / 0.22), transparent 62%);
+}
+
+/* Liquid glass, light and dark. Translucent, blurred, a hairline of light
+   along the top edge, and a soft drop below. */
+.glass {
+  background: color-mix(in oklab, white 74%, transparent);
+  backdrop-filter: blur(18px) saturate(1.4);
+  -webkit-backdrop-filter: blur(18px) saturate(1.4);
+  border: 1px solid color-mix(in oklab, white 70%, transparent);
+  box-shadow:
+    0 12px 40px -14px oklch(0.2 0.07 268 / 0.28),
+    inset 0 1px 0 oklch(1 0 0 / 0.7);
+}
+.glass-dark {
+  background: oklch(1 0 0 / 0.08);
+  backdrop-filter: blur(18px) saturate(1.3);
+  -webkit-backdrop-filter: blur(18px) saturate(1.3);
+  border: 1px solid oklch(1 0 0 / 0.16);
+  box-shadow:
+    0 20px 60px -24px oklch(0 0 0 / 0.55),
+    inset 0 1px 0 oklch(1 0 0 / 0.18);
+}
+
+.text-gradient-brand {
+  background: linear-gradient(
+    92deg,
+    oklch(0.8 0.15 55) 0%,
+    oklch(0.72 0.19 45) 55%,
+    oklch(0.78 0.17 35) 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.text-gradient-blue {
+  background: linear-gradient(92deg, oklch(0.44 0.2 268), oklch(0.58 0.22 290));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.glow-brand {
+  box-shadow:
+    0 0 0 1px oklch(0.66 0.17 48 / 0.35),
+    0 14px 44px -12px oklch(0.66 0.17 48 / 0.6);
+}
+.glow-blue {
+  box-shadow:
+    0 0 0 1px oklch(0.47 0.19 268 / 0.3),
+    0 14px 44px -12px oklch(0.47 0.19 268 / 0.55);
+}
+
 /* ── surfaces ─────────────────────────────────────────────────────────
-   One elevation primitive, now genuinely raised rather than merely
-   outlined. Three stacked effects do the work:
-
-     1. a top-lit gradient, so the card's own surface is brighter at its
-        top edge than at its bottom — the cue the eye reads as a physical
-        face catching light
-     2. a bright inset hairline along that top edge
-     3. a real drop shadow with enough spread to separate the card from
-        the field behind it
-
-   Together these are what made the hero mosaic frames read as objects,
-   and this is the same treatment generalised to every card.
+   One elevation primitive. On a dark field the cue that reads as a raised
+   face is a top-lit gradient; on paper it is a soft, wide, navy-tinted
+   drop shadow and nothing else. Gradients on a white card just make it
+   look dirty, so they are gone — the lift is all in the shadow, which is
+   the analytics app's treatment exactly.
 */
 .panel {
-  background:
-    linear-gradient(
-      180deg,
-      color-mix(in srgb, var(--color-surface-2) 82%, var(--color-fg)) 0%,
-      var(--color-surface-2) 14%,
-      var(--color-surface) 100%
-    );
+  background: var(--color-surface);
   border: 1px solid var(--color-line);
   border-radius: var(--radius-panel);
   box-shadow:
-    inset 0 1px 0 rgb(255 255 255 / 0.07),
-    0 1px 1px rgb(0 0 0 / 0.5),
-    0 8px 20px -10px rgb(0 0 0 / 0.65),
-    0 20px 44px -22px rgb(0 0 0 / 0.55);
+    0 1px 2px oklch(0.2 0.07 268 / 0.04),
+    0 14px 36px -18px oklch(0.2 0.07 268 / 0.22);
 }
 
 /*
-  Raised cell: the same lift, for cards that sit inside a hairline grid
-  where a border and radius of their own would fight the grid. Gets the
-  top-lit face and inset highlight, skips the outer shadow (the grid
-  provides the separation), and lifts on hover.
+  Raised cell: for cards sitting inside a hairline grid, where a border and
+  radius of their own would fight the grid. The grid provides the
+  separation, so a cell is a plain white face that warms on hover.
 */
 .cell {
-  background: linear-gradient(
-    180deg,
-    color-mix(in srgb, var(--color-surface-2) 88%, var(--color-fg)) 0%,
-    var(--color-surface-2) 16%,
-    var(--color-surface) 100%
-  );
-  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.055);
+  background: var(--color-surface);
   transition:
     background 0.2s ease,
     box-shadow 0.2s ease;
 }
 .cell:hover {
-  background: linear-gradient(
-    180deg,
-    color-mix(in srgb, var(--color-surface-2) 78%, var(--color-fg)) 0%,
-    var(--color-surface-2) 18%,
-    var(--color-surface-2) 100%
-  );
-  box-shadow:
-    inset 0 1px 0 rgb(255 255 255 / 0.09),
-    inset 0 0 0 1px rgb(255 255 255 / 0.02);
+  background: color-mix(in srgb, var(--color-model) 3%, var(--color-surface));
 }
 
-/* A recessed well: inputs, code, anything the visitor types into. */
+/* A recessed well: inputs, code, anything the visitor types into. On paper
+   a well is a tint, not a hole. */
 .well {
-  background: var(--color-ink);
+  background: var(--color-surface-2);
   border: 1px solid var(--color-line);
   border-radius: var(--radius-chip);
 }
 
 /*
-  Hairline dividers used to build seamless grids out of cells. The grid
-  itself now carries the outer shadow so a block of cells reads as one
-  raised slab rather than as a flat table.
+  Hairline dividers used to build seamless grids out of cells: 1px of gap
+  over a --line ground reads as a ruled table with no double borders. The
+  grid carries the outer shadow so a block of cells reads as one raised
+  slab.
 */
 .grid-lines {
-  background: var(--color-line);
+  background: var(--color-surface);
   border: 1px solid var(--color-line);
   border-radius: var(--radius-panel);
   overflow: hidden;
   gap: 1px;
   box-shadow:
-    0 1px 1px rgb(0 0 0 / 0.5),
-    0 8px 20px -10px rgb(0 0 0 / 0.6),
-    0 20px 44px -22px rgb(0 0 0 / 0.5);
+    0 1px 2px oklch(0.2 0.07 268 / 0.04),
+    0 14px 36px -18px oklch(0.2 0.07 268 / 0.22);
+}
+
+/*
+  The hairlines are drawn by the cells rather than by the container.
+
+  The container used to be --line and the 1px gaps simply let it show
+  through, which is one rule and works — until a row is short. A five-card
+  grid in a two-column track leaves one empty cell, and on the dark build
+  that gap was a near-black rectangle nobody noticed. On paper it is a
+  grey block sitting in a row of white cards, and it reads as a broken
+  tile rather than as an empty slot.
+
+  A 1px spread shadow on each cell paints into the gap from both sides, so
+  the ruled grid is identical where cells exist and an empty track stays
+  the same white as everything around it. `overflow: hidden` clips the
+  outermost ring against the container's own border, so no edge doubles.
+*/
+.grid-lines > * {
+  box-shadow: 0 0 0 1px var(--color-line);
+}
+
+/* Inside a dark band the same grid inverts: the hairline is white at low
+   alpha and the outer shadow buys nothing against navy. */
+.on-dark .grid-lines {
+  background: transparent;
+  box-shadow: none;
+}
+.on-dark .grid-lines > * {
+  box-shadow: 0 0 0 1px var(--color-line);
+}
+.on-dark .cell {
+  background: oklch(1 0 0 / 0.05);
+}
+.on-dark .cell:hover {
+  background: oklch(1 0 0 / 0.09);
+}
+.on-dark .panel {
+  background: oklch(1 0 0 / 0.06);
+  box-shadow: 0 20px 60px -24px oklch(0 0 0 / 0.5);
 }
 
 /* ── the live-model stages ────────────────────────────────────────────
    The three widgets are the product. Each sits in a framed panel over a
-   sparse indigo/amber glow: cool light from the model side, a warmer
-   trace from the verified side. Gradients only — no blur filter, so this
-   costs nothing to paint.
+   sparse blue/orange wash: cool light from the model side, a warmer trace
+   from the verified side. Gradients only — no blur filter, so this costs
+   nothing to paint.
 */
 .stage {
   position: relative;
@@ -281,12 +464,12 @@ h4 {
   background:
     radial-gradient(
       42% 56% at 16% 4%,
-      color-mix(in srgb, var(--color-glow) 26%, transparent),
+      color-mix(in srgb, var(--color-glow) 12%, transparent),
       transparent 68%
     ),
     radial-gradient(
       38% 50% at 88% 16%,
-      color-mix(in srgb, var(--color-signal) 8%, transparent),
+      color-mix(in srgb, var(--color-signal-fill) 10%, transparent),
       transparent 70%
     );
 }
@@ -294,9 +477,8 @@ h4 {
   position: relative;
 }
 
-/* Gradient hairline frame. The widgets draw their own square 1px border;
-   clipping it to this radius is what rounds them without touching their
-   files. */
+/* The widgets draw their own square 1px border; clipping to this radius is
+   what rounds them without touching their files. */
 .stage-frame {
   padding: 1px;
   border-radius: var(--radius-panel);
@@ -307,8 +489,8 @@ h4 {
     var(--color-line) 45%
   );
   box-shadow:
-    0 24px 48px -28px rgb(0 0 0 / 0.85),
-    inset 0 1px 0 rgb(255 255 255 / 0.05);
+    0 2px 4px oklch(0.2 0.07 268 / 0.05),
+    0 26px 60px -28px oklch(0.2 0.07 268 / 0.3);
 }
 .stage-frame > * {
   border-radius: calc(var(--radius-panel) - 1px);
@@ -316,26 +498,30 @@ h4 {
 }
 
 /* ── sticky nav ───────────────────────────────────────────────────────
-   The only glass on the site, and only once scrolled.
+   Dark glass over everything, at every scroll position. The nav keeps the
+   navy of the hero as the page scrolls onto the light sections, so the
+   brand colour never leaves the screen — the analytics app's header,
+   which is also the reason the wordmark can stay white throughout.
 */
 .nav-shell {
-  border-bottom: 1px solid transparent;
+  background: oklch(0.17 0.07 268 / 0.82);
+  border-bottom: 1px solid oklch(1 0 0 / 0.1);
+  backdrop-filter: blur(18px) saturate(150%);
+  -webkit-backdrop-filter: blur(18px) saturate(150%);
   transition: background-color 0.25s ease, border-color 0.25s ease;
 }
+/* Once scrolled it firms up, so the light content passing underneath
+   never shows through enough to hurt the wordmark. */
 .nav-shell[data-scrolled="true"] {
-  /* Opaque enough to stay readable even where backdrop-filter is
-     unavailable (some GPUs/headless browsers render no blur). */
-  background: color-mix(in srgb, var(--color-ink) 92%, transparent);
-  border-bottom-color: var(--color-line);
-  backdrop-filter: blur(14px) saturate(150%);
-  -webkit-backdrop-filter: blur(14px) saturate(150%);
+  background: oklch(0.17 0.07 268 / 0.94);
+  border-bottom-color: oklch(1 0 0 / 0.14);
 }
 
 /*
-  The one orchestrated motion moment: the hero settles into place once,
-  on load. Everything else is a gentle opacity fade tied to scroll
-  position. The reduced-motion guard at the bottom of this file zeroes
-  these durations automatically.
+  The one orchestrated motion moment: the hero settles into place once, on
+  load. Everything else is a gentle opacity fade tied to scroll position.
+  The reduced-motion guard at the bottom of this file zeroes these
+  durations automatically.
 */
 @keyframes rise {
   from {
@@ -372,78 +558,46 @@ h4 {
   }
 }
 
-/* Faint plotting grid behind the hero. An instrument, not a brochure. */
+/* ── hero ─────────────────────────────────────────────────────────────
+   A faint plotting grid over the mesh. The surface reads as a plotting
+   space, which is what the work is. White at low alpha now rather than a
+   --line hairline, because the ground underneath it is navy.
+*/
 .hero-grid {
   background-image:
-    linear-gradient(
-      color-mix(in srgb, var(--color-line) 78%, transparent) 1px,
-      transparent 1px
-    ),
-    linear-gradient(
-      90deg,
-      color-mix(in srgb, var(--color-line) 78%, transparent) 1px,
-      transparent 1px
-    );
+    linear-gradient(oklch(1 0 0 / 0.6) 1px, transparent 1px),
+    linear-gradient(90deg, oklch(1 0 0 / 0.6) 1px, transparent 1px);
   background-size: 40px 40px;
-  opacity: 0.5;
-  /*
-    Fade well inside the element so no hard grid edge is ever visible. A
-    narrow hero is tall and thin, so the wash is anchored high and dies out
-    fast — otherwise its dense centre lands right behind the headline.
-  */
-  mask-image: radial-gradient(ellipse 80% 40% at 46% 14%, black, transparent 72%);
-  -webkit-mask-image: radial-gradient(ellipse 80% 40% at 46% 14%, black, transparent 72%);
+  opacity: 0.07;
 }
 
 @media (min-width: 768px) {
   .hero-grid {
     background-size: 56px 56px;
-    opacity: 0.75;
-    mask-image: radial-gradient(ellipse 72% 58% at 40% 22%, black, transparent 74%);
-    -webkit-mask-image: radial-gradient(
-      ellipse 72% 58% at 40% 22%,
-      black,
-      transparent 74%
-    );
   }
-}
-
-/* Single ambient wash behind the hero, indigo, low and off-centre. */
-.hero-glow {
-  background:
-    radial-gradient(
-      50% 45% at 12% 8%,
-      color-mix(in srgb, var(--color-glow) 22%, transparent),
-      transparent 70%
-    ),
-    radial-gradient(
-      44% 40% at 78% 0%,
-      color-mix(in srgb, var(--color-model) 10%, transparent),
-      transparent 72%
-    );
 }
 
 /* ── per-project accent ───────────────────────────────────────────────
    A card for a project with a live, inspectable UI carries a trace of that
-   app's own colour. Three cheap touches, in order of subtlety: a bright top
-   edge, a soft corner wash, and a slightly lifted border. Enough to make
-   the card feel like it belongs to a product rather than a list.
+   app's own colour: a bright top edge, a soft corner wash, and a slightly
+   lifted border. Enough to make the card feel like it belongs to a product
+   rather than a list.
 
-   `--accent` is the text-safe tint. `--accent-raw` is the app's real colour
-   and is used only where nothing needs to be legible on top of it.
+   `--accent` is the text-safe tint. `--accent-raw` is the app's real
+   colour and is used only where nothing needs to be legible on top of it.
+   Both washes are weaker here than they were on the dark build — the same
+   alpha that read as a trace on near-black reads as a stain on white.
 */
 .card-accent {
-  border-color: color-mix(in srgb, var(--accent) 22%, var(--color-line));
+  border-color: color-mix(in srgb, var(--accent) 26%, var(--color-line));
 }
 
-/* The top edge. Brightest at the left, fading out — reads as light coming
-   off the product rather than as a rule. */
 .card-accent::before {
   content: "";
   position: absolute;
   inset-inline: 0;
   top: 0;
-  height: 1px;
+  height: 2px;
   pointer-events: none;
   background: linear-gradient(
     90deg,
@@ -453,8 +607,6 @@ h4 {
   );
 }
 
-/* A single soft wash in the top-left corner, at low strength so body copy
-   over it keeps its contrast. */
 .card-accent::after {
   content: "";
   position: absolute;
@@ -462,7 +614,7 @@ h4 {
   pointer-events: none;
   background: radial-gradient(
     38% 44% at 0% 0%,
-    color-mix(in srgb, var(--accent-raw) 15%, transparent),
+    color-mix(in srgb, var(--accent-raw) 7%, transparent),
     transparent 68%
   );
 }
@@ -479,15 +631,13 @@ h4 {
 
 /* ── hero mosaic ──────────────────────────────────────────────────────
    Shipped-product screenshots in minimal browser chrome, tilted and
-   layered. Mobile first: a single clean horizontal band, flat and sharp,
-   sitting below the hero copy and never behind it. The tilt, the overlap,
-   and the depth treatments are all additive from 768px up.
+   layered. Mobile first: a single clean horizontal band, flat and sharp.
+   The tilt, the overlap, and the depth treatments are all additive from
+   768px up.
 */
 .mosaic {
   display: flex;
   gap: 1rem;
-  /* Bleed the band to the viewport edge so it reads as a band, not a row
-     of cards inside a container. */
   margin-inline: calc(50% - 50vw);
   padding-inline: 1.25rem;
   overflow-x: auto;
@@ -503,21 +653,23 @@ h4 {
   flex: 0 0 78vw;
   scroll-snap-align: center;
   margin: 0;
-  border-radius: 10px;
+  border-radius: var(--radius-card);
   border: 1px solid var(--color-line);
-  background: var(--color-surface-2);
+  background: var(--color-surface);
   overflow: hidden;
-  box-shadow: 0 18px 40px -24px rgb(0 0 0 / 0.8);
+  box-shadow:
+    0 2px 4px oklch(0.2 0.07 268 / 0.05),
+    0 22px 50px -26px oklch(0.2 0.07 268 / 0.35);
 }
 
-/* Minimal browser chrome: a dark bar and three dots. */
+/* Minimal browser chrome: a tinted bar and three dots. */
 .mosaic-chrome {
   display: flex;
   align-items: center;
   gap: 6px;
   height: 26px;
   padding-inline: 10px;
-  background: var(--color-ink);
+  background: var(--color-surface-2);
   border-bottom: 1px solid var(--color-line);
 }
 .mosaic-dot {
@@ -526,8 +678,7 @@ h4 {
   border-radius: 50%;
   background: var(--color-line-bright);
 }
-/* The frame's own app colour, used once, on the leftmost dot only. Enough
-   to tie the frame to the product without recolouring the whole card. */
+/* The frame's own app colour, used once, on the leftmost dot only. */
 .mosaic-dot:first-child {
   background: var(--accent);
 }
@@ -539,26 +690,23 @@ h4 {
   overflow: hidden;
 }
 
-/* Ambient wash behind the band, matching the hero's indigo. */
+/* Ambient wash behind the band. */
 .mosaic-wash {
   background: radial-gradient(
     58% 60% at 50% 30%,
-    color-mix(in srgb, var(--color-glow) 16%, transparent),
+    color-mix(in srgb, var(--color-glow) 8%, transparent),
     transparent 72%
   );
 }
 
 @media (min-width: 768px) {
   .mosaic {
-    /* Layered stack: negative gap pulls frames into overlap, and the tilt
-       plus depth ladder does the rest. */
     gap: 0;
     overflow: visible;
     padding-inline: 0;
     margin-inline: 0;
     justify-content: center;
     align-items: center;
-    /* Keep the perspective shallow — this is a tilt, not a 3D carousel. */
     perspective: 1400px;
   }
 
@@ -566,7 +714,10 @@ h4 {
     flex: 0 1 460px;
     min-width: 0;
     transform: rotate(var(--tilt)) scale(var(--depth-scale, 1));
-    transition: transform 0.45s cubic-bezier(0.2, 0.7, 0.3, 1);
+    transition:
+      transform 0.45s cubic-bezier(0.2, 0.7, 0.3, 1),
+      opacity 0.45s ease,
+      filter 0.45s ease;
   }
   .mosaic-frame:not(:first-child) {
     margin-left: -5.5%;
@@ -575,59 +726,45 @@ h4 {
   /*
     Five 460px frames cannot fit between 768px and 1279px — flex-shrink
     crushes them to ~190px, at which point a dashboard screenshot is an
-    unreadable smudge. So the two furthest-back frames are dropped from
-    the stack until there is room, holding every visible frame at a
-    legible ~320px. They return at xl.
+    unreadable smudge. So the two furthest-back frames are dropped from the
+    stack until there is room. They return at xl.
 
     display:none rather than visibility/opacity: a hidden frame must also
     give up its flex basis, or the remaining three shrink anyway.
   */
-  .mosaic-frame[data-depth='2'] {
+  .mosaic-frame[data-depth="2"] {
     display: none;
   }
 
   /*
-    The depth ladder. Nearer frames are sharper, brighter, larger, and sit
-    above their neighbours; farther frames recede on every axis at once,
-    which is what makes the stack read as depth rather than as overlap.
+    The depth ladder. On the dark build this was a brightness ramp, which
+    inverted whenever a predominantly white screenshot sat beside a dark
+    one — the receded frame read as the brighter object. On paper the ramp
+    is opacity, blur and scale instead: all three recede in the same
+    direction regardless of what the screenshot itself looks like, so the
+    data-tone escape hatch the old ladder needed is gone.
   */
   .mosaic-frame[data-depth="0"] {
     --depth-scale: 1;
     z-index: 3;
+    opacity: 1;
     filter: none;
     box-shadow:
-      0 34px 70px -30px rgb(0 0 0 / 0.9),
-      0 0 0 1px color-mix(in srgb, var(--accent) 26%, transparent),
-      0 0 46px -18px color-mix(in srgb, var(--accent) 34%, transparent);
+      0 4px 8px oklch(0.2 0.07 268 / 0.06),
+      0 34px 70px -30px oklch(0.2 0.07 268 / 0.45),
+      0 0 0 1px color-mix(in srgb, var(--accent) 30%, transparent);
   }
   .mosaic-frame[data-depth="1"] {
     --depth-scale: 0.94;
     z-index: 2;
-    filter: blur(0.7px) brightness(0.82) saturate(0.9);
+    opacity: 0.72;
+    filter: blur(0.7px) saturate(0.85);
   }
   .mosaic-frame[data-depth="2"] {
     --depth-scale: 0.88;
     z-index: 1;
-    filter: blur(1.6px) brightness(0.66) saturate(0.82);
-  }
-
-  /*
-    The ladder above was calibrated against dark dashboard screenshots.
-    A predominantly WHITE capture (a light marketing page, a Postgres schema
-    canvas) at brightness(0.82) still reads brighter than the dark depth-0
-    frame beside it, which inverts the hierarchy — the eye goes to the
-    receded frame instead of the centre one.
-
-    So light shots get extra damping via an opt-in attribute rather than a
-    change to the shared ladder, which would over-darken every dark frame.
-    Values chosen so a white frame's perceived weight lands just under its
-    dark neighbour at the same depth.
-  */
-  .mosaic-frame[data-tone='light'][data-depth='1']:not(:hover) {
-    filter: blur(0.7px) brightness(0.62) saturate(0.9) contrast(0.95);
-  }
-  .mosaic-frame[data-tone='light'][data-depth='2']:not(:hover) {
-    filter: blur(1.6px) brightness(0.45) saturate(0.82) contrast(0.92);
+    opacity: 0.5;
+    filter: blur(1.6px) saturate(0.75);
   }
 
   /* Hovering a receded frame brings it forward and clears it — the depth
@@ -635,6 +772,7 @@ h4 {
   .mosaic-frame:hover {
     --depth-scale: 1.01;
     z-index: 4;
+    opacity: 1;
     filter: none;
   }
 
@@ -643,18 +781,17 @@ h4 {
   }
 }
 
-/* Room for the full five-frame stack. Restores the two furthest-back
-   frames hidden in the md range above. */
+/* Room for the full five-frame stack. */
 @media (min-width: 1280px) {
-  .mosaic-frame[data-depth='2'] {
+  .mosaic-frame[data-depth="2"] {
     display: block;
   }
 }
 
 /*
-  The only motion: a very slow vertical float, staggered per frame so the
-  band breathes rather than pulsing in unison. No parallax, no scroll
-  coupling. Fully off under reduced motion via the guard below.
+  The only ambient motion: a very slow vertical float, staggered per frame
+  so the band breathes rather than pulsing in unison. No parallax, no
+  scroll coupling. Fully off under reduced motion via the guard below.
 */
 @keyframes mosaic-float {
   from {
@@ -678,6 +815,11 @@ h4 {
   }
 }
 
+/* ── range inputs ─────────────────────────────────────────────────────
+   The widgets' only control. Blue thumb on a light track: the visitor is
+   moving an input into a model, and blue is what the model side of the
+   palette means.
+*/
 input[type="range"] {
   -webkit-appearance: none;
   appearance: none;
@@ -688,33 +830,37 @@ input[type="range"]:active {
   cursor: grabbing;
 }
 input[type="range"]::-webkit-slider-runnable-track {
-  height: 2px;
+  height: 4px;
   background: var(--color-line-bright);
-  border-radius: 2px;
+  border-radius: 999px;
 }
 input[type="range"]::-moz-range-track {
-  height: 2px;
+  height: 4px;
   background: var(--color-line-bright);
-  border-radius: 2px;
+  border-radius: 999px;
 }
 input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
-  width: 20px;
-  height: 20px;
-  margin-top: -9px;
+  width: 18px;
+  height: 18px;
+  margin-top: -7px;
   border-radius: 50%;
-  background: var(--color-signal);
-  border: 3px solid var(--color-ink);
-  box-shadow: 0 0 0 1px var(--color-signal);
+  background: var(--color-model);
+  border: 3px solid var(--color-surface);
+  box-shadow:
+    0 0 0 1px var(--color-model),
+    0 2px 6px -1px oklch(0.2 0.07 268 / 0.3);
 }
 input[type="range"]::-moz-range-thumb {
   width: 14px;
   height: 14px;
   border-radius: 50%;
-  background: var(--color-signal);
-  border: 3px solid var(--color-ink);
-  box-shadow: 0 0 0 1px var(--color-signal);
+  background: var(--color-model);
+  border: 3px solid var(--color-surface);
+  box-shadow:
+    0 0 0 1px var(--color-model),
+    0 2px 6px -1px oklch(0.2 0.07 268 / 0.3);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -729,43 +875,37 @@ input[type="range"]::-moz-range-thumb {
 /* ── page rhythm ──────────────────────────────────────────────────────
    A long single-column page on one flat ground reads as a document. The
    band gives the page chapters: a full-bleed ground change with hairlines
-   top and bottom, so scrolling feels like moving between rooms rather
-   than through one corridor. Full-bleed via the margin trick because the
-   shell lives inside, not outside.
+   top and bottom, so scrolling feels like moving between rooms rather than
+   through one corridor.
+
+   On paper the alternation inverts from the dark build. The page ground is
+   the tinted one and a band is plain white — a lit room rather than a dim
+   one — which is also what makes the card shadows inside a band read,
+   since a shadow on a tinted ground is half-invisible.
 */
 .band {
   position: relative;
-  background:
-    linear-gradient(
-      180deg,
-      color-mix(in srgb, var(--color-surface) 55%, var(--color-ink)) 0%,
-      var(--color-ink) 100%
-    );
+  background: var(--color-surface);
   border-block: 1px solid var(--color-line);
-}
-
-/* A single soft indigo wash pinned to the top of a band, so the ground
-   change is felt before it is noticed. */
-.band::before {
-  content: "";
-  position: absolute;
-  inset: 0 0 auto;
-  height: 340px;
-  pointer-events: none;
-  background: radial-gradient(
-    60% 100% at 50% 0%,
-    color-mix(in srgb, var(--color-glow) 13%, transparent),
-    transparent 72%
-  );
 }
 .band > * {
   position: relative;
 }
 
+/* The dark chapter. One per page at most: the closing call to action, on
+   the same mesh as the hero, so the page opens and shuts on brand colour
+   and everything between them is the work. */
+.band-dark {
+  position: relative;
+  border-block: 1px solid oklch(1 0 0 / 0.1);
+}
+.band-dark > * {
+  position: relative;
+}
+
 /* ── raised, clickable cards ──────────────────────────────────────────
-   The feature cards are the most link-like objects on the page and were
-   reading as static panels. A real lift plus a warming border on hover is
-   the cue that says "this opens".
+   The feature cards are the most link-like objects on the page. A real
+   lift plus a blue border on hover is the cue that says "this opens".
 */
 .card-lift {
   transition:
@@ -776,20 +916,18 @@ input[type="range"]::-moz-range-thumb {
 @media (hover: hover) and (prefers-reduced-motion: no-preference) {
   .card-lift:hover {
     transform: translateY(-3px);
-    border-color: color-mix(in srgb, var(--color-signal) 32%, var(--color-line));
+    border-color: color-mix(in srgb, var(--color-model) 40%, var(--color-line));
     box-shadow:
-      inset 0 1px 0 rgb(255 255 255 / 0.09),
-      0 2px 2px rgb(0 0 0 / 0.5),
-      0 18px 34px -16px rgb(0 0 0 / 0.7),
-      0 34px 64px -30px rgb(0 0 0 / 0.6);
+      0 4px 8px oklch(0.2 0.07 268 / 0.06),
+      0 24px 48px -20px oklch(0.2 0.07 268 / 0.34);
   }
 }
 
 /* ── scroll progress ──────────────────────────────────────────────────
-   A hairline of amber across the bottom of the nav, driven by a scroll
+   A hairline of orange across the bottom of the nav, driven by a scroll
    timeline. Pure CSS — no listener, no JS, and browsers without support
-   simply never draw it. Amber is legitimate here: it measures something
-   real, which is the entire palette rule.
+   simply never draw it. Warm is legitimate here under the palette rule: it
+   measures something real.
 */
 @keyframes progress-grow {
   from {
@@ -812,17 +950,14 @@ input[type="range"]::-moz-range-thumb {
 
 /* ── hero profile card ────────────────────────────────────────────────
    The identity block, when no portrait is set. Not a placeholder for a
-   missing image — a designed object: the nav's own bar mark at scale,
-   over the same indigo wash the hero uses.
+   missing image — a designed object: the nav's own bar mark at scale, over
+   the same mesh the hero uses.
 */
 .identity-mark {
-  background:
-    radial-gradient(
-      70% 70% at 30% 12%,
-      color-mix(in srgb, var(--color-glow) 34%, transparent),
-      transparent 72%
-    ),
-    linear-gradient(180deg, var(--color-surface-2), var(--color-surface));
+  background-color: oklch(0.2 0.07 268);
+  background-image:
+    radial-gradient(70% 70% at 30% 12%, oklch(0.46 0.2 268 / 0.75), transparent 72%),
+    radial-gradient(50% 50% at 90% 90%, oklch(0.66 0.17 48 / 0.35), transparent 70%);
 }
 
 /* ── entrance stagger ─────────────────────────────────────────────────
@@ -878,18 +1013,19 @@ input[type="range"]::-moz-range-thumb {
 
 /* ── print ────────────────────────────────────────────────────────────
    /about is the résumé, so ⌘P has to produce a document rather than a
-   screenshot of a dark website. No PDF is checked into the repo on
-   purpose — one would start disagreeing with the page the first time
-   either was edited — so this stylesheet is the deliverable.
+   screenshot of a website. No PDF is checked into the repo on purpose —
+   one would start disagreeing with the page the first time either was
+   edited — so this stylesheet is the deliverable.
 
-   Everything on the site draws its colour through the tokens declared in
-   @theme, which means re-declaring those tokens here converts the whole
-   page to ink-on-paper in one place. This block must stay last in the
-   file: it wins on source order, not on specificity.
+   Far less work than it was on the dark build: the screen palette is
+   already ink on paper. What is left is flattening the chrome, dropping
+   the shadows, and pulling the two brand hues to values that survive a
+   greyscale laser printer. This block must stay last in the file: it wins
+   on source order, not on specificity.
 */
 @media print {
   :root {
-    --color-ink: #ffffff;
+    --color-page: #ffffff;
     --color-surface: #ffffff;
     --color-surface-2: #ffffff;
     --color-line: #d7d9e0;
@@ -899,11 +1035,13 @@ input[type="range"]::-moz-range-thumb {
     --color-fg-2: #23262e;
     --color-fg-3: #55596a;
 
-    /* Amber is unreadable on paper; the epistemic split survives as a warm
-       brown against a cool indigo, which still prints legibly in greyscale. */
+    /* The epistemic split survives as a warm brown against a cool indigo,
+       which stays legible in greyscale. */
     --color-signal: #7a4a06;
+    --color-signal-fill: #b8792a;
     --color-signal-dim: #c9963f;
     --color-model: #2f3a8f;
+    --color-model-fill: #3f4ba8;
     --color-model-dim: #9aa3d8;
     --color-risk: #a11d22;
     --color-glow: transparent;
@@ -916,19 +1054,57 @@ input[type="range"]::-moz-range-thumb {
 
   /* Chrome, ambience, and anything interactive: all off. */
   .nav-shell,
-  .hero-glow,
   .hero-grid,
   .stage::before,
   .mosaic-wash {
     display: none !important;
   }
 
-  /* Raised surfaces flatten to plain rules — gradients and drop shadows
-     cost toner and buy nothing on paper. */
+  /* The dark grounds print as paper — a full-bleed navy band is most of a
+     toner cartridge and buys nothing on a résumé. .on-dark's token
+     overrides have to be unwound too, or its white type prints invisible. */
+  .bg-mesh,
+  .bg-mesh-soft,
+  .band-dark,
+  .identity-mark,
+  .glass,
+  .glass-dark {
+    background: #ffffff !important;
+    background-image: none !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    border-color: var(--color-line) !important;
+  }
+  .on-dark {
+    --color-page: #ffffff;
+    --color-surface: #ffffff;
+    --color-surface-2: #ffffff;
+    --color-line: #d7d9e0;
+    --color-line-bright: #a8adbb;
+    --color-fg: #000000;
+    --color-fg-2: #23262e;
+    --color-fg-3: #55596a;
+    --color-signal: #7a4a06;
+    --color-signal-dim: #c9963f;
+    --color-model: #2f3a8f;
+    --color-model-dim: #9aa3d8;
+    color: #000000;
+  }
+  .text-gradient-brand,
+  .text-gradient-blue {
+    background: none !important;
+    -webkit-background-clip: border-box !important;
+    background-clip: border-box !important;
+    color: #000000 !important;
+  }
+
+  /* Raised surfaces flatten to plain rules — shadows cost toner and buy
+     nothing on paper. */
   .panel,
   .cell,
   .grid-lines,
-  .stage-frame {
+  .stage-frame,
+  .mosaic-frame {
     background: #ffffff !important;
     box-shadow: none !important;
   }
