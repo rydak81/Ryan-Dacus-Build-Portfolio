@@ -26,3 +26,7 @@ next-env.d.ts
 
 # vercel
 .vercel
+
+# Python bytecode from running the scripts/ helpers locally.
+__pycache__/
+*.py[cod]

@@ -70,14 +70,20 @@ def crop_to_aspect(im: Image.Image, focus: float, zoom: float) -> Image.Image:
     docstring.
     """
     w, h = im.size
-    crop_w = min(w, int(w / max(zoom, 1.0)))
-    crop_h = int(crop_w * TARGET_H / TARGET_W)
 
-    # If the source is too short for a 4:5 crop at full width, drive the
-    # crop from the height instead so nothing is invented.
-    if crop_h > h:
-        crop_h = h
-        crop_w = int(crop_h * TARGET_W / TARGET_H)
+    # Fit FIRST, then zoom. Deriving the window from the width and clamping
+    # afterwards discarded --zoom entirely on any source wider than 4:5: the
+    # clamp reset both dimensions to the height-driven crop, so a 1600x900
+    # source produced an identical 720x900 window at --zoom 1 and --zoom 2.
+    # Taking the largest 4:5 window that fits and dividing that by the zoom
+    # keeps the control meaningful at every aspect, and cannot exceed the
+    # source in either axis, so no clamp is needed at all.
+    fit_w = min(w, int(h * TARGET_W / TARGET_H))
+    fit_h = int(fit_w * TARGET_H / TARGET_W)
+
+    z = max(zoom, 1.0)
+    crop_w = max(1, int(fit_w / z))
+    crop_h = max(1, min(h, int(crop_w * TARGET_H / TARGET_W)))
 
     left = (w - crop_w) // 2
     top = int(h * focus - crop_h / 2)
