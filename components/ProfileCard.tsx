@@ -17,7 +17,7 @@ export default function ProfileCard() {
         className="pointer-events-none absolute inset-x-0 top-0 h-px"
         style={{
           background:
-            'linear-gradient(90deg, transparent, var(--color-signal), transparent)',
+            'linear-gradient(90deg, transparent, var(--color-signal-fill), transparent)',
         }}
       />
 
@@ -30,7 +30,7 @@ export default function ProfileCard() {
           {profile.name}
         </p>
         <p className="mt-1 text-sm leading-snug text-fg-3">
-          Business development · Partnerships · Sales leadership
+          Revenue systems · Analytics · Business development
         </p>
         <p className="mt-3 flex items-center gap-1.5 text-sm text-fg-2">
           <PinIcon />

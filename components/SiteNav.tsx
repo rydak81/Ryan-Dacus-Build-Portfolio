@@ -4,22 +4,30 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 
 /**
- * Slim sticky chrome. Transparent over the hero, glass once scrolled — the
- * only backdrop-filter on the site. Anchors are absolute (`/#method`) so the
- * same nav works from a case-study page.
+ * Dark glass over everything, at every scroll position.
+ *
+ * The nav keeps the navy of the hero as the page scrolls onto the light
+ * sections below it, so the brand colour never leaves the screen and the
+ * wordmark never has to change colour halfway down the page. That is the
+ * analytics app's header, and carrying it over is most of what makes the
+ * two properties read as one product family.
+ *
+ * The `scrolled` state no longer switches the treatment on and off — it
+ * only firms the glass up, so light content passing underneath never
+ * shows through enough to hurt the wordmark.
  */
 
 /*
-   Ordered the way the page argues: the sales motion, then the record, then
-   the work, then the full profile. "Method" and "Stack" came out — they are
-   build-side sections, still reachable by scrolling, and giving them nav
-   real estate made the site read as an engineer's portfolio in the first
-   two seconds. About is a real route, not an anchor.
+   Ordered the way the page argues: the operating loop first, then the
+   work it produced, then the record behind it, then the full profile.
+   "The loop" replaced "How I sell" when the page spine changed — the
+   sales motion is now one chapter of the career rather than the frame
+   the whole site hangs on.
 */
 const LINKS: [string, string][] = [
-  ['How I sell', '/#motion'],
-  ['Career', '/#career'],
+  ['The loop', '/#loop'],
   ['Work', '/#work'],
+  ['Career', '/#career'],
   ['About', '/about'],
 ];
 
@@ -35,21 +43,24 @@ export default function SiteNav({ email }: { email: string }) {
 
   return (
     <div
-      className="nav-shell sticky top-0 z-50"
+      className="nav-shell on-dark sticky top-0 z-50"
       data-scrolled={scrolled ? 'true' : 'false'}
     >
       <nav
         aria-label="Primary"
-        className="shell flex h-16 items-center justify-between gap-4"
+        className="shell flex h-[72px] items-center justify-between gap-4"
       >
         <Link
           href="/"
-          className="flex items-center gap-2.5 text-[0.9375rem] font-bold tracking-[-0.02em] text-fg"
+          className="flex items-center gap-2.5 text-base font-extrabold tracking-[-0.02em] text-white"
         >
-          <span aria-hidden className="flex items-end gap-[2px]">
-            <span className="block h-1.5 w-[3px] rounded-[1px] bg-model-dim" />
-            <span className="block h-2.5 w-[3px] rounded-[1px] bg-model" />
-            <span className="block h-4 w-[3px] rounded-[1px] bg-signal" />
+          {/* Three bars climbing: the recessive one, the model one, the
+              verified one. The same mark the identity card renders at
+              scale, and the site's palette rule in three objects. */}
+          <span aria-hidden className="flex items-end gap-[2.5px]">
+            <span className="block h-2 w-[3.5px] rounded-[1px] bg-white/35" />
+            <span className="block h-3 w-[3.5px] rounded-[1px] bg-[oklch(0.72_0.14_268)]" />
+            <span className="block h-[18px] w-[3.5px] rounded-[1px] bg-[oklch(0.72_0.17_50)]" />
           </span>
           Ryan Dacus
         </Link>
@@ -57,15 +68,15 @@ export default function SiteNav({ email }: { email: string }) {
         <div className="flex items-center gap-1 sm:gap-2">
           {/*
             The anchors collapse on a phone, but About must not — it is a
-            separate route, and without it the only way to reach the résumé
-            on mobile was to scroll the entire home page to the footer.
+            separate route, and without it the only way to reach the
+            résumé on mobile was to scroll the entire home page.
           */}
           <ul className="flex items-center gap-1">
             {LINKS.map(([label, href]) => (
               <li key={label} className={href === '/about' ? '' : 'hidden sm:block'}>
                 <Link
                   href={href}
-                  className="rounded-chip px-3 py-1.5 text-sm font-semibold text-fg-2 transition-colors hover:bg-surface-2 hover:text-fg"
+                  className="rounded-chip px-3 py-1.5 text-sm font-medium text-white/70 transition-colors hover:bg-white/10 hover:text-white"
                 >
                   {label}
                 </Link>
@@ -74,7 +85,7 @@ export default function SiteNav({ email }: { email: string }) {
           </ul>
           <a
             href={`mailto:${email}`}
-            className="cell rounded-chip border border-line-bright px-3.5 py-1.5 text-sm font-semibold text-fg transition-colors hover:border-signal hover:text-signal"
+            className="glow-brand ml-1 rounded-chip bg-signal-cta px-4 py-2 text-sm font-semibold text-white transition-opacity hover:opacity-90"
           >
             Get in touch
           </a>
@@ -84,12 +95,12 @@ export default function SiteNav({ email }: { email: string }) {
       {/*
         Read-position hairline. Driven by a scroll timeline in globals.css —
         no listener, no state, and browsers without support just never draw
-        it. Amber is legitimate here under the palette rule: it is measuring
+        it. Warm is legitimate here under the palette rule: it is measuring
         something real.
       */}
       <div
         aria-hidden
-        className="scroll-progress absolute inset-x-0 bottom-0 h-px bg-signal"
+        className="scroll-progress absolute inset-x-0 bottom-0 h-px bg-[oklch(0.72_0.17_50)]"
       />
     </div>
   );

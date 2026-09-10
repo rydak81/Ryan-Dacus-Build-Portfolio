@@ -63,13 +63,18 @@ export interface Profile {
 export const profile: Profile = {
   name: 'Ryan Dacus',
   /*
-    Commercially led, deliberately. The building is the differentiator, not
-    the identity — the roles being targeted are Director/Manager of Business
-    Development, Sales, Partnerships, and Alliances, and a headline that
-    reads as an engineer's disqualifies him from the shortlist he wants.
+    Led by the discipline rather than the job title, which is the inverse
+    of how this read before. The old headline opened on "twenty years in
+    B2B revenue" and filed the building at the end as an aside — accurate
+    about the roles held, wrong about what the work has actually been for
+    the last three years, and a headline that screens out every
+    performance-analysis, revenue-operations, and analytics req on the
+    board. The commercial record is not dropped; it moves to where it does
+    the most work, as the reason the models are built around the
+    operator's economics instead of a textbook's.
   */
   headline:
-    'Twenty years in B2B revenue — founding sales hire, millions in ACV closed with 80%+ of it self-sourced, teams hired and led to quota. I also build the systems the number depends on.',
+    'I build the systems that find revenue — ingestion pipelines, performance analytics, forecast engines, and the tooling that acts on what they surface. Twenty years carrying the number is why they are built around the operator’s P&L.',
   location: 'Greenville, SC',
   email: 'ryandacus@gmail.com',
   phone: '(864) 915-3193',
@@ -86,9 +91,17 @@ export const profile: Profile = {
 /** The chapter the profile card shows as "Now". */
 export const CURRENT_CHAPTER_ID = 'threecolts';
 
-/** Target titles, condensed to one line for the card. */
+/**
+ * Target titles, condensed to one line for the card.
+ *
+ * Deliberately spans two families rather than picking one. The analytical
+ * roles lead because they are the ones the shelf on this site evidences
+ * directly and the ones the old positioning was screening out; the
+ * commercial roles stay because twenty years of carrying a number is not
+ * a thing to hide, and because the combination is the actual offer.
+ */
 export const openTo =
-  'Director or Manager — business development, sales, partnerships, alliances';
+  'Revenue operations · performance and data analytics · business development and partnerships';
 
 /** Career start year. Drives the counted "years" stat so it never goes stale. */
 export const CAREER_START = 2005;
@@ -97,26 +110,133 @@ export const CAREER_START = 2005;
 
 /**
  * The "about me" that isn't a summary of the résumé below it. Four
- * paragraphs, each doing a different job: what I do, where the revenue
- * actually came from, why it's unusual, what I'm optimising for next.
- * Synthesised from the professional summary on all four targeted résumés.
+ * paragraphs, each doing a different job: the loop I run, why the
+ * analysis inside it is trustworthy, the commercial record that shaped
+ * it, and what I'm optimising for next.
  *
- * Paragraph two is the self-sourced distinction and it sits second on
- * purpose. It is the claim most likely to be skimmed past as boilerplate
- * and the one that separates this record from a quota hit on inherited
- * pipeline, so it gets read before the building does.
+ * The order is the repositioning. It used to open on the quota and file
+ * the building third; it now opens on the loop and lets the revenue
+ * record explain why the models are built the way they are. Paragraph
+ * two is load-bearing and the one most likely to be skimmed as
+ * boilerplate — it is three specific times the honest answer cost
+ * something, which is the only real evidence that the honesty is not
+ * decorative.
  */
 export const mission = {
   eyebrow: 'How I work',
   title:
-    'I carry the number first. The building is what makes the number easier to hit.',
+    'Instrument it, find what is underperforming, prove why, then ship the thing that fixes it.',
   body: [
-    'Twenty years of B2B selling and sales management, and millions in annual contract value sourced and closed across it. Founding sales hire at a high-growth Amazon agency, where I built the commercial function from zero — ICP, outbound motion, service packaging, pricing — and hired, ramped, and led a team of six to consistent quota attainment. Then I did it again from nothing, opening a net-new channel revenue stream at a commerce SaaS portfolio, where I carry a quarterly number for channel-sourced ACV and new agreements today.',
-    'The number underneath that number is the one I would look at first: across my last three roles, more than 80% of what I closed was self-sourced. Not routed from marketing, not inherited from an SDR queue, not a lead-gen list handed over at the top of the funnel — territory I mapped, accounts I identified, conversations I opened cold. It is a different job than working pipeline someone else filled, and it is the half of the résumé that transfers to a role where the pipeline does not exist yet.',
-    'What is unusual is what happens after I find the friction. Most sellers file a request for the CRM, the forecast, the enablement library, the prospecting console — and wait two quarters. I build them, ship them, and sell on them the same month. Everything on this site came out of a problem inside my own revenue motion, and most of it went live against real accounts while I was carrying a quota.',
-    'That is the offer: a commercial leader who sources his own pipeline, qualifies, negotiates, and closes — who also removes the operational drag on the team behind him instead of escalating it. What I want next is to run business development, partnerships, or a sales team where both halves count.',
+    'The work is a loop, and I have run every stage of it. Instrument the revenue so the data exists at all — ingestion, schema, the joins nobody wants to own. Monitor it so movement is visible while it is still cheap to act on. Pinpoint what is underperforming and rank it by what it actually costs. Prove why, with a method that survives being argued with. Then build the thing that closes the gap, rather than filing a request for it. Everything on this site is a stage of that loop, built against a real operation while it was running.',
+    'What makes the analysis worth trusting is where it was done. These are not exercises on a public dataset. The recovery engine was rebuilt bottom-up after I caught my own first version overstating by 2.5× — sized off revenue rather than units × landed cost — before it ever reached a client. The forecast engine reports a distribution rather than a point, because a single confident number understates risk in both directions. The QBR dashboard applies Bayesian shrinkage because an account that activated one of two times is not a 50% account. Every one of those is a decision about honesty first and technique second.',
+    'The commercial record underneath it is the reason the models are built the way they are. Twenty years in B2B revenue: founding sales hire who built a commercial function from zero and led a team of six to quota, then a net-new channel revenue stream built from nothing, with millions in annual contract value sourced and closed across it and more than 80% of that self-sourced across my last three roles. That is not a separate career from this one. It is why the unit economics in every model here are the operator’s, why the forecasts get shown to people who have to commit to them, and why I know which number a business actually acts on.',
+    'What I want next is a seat where both halves count — revenue operations, performance and data analysis, or a commercial role with real ownership of the systems behind it. I have never needed a category to be handed to me before I could be useful in it, and the shelf below is the evidence: most of it is a domain I had to learn quickly, instrument, and then act in.',
   ],
 };
+
+/* ── the operating loop ─────────────────────────────────────────────── */
+
+/**
+ * The five stages of the work, and the systems built for each one.
+ *
+ * This is the section that does the repositioning, and it replaced a
+ * five-stage sales motion that used to sit here. The old spine was the
+ * commercial funnel — source, qualify, prove, close, activate, forecast —
+ * with a tool hung off each stage as evidence that the selling got easier.
+ * That framing was built to stop a portfolio full of copulas from reading
+ * as an engineer's CV, back when the roles being targeted were all
+ * commercial ones.
+ *
+ * It solved that problem and created a worse one: it filed twenty projects
+ * about ingestion, measurement, diagnosis and optimisation under "how I
+ * sell", where a hiring manager for a performance-analysis or revenue
+ * operations role would never look for them. The work is a loop, the loop
+ * is not specific to selling, and this is the honest shape of it.
+ *
+ * Every stage cites projects by slug from lib/projects.ts, so a link can
+ * never point at nothing and a stage can never claim a system that was
+ * renamed or removed.
+ */
+export interface LoopStage {
+  /** The verb. Two words at most — these set as a rail. */
+  stage: string;
+  /** What the job actually is at this stage. */
+  job: string;
+  /** What most teams do instead, and what it costs them. */
+  friction: string;
+  /** Project slugs built to serve this stage. */
+  systems: string[];
+}
+
+export const loop: LoopStage[] = [
+  {
+    stage: 'Instrument',
+    job: 'Make the data exist at all. Most revenue questions are unanswerable not because the analysis is hard but because nothing is recording the thing being asked about — the pipeline lives in one system, the fulfilment data in another, and the join between them is nobody’s job. I build the system of record and wire it to the systems around it: a business development CRM architected from scratch and integrated with the company ERP to carry pipeline, outreach status, opportunity scoring, and estimated ACV; a Postgres schema with row-level security behind an account portal; an outbound console consolidating four separate tools into one workflow.',
+    friction:
+      'The usual substitute is a spreadsheet that gets rebuilt every week, and it fails quietly — not by breaking, but by being three days stale in a way nobody can see. By the time the data is trustworthy enough to act on, the window it described has closed.',
+    systems: [
+      'voadera-bd-crm',
+      'monday-revenue-crm',
+      'prospecting-command-center',
+      'channel-enablement-portal',
+    ],
+  },
+  {
+    stage: 'Monitor',
+    job: 'Make movement visible while it is still cheap to act on. That means a live view rather than a quarterly deck: channel-sourced ACV trending against target, account activation as it happens, and a standing intelligence program tracking twenty competitors and seven platform surfaces weekly, mapped to product line so a finding lands on someone’s desk with a decision attached to it.',
+    friction:
+      'A manual quarterly reporting cycle tells you what happened one quarter after you could have changed it. The failure mode is worse than lateness: a metric nobody watches between reviews is a metric that drifts for eleven weeks and then gets explained rather than fixed.',
+    systems: [
+      'qbr-funnel-command-center',
+      'weekly-growth-brief-engine',
+      'channel-health-slack',
+      'marketplace-beta',
+    ],
+  },
+  {
+    stage: 'Pinpoint',
+    job: 'Find what is underperforming, and rank it by what it actually costs rather than by how visible it is. This is the stage that pays for the other four. A carrier and logistics spend analysis surfaced an annualised late-fee exposure nobody had aggregated because it arrived as line items across separate invoices. A profitability suite ranks a catalogue by margin contribution rather than by revenue, which reorders it substantially. A deal analyser screens acquisition candidates against fixed criteria so the weak ones are cheap to reject.',
+    friction:
+      'Ranking by revenue puts the loudest line at the top and buries the one quietly costing the most. Averages do the same thing to a heavy-tailed distribution: the mean describes the winners and says nothing about the long tail where the recoverable money usually is.',
+    systems: [
+      'carrier-spend-analysis',
+      'recovery-profitability-suite',
+      'pricescope',
+      'fba-deal-analyzer',
+    ],
+  },
+  {
+    stage: 'Diagnose',
+    job: 'Prove why, with a method that survives being argued with. Dependence modelled explicitly with a Gaussian copula rather than assumed away, because correlated line items widen a forecast interval far more than independence implies. Bayesian updating on activation rates, because an account that activated one of two times is not a fifty per cent account. Regression for elasticity where the relationship is worth quantifying. Every output carries its interval and the conditions that would make it wrong.',
+    friction:
+      'A single-point estimate invites the reader to argue with the number instead of the decision. Showing the distribution moves the conversation to what to do about the downside — and it is also the honest reporting of what a model actually knows.',
+    systems: [
+      'acv-forecast-engine',
+      '3t-recovery-wizard',
+      'qbr-funnel-command-center',
+      'agencyforecast',
+    ],
+  },
+  {
+    stage: 'Execute',
+    job: 'Ship the thing that closes the gap, rather than filing a request for it. A finding that ends in a recommendation is half a job. The recovery wizard turns the analysis into a guided flow an operator can actually run; the enablement portal does the account’s onboarding work for it instead of scheduling another check-in call; the prompt tooling puts the qualification framework where the conversation happens. Same week, against real accounts, while carrying a number.',
+    friction:
+      'The standard path is a ticket, a roadmap, and two quarters. The cost is not only the delay — it is that the person who understood the problem is not the person who eventually builds for it, and the specific thing that made it worth solving does not survive the handoff.',
+    systems: [
+      '3t-recovery-wizard',
+      'channel-enablement-portal',
+      'sales-enablement-system',
+      'leadprompter',
+    ],
+  },
+];
+
+/** Projects behind a loop stage, in shelf order. Unknown slugs drop out. */
+export function systemsForStage(stage: { systems: string[] }): Project[] {
+  return stage.systems
+    .map((slug) => published.find((p) => p.slug === slug))
+    .filter((p): p is Project => Boolean(p));
+}
 
 /* ── how I sell ─────────────────────────────────────────────────────── */
 
@@ -464,127 +584,17 @@ export interface CapabilityGroup {
 
 export const capabilities: CapabilityGroup[] = [
   {
-    label: 'Sales leadership',
-    items: [
-      {
-        /*
-          Listed first, and deliberately separate from the full-cycle entry
-          below it. "Full-cycle" is a claim almost every seller makes and
-          it says nothing about where the pipeline came from; this one does,
-          and it is the distinction that decides whether the record
-          transfers to a territory with no lead flow in it.
-        */
-        name: 'Self-sourced pipeline origination — cold, not inherited',
-        claim: 'shipped',
-        evidence: [
-          'prospecting-command-center',
-          'leadprompter',
-          'monday-revenue-crm',
-        ],
-        note: 'Over 80% of closed revenue across my last three roles was self-sourced — not routed from marketing, not handed over by an SDR queue, not a purchased lead list. The systems cited here are the ones I built to do it at volume without adding headcount.',
-      },
-      {
-        name: 'Full-cycle B2B new business, sourcing through close',
-        claim: 'working',
-        evidence: [],
-        note: 'Twenty years of it, most recently carrying a quarterly number for channel-sourced ACV — cold outbound through multi-stakeholder negotiation and co-sell close. Evidenced by the record below, not by a repo.',
-      },
-      {
-        name: 'Building a revenue function from zero',
-        claim: 'working',
-        evidence: [],
-        note: 'Twice. Founding sales hire at an agency, then a net-new channel revenue stream at a commerce SaaS portfolio.',
-      },
-      {
-        name: 'Hiring, ramping, coaching, and performance management',
-        claim: 'working',
-        evidence: [],
-        note: 'Led a team of six to consistent quota attainment through structured coaching and call reviews, including the onboarding curriculum they ramped on.',
-      },
-      {
-        name: 'Pricing, contract structure, and deal desk',
-        claim: 'working',
-        evidence: [],
-        note: 'Built the hybrid retainer-plus-performance agency model and the exception path governing it; negotiated channel terms and performance expectations across three product lines.',
-      },
-      {
-        name: 'Playbooks, qualification frameworks, and enablement',
-        claim: 'shipped',
-        evidence: ['sales-enablement-system', 'channel-enablement-portal'],
-      },
-      {
-        name: 'Forecasting discipline and pipeline hygiene',
-        claim: 'shipped',
-        evidence: ['qbr-funnel-command-center', 'acv-forecast-engine'],
-      },
-    ],
-  },
-  {
-    label: 'Partnerships, channel, and alliances',
-    items: [
-      {
-        name: 'Channel program design and partner recruitment',
-        claim: 'shipped',
-        evidence: [
-          'channel-enablement-portal',
-          'monday-revenue-crm',
-          'sales-enablement-system',
-        ],
-      },
-      {
-        name: 'Co-sell motions and account-conflict resolution',
-        claim: 'working',
-        evidence: [],
-        note: 'Joint end-customer opportunities worked alongside channel-side sellers across three product lines, with clear ownership where both sides sell into the same market.',
-      },
-      {
-        name: 'CRM architecture and revenue operations',
-        claim: 'shipped',
-        evidence: [
-          'voadera-bd-crm',
-          'monday-revenue-crm',
-          'prospecting-command-center',
-        ],
-      },
-      {
-        name: 'Competitive and market intelligence',
-        claim: 'shipped',
-        evidence: ['weekly-growth-brief-engine', '1p-market-strategy'],
-      },
-    ],
-  },
-  {
-    label: 'Marketplace and financial domain',
-    items: [
-      {
-        name: 'Marketplace domain — Amazon 1P/3P/FBA, Walmart, TikTok Shop',
-        claim: 'shipped',
-        evidence: [
-          'recovery-profitability-suite',
-          'weekly-growth-brief-engine',
-          'fba-deal-analyzer',
-        ],
-      },
-      {
-        name: 'Acquisition screening, SDE normalisation, SBA 7(a) structuring',
-        claim: 'shipped',
-        evidence: ['acquisition-analyzer', 'acquisition-deal-pipeline'],
-      },
-      {
-        name: 'Margin, unit economics, and spend analysis',
-        claim: 'shipped',
-        evidence: ['carrier-spend-analysis', 'recovery-profitability-suite'],
-      },
-      {
-        name: 'Amazon and eBay seller operations',
-        claim: 'working',
-        evidence: [],
-        note: 'Sourced, listed, priced, and scaled my own catalogues with my own capital at risk. The operator experience underneath every model on this site.',
-      },
-    ],
-  },
-  {
-    label: 'Forecasting and analysis',
+    /*
+      Group order is the positioning, and it inverted here. The ledger used
+      to open on "Sales leadership" and file the analysis fourth and the
+      engineering last, which told a reader scanning for a
+      performance-analysis or revenue-operations fit to stop reading at the
+      first heading. What the shelf below can actually prove is the
+      analysis and the systems, so those lead; the commercial record stays
+      in full, further down, where it reads as range rather than as the
+      whole of the offer.
+    */
+    label: 'Analysis and forecasting',
     items: [
       {
         name: 'Monte Carlo simulation',
@@ -620,10 +630,59 @@ export const capabilities: CapabilityGroup[] = [
         evidence: ['3t-recovery-wizard'],
       },
       {
+        name: 'Margin, unit economics, and spend analysis',
+        claim: 'shipped',
+        evidence: ['carrier-spend-analysis', 'recovery-profitability-suite'],
+        note: 'The stage of the loop that pays for the other four. Ranking a catalogue by margin contribution rather than revenue reorders it substantially, and an exposure spread across separate invoices is invisible until somebody aggregates it.',
+      },
+      {
         name: 'Kalman filtering and state estimation',
         claim: 'studied',
         evidence: [],
         note: 'Graduate electrical engineering coursework, applied to battery state-of-charge algorithm development. Not implemented in anything on this site, and I would not claim it as production experience.',
+      },
+    ],
+  },
+  {
+    label: 'Data systems and pipelines',
+    items: [
+      {
+        name: 'Next.js, React, TypeScript',
+        claim: 'shipped',
+        evidence: [
+          'channel-enablement-portal',
+          '3t-recovery-wizard',
+          'fba-deal-analyzer',
+        ],
+      },
+      {
+        name: 'Postgres schema design and row-level security',
+        claim: 'shipped',
+        evidence: ['channel-enablement-portal', '3t-recovery-wizard'],
+      },
+      {
+        name: 'Python data engineering',
+        claim: 'shipped',
+        evidence: [
+          'recovery-profitability-suite',
+          'acv-forecast-engine',
+          'carrier-spend-analysis',
+        ],
+      },
+      {
+        name: 'CRM architecture and system-of-record design',
+        claim: 'shipped',
+        evidence: [
+          'voadera-bd-crm',
+          'monday-revenue-crm',
+          'prospecting-command-center',
+        ],
+        note: 'The instrument stage. A pipeline database wired into the company ERP so opportunity scoring and estimated ACV are computed rather than retyped — the first time a system I built was the system of record for someone else’s job.',
+      },
+      {
+        name: 'ERP and multi-system integration',
+        claim: 'shipped',
+        evidence: ['voadera-bd-crm', 'prospecting-command-center'],
       },
     ],
   },
@@ -655,35 +714,124 @@ export const capabilities: CapabilityGroup[] = [
     ],
   },
   {
-    label: 'Systems I build',
+    label: 'Revenue operations and reporting',
     items: [
       {
-        name: 'Next.js, React, TypeScript',
+        name: 'Performance monitoring and live reporting',
+        claim: 'shipped',
+        evidence: [
+          'qbr-funnel-command-center',
+          'weekly-growth-brief-engine',
+          'channel-health-slack',
+        ],
+        note: 'Replacing a manual quarterly reporting cycle with a live view and a forward projection. A metric nobody watches between reviews drifts for eleven weeks and then gets explained rather than fixed.',
+      },
+      {
+        name: 'Forecasting discipline and pipeline hygiene',
+        claim: 'shipped',
+        evidence: ['qbr-funnel-command-center', 'acv-forecast-engine'],
+      },
+      {
+        name: 'Competitive and market intelligence',
+        claim: 'shipped',
+        evidence: ['weekly-growth-brief-engine', '1p-market-strategy'],
+      },
+      {
+        name: 'Playbooks, qualification frameworks, and enablement',
+        claim: 'shipped',
+        evidence: ['sales-enablement-system', 'channel-enablement-portal'],
+      },
+    ],
+  },
+  {
+    label: 'Commercial record',
+    items: [
+      {
+        /*
+          Listed first within the group, and deliberately separate from the
+          full-cycle entry below it. "Full-cycle" is a claim almost every
+          seller makes and it says nothing about where the pipeline came
+          from; this one does, and it is the distinction that decides
+          whether the record transfers to a territory with no lead flow in
+          it.
+        */
+        name: 'Self-sourced pipeline origination — cold, not inherited',
+        claim: 'shipped',
+        evidence: [
+          'prospecting-command-center',
+          'leadprompter',
+          'monday-revenue-crm',
+        ],
+        note: 'Over 80% of closed revenue across my last three roles was self-sourced — not routed from marketing, not handed over by an SDR queue, not a purchased lead list. The systems cited here are the ones I built to do it at volume without adding headcount.',
+      },
+      {
+        name: 'Full-cycle B2B new business, sourcing through close',
+        claim: 'working',
+        evidence: [],
+        note: 'Twenty years of it, most recently carrying a quarterly number for channel-sourced ACV — cold outbound through multi-stakeholder negotiation and co-sell close. Evidenced by the record below, not by a repo.',
+      },
+      {
+        name: 'Building a revenue function from zero',
+        claim: 'working',
+        evidence: [],
+        note: 'Twice. Founding sales hire at an agency, then a net-new channel revenue stream at a commerce SaaS portfolio.',
+      },
+      {
+        name: 'Hiring, ramping, coaching, and performance management',
+        claim: 'working',
+        evidence: [],
+        note: 'Led a team of six to consistent quota attainment through structured coaching and call reviews, including the onboarding curriculum they ramped on.',
+      },
+      {
+        name: 'Pricing, contract structure, and deal desk',
+        claim: 'working',
+        evidence: [],
+        note: 'Built the hybrid retainer-plus-performance agency model and the exception path governing it; negotiated channel terms and performance expectations across three product lines.',
+      },
+    ],
+  },
+  {
+    label: 'Partnerships, channel, and alliances',
+    items: [
+      {
+        name: 'Channel program design and account recruitment',
         claim: 'shipped',
         evidence: [
           'channel-enablement-portal',
-          '3t-recovery-wizard',
+          'monday-revenue-crm',
+          'sales-enablement-system',
+        ],
+      },
+      {
+        name: 'Co-sell motions and account-conflict resolution',
+        claim: 'working',
+        evidence: [],
+        note: 'Joint end-customer opportunities worked alongside channel-side sellers across three product lines, with clear ownership where both sides sell into the same market.',
+      },
+    ],
+  },
+  {
+    label: 'Marketplace and financial domain',
+    items: [
+      {
+        name: 'Marketplace domain — Amazon 1P/3P/FBA, Walmart, TikTok Shop',
+        claim: 'shipped',
+        evidence: [
+          'recovery-profitability-suite',
+          'weekly-growth-brief-engine',
           'fba-deal-analyzer',
         ],
       },
       {
-        name: 'Postgres schema design and row-level security',
+        name: 'Acquisition screening, SDE normalisation, SBA 7(a) structuring',
         claim: 'shipped',
-        evidence: ['channel-enablement-portal', '3t-recovery-wizard'],
+        evidence: ['acquisition-analyzer', 'acquisition-deal-pipeline'],
       },
       {
-        name: 'Python data engineering',
-        claim: 'shipped',
-        evidence: [
-          'recovery-profitability-suite',
-          'acv-forecast-engine',
-          'carrier-spend-analysis',
-        ],
-      },
-      {
-        name: 'ERP and multi-system integration',
-        claim: 'shipped',
-        evidence: ['voadera-bd-crm', 'prospecting-command-center'],
+        name: 'Amazon and eBay seller operations',
+        claim: 'working',
+        evidence: [],
+        note: 'Sourced, listed, priced, and scaled my own catalogues with my own capital at risk. The operator experience underneath every model on this site.',
       },
     ],
   },
@@ -692,27 +840,32 @@ export const capabilities: CapabilityGroup[] = [
 /* ── what I'm looking for ───────────────────────────────────────────── */
 
 /**
- * The section every portfolio omits and every recruiter needs. The four
- * tracks map to the four role-targeted résumés — being specific here
- * disqualifies bad fits early, which is the point.
+ * The section every portfolio omits and every recruiter needs. Being
+ * specific here disqualifies bad fits early, which is the point.
+ *
+ * The titles list leads with the analytical roles and keeps the
+ * commercial ones rather than choosing between them. That is not
+ * hedging: the two halves are the same skill applied at different points
+ * of the same loop, and a list that named only one of them would be
+ * describing half of what actually gets done.
  */
 export const lookingFor: { label: string; lines: string[] }[] = [
   {
     label: 'Titles',
     lines: [
-      'Director of Business Development · Director of Sales',
-      'Manager of Sales, Business Development, or Partnerships',
-      'Partnerships / Alliances Manager or Director',
-      'Also a fit: solutions consulting, sales engineering, GTM engineering',
+      'Revenue Operations — Manager or Director',
+      'Performance, business, or revenue analyst · analytics lead',
+      'Solutions consulting · sales engineering · GTM engineering',
+      'Also a fit: business development, partnerships, or sales leadership',
     ],
   },
   {
     label: 'Companies',
     lines: [
       'B2B SaaS, commerce, retail, and logistics software',
+      'Anywhere the revenue data exists but nobody owns the joins',
       'AI tooling where the buyer asks technical questions',
       'Where marketplace domain knowledge pays off on day one',
-      'Agency, channel, and reseller ecosystems',
     ],
   },
   {
@@ -726,9 +879,9 @@ export const lookingFor: { label: string; lines: string[] }[] = [
   {
     label: 'What I need',
     lines: [
-      'A number to carry — I do better work with one',
-      'Ownership of the customer conversation end to end',
+      'Access to the data, and a real decision hanging on it',
       'Permission to build the answer, not just file the request',
+      'A number attached to the work — I do better work with one',
     ],
   },
 ];
@@ -807,6 +960,57 @@ export const careerResults: { value: string; label: string; chapter: string }[] 
       chapter: 'Seller Interactive · Threecolts',
     },
   ];
+
+/* ── the home record strip ──────────────────────────────────────────── */
+
+/**
+ * The six figures directly under the hero — the moment a reader decides
+ * whether to keep scrolling.
+ *
+ * Composed here rather than in the page so the ordering argument lives
+ * with the data. It leads with what is on the shelf and counted from
+ * lib/projects.ts, then the years, then the commercial record: the same
+ * inversion the rest of this repositioning makes. The old strip opened on
+ * the ACV figure, which framed the whole site as a sales record with some
+ * software attached.
+ *
+ * `note` is the provenance line — a chapter for a career figure, a
+ * derivation for a counted one. Nothing on the strip is a bare number.
+ */
+export function recordStrip(): {
+  value: string;
+  label: string;
+  note: string;
+}[] {
+  return [
+    {
+      value: String(stats.live),
+      label: 'Systems live in production',
+      note: 'Counted from the shelf — deployed and reachable',
+    },
+    {
+      value: String(stats.shipped),
+      label: 'Systems built or shipped',
+      note: 'Live plus running-but-unhosted, counted the same way',
+    },
+    {
+      value: String(stats.years),
+      label: 'Years in B2B revenue',
+      note: 'Since 2005 · computed at build, never typed',
+    },
+    ...careerResults
+      .filter((r) => STRIP_FIGURES.includes(r.value))
+      .map((r) => ({ value: r.value, label: r.label, note: r.chapter })),
+  ];
+}
+
+/**
+ * Which career figures earn a place on the home strip. The full set lives
+ * on /about, where there is room for it; here there are three slots left
+ * after the counted figures and these are the three that carry furthest
+ * to a reader who is not hiring for a quota.
+ */
+const STRIP_FIGURES = ['Millions', '80%+', '2'];
 
 /* ── education ─────────────────────────────────────────────────────── */
 

@@ -30,19 +30,35 @@ after it is reference Claude Code can read on its own.
 
 A portfolio site for Ryan Dacus — 20 years in e-commerce revenue (Amazon seller →
 founding sales hire at an agency → partnerships lead at a commerce SaaS holding
-company), now job searching for GTM engineering, solutions consulting, and
-partnerships roles.
+company), who now builds the revenue systems as well as carrying the number.
 
 The site's thesis: **a portfolio where the models are live, not pictured.** Anyone
 can claim they built a Monte Carlo forecasting engine. This site runs it in the
 visitor's browser. That is the entire differentiator and every decision should
 protect it.
 
-Hero line: *"I sell technology I actually know how to build."*
+Hero line: *"I build the systems that find the revenue."*
 
-Audience: hiring managers at commerce/retail/logistics software companies. They are
-technical enough to be impressed by a working copula simulation and unimpressed by
-a wall of buzzwords. Assume they will click one thing, and it will be the widget.
+**The positioning was inverted, and this is the current framing.** The site used
+to lead commercially — "I sell technology I know how to build", a record strip
+opening on ACV, and a five-stage sales motion as the page spine — because the
+roles being targeted were all business development and partnerships ones. That
+framing filed twenty projects about ingestion, measurement, diagnosis and
+optimisation under "how I sell", where nobody hiring for revenue operations,
+performance analysis, or a data role would look for them.
+
+The spine is now the **operating loop** — instrument, monitor, pinpoint,
+diagnose, execute (`lib/career.ts` → `loop`, rendered by `OperatingLoop.tsx`).
+The sales motion survives further down the page as one chapter of the career.
+The commercial record is not hidden or softened anywhere; it is repositioned as
+the reason the models are built around the operator's economics rather than as
+the whole of the offer. Keep both halves. The adaptability across them is the
+argument, so do not let a future edit collapse the site back onto one of them.
+
+Audience: hiring managers at commerce/retail/logistics software companies, across
+both families of role. They are technical enough to be impressed by a working
+copula simulation and unimpressed by a wall of buzzwords. Assume they will click
+one thing, and it will be the widget.
 
 ---
 
@@ -65,7 +81,7 @@ lib/
   simulation.ts           Gaussian copula Monte Carlo, browser port of the Python engine
 ```
 
-Stack: Next 15.5.4 (App Router), React 19.1.0, Tailwind **v4**.1.13, TypeScript.
+Stack: Next 15.5.9 (App Router), React 19.1.0, Tailwind **v4**, TypeScript.
 No database, no CMS, no auth, no test suite. Keep it that way.
 
 ### Tailwind v4 gotcha — read this before styling anything
@@ -85,43 +101,95 @@ npm run build && grep -o '\.bg-surface{[^}]*}' .next/static/css/*.css
 
 ## Design system
 
+### The ground: light, and shared with the analytics app
+
+**The site was a dark build and is now a light one.** The palette, type,
+radius and elevation come from the FilamentIQ desktop-manufacturing
+analytics app, ported deliberately so the two properties read as one body of
+work. If you are looking at an old screenshot or an old branch, the near-black
+indigo field is gone.
+
+- Page ground is cool paper `oklch(0.975 0.007 262)`; cards are white.
+- The **only** dark surfaces are the mesh hero, the sticky nav, and the
+  closing band. They all use `.bg-mesh`, which is one definition.
+- `.on-dark` redefines the colour tokens for a subtree rather than restyling
+  each element. That is why `text-fg-2` means "the quieter body colour" on
+  either ground, and it is the mechanism the print block uses too. Use it —
+  do not hand-write white text utilities on a dark section.
+
 ### The one idea: colour encodes epistemic status
 
-This is not decoration. The whole project has been an argument about the
-difference between *built* and *claimed*, so the palette enforces it:
+This survived the move intact. It is not decoration — the whole project is an
+argument about the difference between *built* and *claimed*, so the palette
+enforces it:
 
 | Token | Meaning |
 |---|---|
-| `signal` (amber `#ffb454`) | a measured, verified, defensible number; something live |
-| `model` (cyan `#5ac8e8`) | something a model produced — an estimate, a simulation |
-| `risk` (red `#e5484d`) | downside, floor breach |
+| `signal` (burnt orange `oklch(0.5 0.16 42)`) | a measured, verified, defensible number; something live |
+| `model` (royal blue `oklch(0.44 0.2 268)`) | something a model produced — an estimate, a simulation |
+| `risk` (red) | downside, floor breach |
 
 **Nothing on this site is warm unless it is true.** If you add a new stat and
-you're unsure which colour it takes, that uncertainty is your answer: it's cyan.
+you're unsure which colour it takes, that uncertainty is your answer: it's blue.
 
-Full token set: `ink` `surface` `surface-2` `line` `line-bright` `fg` `fg-2` `fg-3`
-`signal` `signal-dim` `model` `model-dim` `risk`.
+One thing did change with the ground. On near-black, colour was how a number
+got noticed, so most figures were amber. On paper the default state of a
+number is navy ink, and only a figure actually making a claim takes a hue —
+the record strip tones exactly one cell. Follow that restraint.
+
+Three variants exist per hue and they are not interchangeable:
+
+- plain (`--color-signal`, `--color-model`) — **text**, verified AA on white
+- `-fill` — bars, dots, gradient stops, glows. Nothing is read on top of it.
+- `-dim` — hairlines: underline decorations, left rails, chart gridlines.
+- `--color-signal-cta` is a fourth, for filled buttons only. White on the
+  brand `-fill` orange measures 3.31:1, which is under AA for button text.
+
+Full token set: `page` `surface` `surface-2` `ink` `ink-2` `line` `line-bright`
+`fg` `fg-2` `fg-3` `signal` `signal-fill` `signal-dim` `signal-cta` `model`
+`model-fill` `model-dim` `risk` `success` `warning` `glow`.
+
+**Contrast is checked, not eyeballed.** Every text/background pair on `/`,
+`/about` and a case study measures at or above AA. Re-check after any token
+change — resolve colours through a canvas, because `getComputedStyle` returns
+`oklch()` strings that naive RGB parsing silently mis-reads as passing.
 
 ### Type
 
-- Display — Space Grotesk, via `style={{ fontFamily: 'var(--font-display)' }}`
-- Body — IBM Plex Sans (default on `body`)
-- Mono — IBM Plex Mono, applied with the `.num` utility class
+- Display and body — Plus Jakarta Sans (`--font-jakarta`), 400–800
+- Mono — JetBrains Mono, applied with the `.num` utility class
+- The type scale is overridden in `@theme`; `text-xs` is 13px, not 12px,
+  because this site's caveat copy lives at the two smallest steps.
 
-**Every number on the site is mono and tabular.** `.num` handles it. Stats, tags,
-percentages, URLs, eyebrows. This is the most load-bearing typographic rule here —
-it's what makes the site read as an instrument rather than a brochure.
+**Every number on the site is mono and tabular.** `.num` handles it. Stats,
+percentages, step indices, URLs. Not eyebrows and not tag chips — those are
+words, not measurements, and use `.label` instead.
 
 ### Other conventions
 
-- Borders over shadows. Grid gaps done with `gap-px` on a `bg-line` parent.
-- Zero border radius except status dots.
-- `.eyebrow` for small uppercase mono labels.
-- Numbered markers (`01`/`02`/`03`) only where content is genuinely sequential.
-  They're used in Method and in case study sections. Don't spread them further.
+- Radius everywhere: `rounded-chip` 8px, `rounded-card` 12px, `rounded-panel`
+  16px. The old zero-radius rule is gone.
+- Elevation is a soft navy-tinted drop shadow, not a border and not a
+  gradient. `.panel` is the primitive; `.cell` is its version for a card
+  inside a hairline grid.
+- `.grid-lines` builds ruled grids with `gap: 1px`, and the hairlines are
+  drawn by `.grid-lines > *` box-shadows rather than by the container's
+  background. That is deliberate: a short last row would otherwise leave a
+  grey block where a card is missing.
+- `.eyebrow` for small uppercase labels. They are blue — brand chrome, not
+  body copy.
+- Numbered markers (`01`/`02`/`03`) only where content is genuinely
+  sequential: the operating loop, Method, case study sections.
 - Respect `prefers-reduced-motion` (already handled globally).
-- Motion is currently near-zero. That is a choice. If you add any, make it one
+- Motion is near-zero. That is a choice. If you add any, make it one
   orchestrated moment, not scattered hover effects.
+
+**Screenshotting this site:** the `.fade-in` and `.stagger` scroll timelines
+render at opacity 0 in a full-page capture, which looks like half the page is
+blank. Emulate reduced motion. And always confirm the served HTML's CSS URL
+returns 200 — a `next start` left running across a rebuild serves a stale
+hash and the page renders completely unstyled, which looks like a Tailwind
+failure and is not one.
 
 ---
 

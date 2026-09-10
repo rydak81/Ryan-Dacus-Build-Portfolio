@@ -114,18 +114,21 @@ export default function AboutPage() {
 
 function ProfileHeader() {
   return (
-    <header className="relative overflow-x-clip pt-16 pb-14 md:pt-24 md:pb-20">
+    /* Same mesh as the home hero, so both entry points to the site open
+       on the same surface. The print block in globals.css unwinds both
+       `.bg-mesh` and `.on-dark`'s token overrides, which is what keeps
+       ⌘P producing ink on paper rather than white type on white. */
+    <header className="on-dark bg-mesh relative overflow-x-clip pt-16 pb-14 md:pt-24 md:pb-20">
       <div
         aria-hidden
-        className="hero-glow pointer-events-none absolute inset-x-0 -top-24 bottom-0 print:hidden"
+        className="hero-grid pointer-events-none absolute inset-0 print:hidden"
       />
-      <div
-        aria-hidden
-        className="hero-grid pointer-events-none absolute inset-x-0 -top-10 bottom-0 print:hidden"
-      />
-      <div className="shell relative grid gap-10 md:grid-cols-[minmax(0,1fr)_auto] md:items-end">
+      {/* Centred rather than bottom-aligned. The identity card is ~660px
+          tall and the copy beside it is about half that, so `items-end`
+          left a screen-height hole above the name. */}
+      <div className="shell relative grid gap-10 md:grid-cols-[minmax(0,1fr)_auto] md:items-center">
         <div>
-          <h1 className="rise mt-6 max-w-[16ch] text-balance text-[clamp(2.5rem,6vw,4.25rem)] leading-[1.04]">
+          <h1 className="rise mt-6 max-w-[16ch] text-balance text-[clamp(2.5rem,6vw,4.25rem)] leading-[1.04] text-white print:text-black">
             {profile.name}
           </h1>
           <p className="rise rise-1 mt-6 max-w-2xl text-pretty text-lg leading-relaxed text-fg-2">
@@ -138,17 +141,17 @@ function ProfileHeader() {
           <div className="rise rise-3 mt-8 flex flex-wrap items-center gap-x-3 gap-y-3 print:hidden">
             <a
               href={`mailto:${profile.email}`}
-              className="rounded-card bg-signal px-6 py-3 text-sm font-bold text-ink shadow-[0_8px_24px_-14px_rgba(255,191,92,0.5)] transition-opacity hover:opacity-90"
+              className="glow-brand rounded-chip bg-signal-cta px-6 py-3 text-sm font-semibold text-white transition-opacity hover:opacity-90"
             >
               Get in touch
             </a>
             <Link
               href="/#work"
-              className="cell rounded-card border border-line-bright px-6 py-3 text-sm font-semibold text-fg transition-colors hover:border-fg-3"
+              className="glass-dark rounded-chip px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-white/15"
             >
               See the work
             </Link>
-            <PrintResume className="label rounded-card px-3 py-3 text-sm text-fg-3 underline decoration-line-bright underline-offset-4 transition-colors hover:text-fg-2" />
+            <PrintResume className="label rounded-chip px-3 py-3 text-sm text-white/65 underline decoration-white/30 underline-offset-4 transition-colors hover:text-white/90" />
           </div>
 
           {/* Plain text in print, where a mailto: is useless. */}
@@ -174,18 +177,15 @@ function Mission() {
   return (
     <div className="shell">
       <section className="fade-in panel relative overflow-hidden px-6 py-12 md:px-12 md:py-16">
-        <div
-          aria-hidden
-          className="hero-glow pointer-events-none absolute inset-0 opacity-70 print:hidden"
-        />
         <div className="relative">
           <p className="eyebrow">{mission.eyebrow}</p>
           <h2 className="mt-6 max-w-4xl text-balance text-2xl leading-snug md:text-3xl">
             {mission.title}
           </h2>
           {/* Same 2×2 as the home page — see the note there. The second
-              paragraph is the self-sourced distinction and takes the accent
-              rail so it is not skimmed as more summary copy. */}
+              paragraph takes the accent rail: it is where the analysis
+              earns its trust, and it is the one most likely to be skimmed
+              as more summary copy. */}
           <div className="mt-7 grid max-w-5xl gap-5 md:grid-cols-2">
             {mission.body.map((para, i) => (
               <p
@@ -546,43 +546,52 @@ function Bullet({ children }: { children: React.ReactNode }) {
 
 function Contact() {
   return (
-    <section className="shell fade-in border-t border-line py-20 md:py-24">
-      <h2 className="text-3xl tracking-[-0.03em] md:text-4xl">
-        Open to a conversation.
-      </h2>
-      <p className="mt-5 max-w-2xl text-pretty leading-relaxed text-fg-2">
-        If any of the above lines up with what you are hiring for, the
-        fastest way to test it is to send me the job description — the{' '}
-        <Link
-          href="/#work"
-          className="text-model underline decoration-model-dim underline-offset-4 hover:decoration-model"
-        >
-          Role Lens
-        </Link>{' '}
-        on the work page will reorder the whole shelf against it before we
-        ever speak.
-      </p>
-      <div className="mt-8 flex flex-wrap gap-x-8 gap-y-3">
-        <a
-          href={`mailto:${profile.email}`}
-          className="num text-signal underline decoration-signal-dim underline-offset-4 transition-colors hover:decoration-signal"
-        >
-          {profile.email}
-        </a>
-        <a
-          href={profile.linkedin}
-          className="num text-model underline decoration-model-dim underline-offset-4 transition-colors hover:decoration-model"
-        >
-          {profile.linkedin.replace('https://', '')}
-        </a>
-        <a
-          href={profile.github}
-          className="num text-model underline decoration-model-dim underline-offset-4 transition-colors hover:decoration-model"
-        >
-          {profile.github.replace('https://', '')}
-        </a>
-      </div>
-    </section>
+    /* Closes on the same mesh as the header above it and as the home page,
+       so both routes open and shut on brand colour with the work in
+       between. The print block flattens it back to paper. */
+    <div className="band-dark on-dark bg-mesh relative overflow-hidden py-20 md:py-24">
+      <div
+        aria-hidden
+        className="hero-grid pointer-events-none absolute inset-0 print:hidden"
+      />
+      <section className="shell fade-in relative">
+        <h2 className="text-3xl tracking-[-0.03em] text-white md:text-4xl print:text-black">
+          Open to a conversation.
+        </h2>
+        <p className="mt-5 max-w-2xl text-pretty leading-relaxed text-fg-2">
+          If any of the above lines up with what you are hiring for, the
+          fastest way to test it is to send me the job description — the{' '}
+          <Link
+            href="/#work"
+            className="text-white underline decoration-white/40 underline-offset-4 hover:decoration-white print:text-black"
+          >
+            Role Lens
+          </Link>{' '}
+          on the work page will reorder the whole shelf against it before we
+          ever speak.
+        </p>
+        <div className="mt-8 flex flex-wrap gap-x-8 gap-y-3">
+          <a
+            href={`mailto:${profile.email}`}
+            className="num text-signal underline decoration-signal-dim underline-offset-4 transition-colors hover:decoration-signal"
+          >
+            {profile.email}
+          </a>
+          <a
+            href={profile.linkedin}
+            className="num text-model underline decoration-model-dim underline-offset-4 transition-colors hover:decoration-model"
+          >
+            {profile.linkedin.replace('https://', '')}
+          </a>
+          <a
+            href={profile.github}
+            className="num text-model underline decoration-model-dim underline-offset-4 transition-colors hover:decoration-model"
+          >
+            {profile.github.replace('https://', '')}
+          </a>
+        </div>
+      </section>
+    </div>
   );
 }
 
