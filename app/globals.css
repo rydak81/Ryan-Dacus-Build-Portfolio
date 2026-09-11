@@ -949,6 +949,83 @@ input[type="range"]::-moz-range-thumb {
 }
 
 /* ── hero profile card ────────────────────────────────────────────────
+   The identity card. Its ground is deliberately OPAQUE and flat, unlike
+   the translucent glass .on-dark hands .panel, because the portrait
+   dissolves into it through .profile-scrim below — and a fade can only be
+   seamless if it terminates on exactly the colour behind it. A
+   translucent card composites the scrim over the mesh at a different rate
+   than the card's own ground does, and the seam comes straight back.
+
+   --profile-ground is the navy .bg-mesh-soft and .identity-mark already
+   sit on, so the card still belongs to the brand grounds; the scrim reads
+   it back out rather than repeating the literal, which is what keeps the
+   two sides of the fade identical by construction.
+*/
+.profile-card {
+  --profile-ground: oklch(0.2 0.07 268);
+  position: relative;
+  background: var(--profile-ground);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-panel);
+  box-shadow:
+    inset 0 1px 0 oklch(1 0 0 / 0.1),
+    0 1px 1px oklch(0 0 0 / 0.4),
+    0 18px 40px -18px oklch(0 0 0 / 0.55),
+    0 40px 80px -36px oklch(0 0 0 / 0.5);
+}
+
+/* A soft blue bloom behind the card, so it sits above the mesh rather
+   than on it. Lives on a wrapper because the card itself clips. */
+.profile-halo {
+  position: relative;
+}
+.profile-halo::before {
+  content: "";
+  position: absolute;
+  inset: -14% -10%;
+  pointer-events: none;
+  background: radial-gradient(
+    54% 46% at 50% 22%,
+    oklch(0.46 0.2 268 / 0.38),
+    transparent 70%
+  );
+}
+.profile-halo > * {
+  position: relative;
+}
+
+/*
+  The scrim. Fades the portrait into the card's own ground so the image
+  has no bottom edge — the single move that separates a designed card from
+  a picture with text underneath it.
+*/
+.profile-scrim {
+  background: linear-gradient(
+    180deg,
+    transparent 20%,
+    color-mix(in oklch, var(--profile-ground) 30%, transparent) 46%,
+    color-mix(in oklch, var(--profile-ground) 78%, transparent) 72%,
+    color-mix(in oklch, var(--profile-ground) 96%, transparent) 90%,
+    var(--profile-ground) 100%
+  );
+}
+
+/* The glass edge: a hairline of light on the inside of the image frame,
+   which is what stops a full-bleed photo from looking pasted on. */
+.profile-frame {
+  position: relative;
+}
+.profile-frame::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  box-shadow:
+    inset 0 1px 0 oklch(1 0 0 / 0.14),
+    inset 0 0 0 1px oklch(1 0 0 / 0.05);
+}
+
+/*
    The identity block, when no portrait is set. Not a placeholder for a
    missing image — a designed object: the nav's own bar mark at scale, over
    the same mesh the hero uses.
