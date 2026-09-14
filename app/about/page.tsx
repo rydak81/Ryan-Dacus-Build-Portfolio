@@ -75,7 +75,7 @@ const PERSON_LD = {
   url: 'https://ryandacus.com/about',
   address: {
     '@type': 'PostalAddress',
-    addressLocality: 'Greenville',
+    addressLocality: 'Simpsonville',
     addressRegion: 'SC',
     addressCountry: 'US',
   },
