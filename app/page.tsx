@@ -127,7 +127,7 @@ function Hero() {
               <span className="absolute inline-flex h-full w-full rounded-full bg-[oklch(0.72_0.17_50)] opacity-60" />
               <span className="relative inline-flex h-2 w-2 rounded-full bg-[oklch(0.72_0.17_50)]" />
             </span>
-            Greenville, SC · Revenue operations, analytics &amp; systems
+            Simpsonville, SC · Revenue operations, analytics &amp; systems
           </p>
           {/*
             Fluid display size via clamp() rather than a single md: jump —
@@ -823,7 +823,7 @@ function Footer() {
        viewport; the text stays inside the shell. */
     <footer className="border-t border-line">
       <div className="shell py-8 text-xs leading-relaxed text-fg-3">
-        Ryan Dacus · Greenville, SC · Built with Next.js on Vercel · Every
+        Ryan Dacus · Simpsonville, SC · Built with Next.js on Vercel · Every
         status label on this page means exactly what it says.
       </div>
     </footer>
