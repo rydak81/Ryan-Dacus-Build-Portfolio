@@ -1,0 +1,81 @@
+name: Pipeline checks
+
+# Runs on anything touching the skills, the pipeline, or the data contract.
+# No API key and no network: the fixture path exercises fetch, validate, promote
+# and the manifest, so the whole pipeline is covered except the live HTTP call.
+on:
+  pull_request:
+    paths:
+      - ".claude/skills/**"
+      - "data/market/**"
+      - "requirements.txt"
+      - ".github/workflows/**"
+  push:
+    branches: [main]
+    paths:
+      - ".claude/skills/**"
+      - "data/market/**"
+      - "requirements.txt"
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      # Stricter than the nightly refresh: on a PR a warning is worth a human's
+      # attention, where mid-refresh it would only block fresh data for no gain.
+      - name: Audit skills and pipeline
+        run: python3 .claude/skills/pipeline-steward/scripts/audit.py --fail-on warn
+
+      - name: Validator self-tests
+        run: python3 .claude/skills/market-data-ingest/tests/test_gates.py
+
+      - name: Workflow YAML is parseable
+        run: |
+          python3 - <<'PY'
+          import pathlib, sys, yaml
+          failed = False
+          for path in sorted(pathlib.Path(".github/workflows").glob("*.yml")):
+              try:
+                  yaml.safe_load(path.read_text())
+                  print(f"ok   {path}")
+              except yaml.YAMLError as exc:
+                  print(f"FAIL {path}: {str(exc).splitlines()[0]}")
+                  failed = True
+          sys.exit(1 if failed else 0)
+          PY
+
+      # Full pipeline on fixtures, in a scratch copy so the committed data/market/
+      # is never touched by a check run.
+      - name: Pipeline end-to-end on fixtures
+        run: |
+          OUT=$(mktemp -d)
+          STAGING=$(mktemp -d)/staging
+          I=.claude/skills/market-data-ingest/scripts/ingest.py
+          V=.claude/skills/market-data-ingest/scripts/validate.py
+          python3 "$I" --source fixture --staging "$STAGING"
+          python3 "$V" --staging "$STAGING"
+          python3 "$I" --promote --staging "$STAGING" --out "$OUT"
+          python3 "$V" --freshness --out "$OUT" --max-age-hours 30
+          test -f "$OUT/manifest.json" || { echo "promote wrote no manifest"; exit 1; }
+          git diff --quiet -- data/market || { echo "check run modified committed data"; exit 1; }
+
+      - name: Fixtures are reproducible
+        run: |
+          python3 .claude/skills/market-data-ingest/scripts/make_fixtures.py
+          if ! git diff --quiet -- .claude/skills/market-data-ingest/fixtures; then
+            echo "Fixtures differ from what make_fixtures.py generates."
+            echo "Regenerate and commit, or revert the hand-edit."
+            git --no-pager diff --stat -- .claude/skills/market-data-ingest/fixtures
+            exit 1
+          fi
+          echo "Fixtures match the generator."

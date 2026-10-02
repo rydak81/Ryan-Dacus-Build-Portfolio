@@ -1,0 +1,160 @@
+{
+  "results": {
+    "add-ticker-nvda/with_skill": {
+      "trials": 3,
+      "passes": 3,
+      "pass_rate": 1.0,
+      "variance": 0.0,
+      "ci95": [
+        0.43850296436068037,
+        1.0
+      ],
+      "ci_width": 0.5614970356393196,
+      "assertions": {
+        "NVDA envelope passes all validation gates": {
+          "passes": 3,
+          "trials": 3,
+          "pass_rate": 1.0
+        },
+        "NVDA fixture generated via make_fixtures.py": {
+          "passes": 3,
+          "trials": 3,
+          "pass_rate": 1.0
+        },
+        "NVDA present in ticker config": {
+          "passes": 3,
+          "trials": 3,
+          "pass_rate": 1.0
+        },
+        "data/market/NVDA.json exists": {
+          "passes": 3,
+          "trials": 3,
+          "pass_rate": 1.0
+        },
+        "existing tickers still intact": {
+          "passes": 3,
+          "trials": 3,
+          "pass_rate": 1.0
+        },
+        "manifest ticker_count matches envelope count": {
+          "passes": 3,
+          "trials": 3,
+          "pass_rate": 1.0
+        },
+        "manifest.json lists NVDA": {
+          "passes": 3,
+          "trials": 3,
+          "pass_rate": 1.0
+        }
+      }
+    },
+    "add-ticker-nvda/without_skill": {
+      "trials": 3,
+      "passes": 3,
+      "pass_rate": 1.0,
+      "variance": 0.0,
+      "ci95": [
+        0.43850296436068037,
+        1.0
+      ],
+      "ci_width": 0.5614970356393196,
+      "assertions": {
+        "NVDA envelope passes all validation gates": {
+          "passes": 3,
+          "trials": 3,
+          "pass_rate": 1.0
+        },
+        "NVDA fixture generated via make_fixtures.py": {
+          "passes": 3,
+          "trials": 3,
+          "pass_rate": 1.0
+        },
+        "NVDA present in ticker config": {
+          "passes": 3,
+          "trials": 3,
+          "pass_rate": 1.0
+        },
+        "data/market/NVDA.json exists": {
+          "passes": 3,
+          "trials": 3,
+          "pass_rate": 1.0
+        },
+        "existing tickers still intact": {
+          "passes": 3,
+          "trials": 3,
+          "pass_rate": 1.0
+        },
+        "manifest ticker_count matches envelope count": {
+          "passes": 3,
+          "trials": 3,
+          "pass_rate": 1.0
+        },
+        "manifest.json lists NVDA": {
+          "passes": 3,
+          "trials": 3,
+          "pass_rate": 1.0
+        }
+      }
+    }
+  },
+  "findings": [
+    {
+      "kind": "wide-interval",
+      "summary": "add-ticker-nvda/with_skill: 95% CI is [0.44, 1.00] -- too wide to act on",
+      "recommendation": "add reps before concluding anything about this eval"
+    },
+    {
+      "kind": "wide-interval",
+      "summary": "add-ticker-nvda/without_skill: 95% CI is [0.44, 1.00] -- too wide to act on",
+      "recommendation": "add reps before concluding anything about this eval"
+    },
+    {
+      "kind": "non-discriminating-assertion",
+      "summary": "add-ticker-nvda: 'NVDA envelope passes all validation gates' passes 100% with and without the skill",
+      "recommendation": "replace it; it cannot detect a regression"
+    },
+    {
+      "kind": "non-discriminating-assertion",
+      "summary": "add-ticker-nvda: 'NVDA fixture generated via make_fixtures.py' passes 100% with and without the skill",
+      "recommendation": "replace it; it cannot detect a regression"
+    },
+    {
+      "kind": "non-discriminating-assertion",
+      "summary": "add-ticker-nvda: 'NVDA present in ticker config' passes 100% with and without the skill",
+      "recommendation": "replace it; it cannot detect a regression"
+    },
+    {
+      "kind": "non-discriminating-assertion",
+      "summary": "add-ticker-nvda: 'data/market/NVDA.json exists' passes 100% with and without the skill",
+      "recommendation": "replace it; it cannot detect a regression"
+    },
+    {
+      "kind": "non-discriminating-assertion",
+      "summary": "add-ticker-nvda: 'existing tickers still intact' passes 100% with and without the skill",
+      "recommendation": "replace it; it cannot detect a regression"
+    },
+    {
+      "kind": "non-discriminating-assertion",
+      "summary": "add-ticker-nvda: 'manifest ticker_count matches envelope count' passes 100% with and without the skill",
+      "recommendation": "replace it; it cannot detect a regression"
+    },
+    {
+      "kind": "non-discriminating-assertion",
+      "summary": "add-ticker-nvda: 'manifest.json lists NVDA' passes 100% with and without the skill",
+      "recommendation": "replace it; it cannot detect a regression"
+    }
+  ],
+  "run_context": {
+    "date": "2026-10-02",
+    "eval": "add-ticker-nvda",
+    "reps_per_config": 3,
+    "graded_by": "evals/grade.py (programmatic, not an LLM judge)",
+    "result": "6/6 runs passed 7/7 assertions",
+    "conclusion_validity": "INVALID as a with-versus-without comparison. All 3 without_skill reps fast-forwarded their worktree onto the feature branch and read SKILL.md, so both configurations are effectively with-skill. The pass rate is evidence that the skill's documented procedure is followable and consistent across 6 independent runs; it is not evidence that the skill helps relative to not having it.",
+    "actionable_findings": [
+      "make_fixtures.py kept a hand-maintained seed table: the 6 runs split 3-3 on NVDA base price (124.56 vs 186.84), so fixtures were reproducible per-person but not across people. Fixed by deriving series params from the symbol.",
+      "Adding a ticker required editing two files and all 6 runs independently performed the second edit -- a repeated-work signal that the design, not the instructions, was wrong. Fixed: tickers.json is now the single source of truth.",
+      "All 7 assertions flagged non-discriminating, which is the correct diagnosis of a contaminated baseline rather than a problem with the assertions themselves."
+    ]
+  }
+}

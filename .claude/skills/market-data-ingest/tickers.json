@@ -1,0 +1,6 @@
+{
+  "_comment": "Keep this list small and deliberate. Every ticker is one API call per refresh, and the Massive free tier rate-limits.",
+  "tickers": ["AAPL", "AMZN", "SHOP"],
+  "resolution": {"multiplier": 1, "timespan": "day"},
+  "lookback_days": 120
+}

@@ -1,0 +1,78 @@
+name: Market data refresh
+
+# 23:17 UTC on weekdays -- after the US close (20:00/21:00 UTC depending on DST),
+# so daily bars have settled. Minute 17 rather than :00 because scheduled workflows
+# bunched on the hour get queued behind everyone else's and run late.
+on:
+  schedule:
+    - cron: "17 23 * * 1-5"
+  workflow_dispatch:
+    inputs:
+      source:
+        description: "fixture replays committed data and needs no API key"
+        type: choice
+        options: [massive, fixture]
+        default: massive
+
+permissions:
+  contents: write
+
+concurrency:
+  # A second run while one is mid-promote would race on data/market/. Queue instead.
+  group: market-data-refresh
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      # Guard before spending any API calls: a skill whose instructions point at a
+      # missing script will fail halfway through and leave staging half-written.
+      - name: Audit skills and pipeline
+        run: python3 .claude/skills/pipeline-steward/scripts/audit.py
+
+      - name: Validator self-tests
+        run: python3 .claude/skills/market-data-ingest/tests/test_gates.py
+
+      - name: Fetch into staging
+        env:
+          MASSIVE_API_KEY: ${{ secrets.MASSIVE_API_KEY }}
+        run: |
+          python3 .claude/skills/market-data-ingest/scripts/ingest.py \
+            --source "${{ inputs.source || 'massive' }}"
+
+      # Gates the promote. A partial fetch looks like success from the outside, so
+      # nothing reaches data/market/ until every envelope has passed.
+      - name: Validate staging
+        run: python3 .claude/skills/market-data-ingest/scripts/validate.py --staging .market-staging
+
+      - name: Promote and rebuild manifest
+        run: python3 .claude/skills/market-data-ingest/scripts/ingest.py --promote
+
+      - name: Freshness check
+        run: |
+          python3 .claude/skills/market-data-ingest/scripts/validate.py \
+            --freshness --max-age-hours 30
+
+      - name: Commit refreshed data
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/market
+          # A no-op refresh is normal on a holiday; it must not fail the run.
+          if git diff --cached --quiet; then
+            echo "No change in market data; nothing to commit."
+            exit 0
+          fi
+          git commit -m "chore(data): refresh market data $(date -u +%Y-%m-%d)"
+          git push
