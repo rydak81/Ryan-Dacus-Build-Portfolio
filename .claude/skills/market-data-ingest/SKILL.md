@@ -137,8 +137,24 @@ default, so the daily contract stays intact.
 
 ## Adding a ticker
 
-Edit `.claude/skills/market-data-ingest/tickers.json`. Keep it small and deliberate; every ticker is an API
-call per run, and the free tier rate-limits. Then run the three-stage sequence above.
+Edit `.claude/skills/market-data-ingest/tickers.json` and nothing else, then
+regenerate fixtures and run the three-stage sequence:
+
+```bash
+python3 .claude/skills/market-data-ingest/scripts/make_fixtures.py
+python3 .claude/skills/market-data-ingest/scripts/ingest.py --source fixture
+python3 .claude/skills/market-data-ingest/scripts/validate.py --staging .market-staging
+python3 .claude/skills/market-data-ingest/scripts/ingest.py --promote
+```
+
+One place, because the generator derives both the ticker list and each symbol's
+price series from this config. An earlier version kept a separate hand-maintained
+seed table, and six independent runs of "add NVDA" split three-three on which base
+price to pick — so the fixtures were reproducible for one person and not across
+people. Deriving the series from the symbol makes it the same for everyone.
+
+Keep the list small and deliberate; every ticker is one API call per refresh, and
+the free tier rate-limits.
 
 ## Reporting
 

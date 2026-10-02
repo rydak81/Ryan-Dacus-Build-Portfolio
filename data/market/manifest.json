@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-10-02T03:00:01Z",
+  "generated_at": "2026-10-02T03:46:41Z",
   "ticker_count": 3,
-  "oldest_fetched_at": "2026-10-02T03:00:01Z",
+  "oldest_fetched_at": "2026-10-02T03:46:41Z",
   "tickers": {
     "AAPL": {
-      "fetched_at": "2026-10-02T03:00:01Z",
+      "fetched_at": "2026-10-02T03:46:41Z",
       "bar_count": 120,
       "resolution": "1d",
       "source": "fixture",
@@ -14,7 +14,7 @@
       }
     },
     "AMZN": {
-      "fetched_at": "2026-10-02T03:00:01Z",
+      "fetched_at": "2026-10-02T03:46:41Z",
       "bar_count": 120,
       "resolution": "1d",
       "source": "fixture",
@@ -24,7 +24,7 @@
       }
     },
     "SHOP": {
-      "fetched_at": "2026-10-02T03:00:01Z",
+      "fetched_at": "2026-10-02T03:46:41Z",
       "bar_count": 120,
       "resolution": "1d",
       "source": "fixture",
