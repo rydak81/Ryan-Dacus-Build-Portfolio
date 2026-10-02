@@ -33,3 +33,6 @@ __pycache__/
 
 # Market-data pipeline staging (never committed; promote cleans it up)
 .market-staging/
+
+# Agent worktrees created by isolated subagent runs
+.claude/worktrees/
