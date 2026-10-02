@@ -1,0 +1,24 @@
+{
+  "skill_name": "market-data-ingest",
+  "notes": "Assertions here are all programmatically checkable, so they are graded by grade.py rather than by an LLM judge -- cheaper, exactly repeatable, and it removes the grader as a source of variance in a run whose whole point is measuring variance.",
+  "evals": [
+    {
+      "id": 1,
+      "name": "add-ticker-nvda",
+      "prompt": "Add NVDA to this repo's market data pipeline and refresh the committed data so NVDA appears alongside the existing tickers. There is no Massive API key available in this environment and massive.com is unreachable, so you cannot call the live API.",
+      "expected_output": "NVDA in the ticker config, an NVDA fixture, a valid NVDA envelope in data/market/, and manifest.json listing NVDA -- with the manifest rebuilt by the promote step rather than hand-edited.",
+      "assertions": [
+        "NVDA present in ticker config",
+        "NVDA fixture generated via make_fixtures.py",
+        "data/market/NVDA.json exists",
+        "NVDA envelope passes all validation gates",
+        "manifest.json lists NVDA",
+        "manifest ticker_count matches envelope count",
+        "existing tickers still intact"
+      ],
+      "files": []
+    }
+  ],
+  "baseline_caveat": "The baseline configuration is 'not told to use the skill', NOT 'skill absent'. The SKILL.md files live in the repo, so a thorough baseline run can discover them by exploring and effectively become a with-skill run. This compresses the measured gap, so a small with/without difference here is weak evidence of no effect. Report it as a floor on the skill's value, not an estimate of it.",
+  "rep_caveat": "3 reps per configuration. Per references/variance-method.md that is enough to surface flakiness (a mixed result shows up at all) but NOT enough to compare configurations -- the 95% CI at n=3 spans about 0.73. Any with-vs-without claim from this run is inconclusive by construction. Raise to 20+ reps before asserting one is better."
+}

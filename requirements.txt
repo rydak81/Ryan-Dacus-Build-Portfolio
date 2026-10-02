@@ -1,3 +1,8 @@
-# Market-data pipeline (see .claude/skills/market-data-ingest/).
+# Market-data pipeline and steward tooling (see .claude/skills/).
 # Python tooling only -- the Next.js site has no runtime dependency on any of this.
+#
+# Keep this in sync with what the scripts actually import. audit.py enforces it:
+# an undeclared import passes locally on any machine that happens to have the
+# package and then fails in CI, which is how PyYAML slipped through once already.
 massive>=2.8.0,<3
+PyYAML>=6.0

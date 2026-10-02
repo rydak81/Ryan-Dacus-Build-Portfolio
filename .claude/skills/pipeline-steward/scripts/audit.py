@@ -22,6 +22,7 @@ import yaml
 
 REPO_ROOT = Path(__file__).resolve().parents[4]
 SKILLS_DIR = REPO_ROOT / ".claude" / "skills"
+REQUIREMENTS = REPO_ROOT / "requirements.txt"
 
 # Anything that looks like a repo-relative path to a file we own. Used to check
 # that SKILL.md's instructions still point at things that exist -- a renamed script
@@ -191,6 +192,80 @@ def audit_python(path: Path) -> list[Finding]:
     return findings
 
 
+def declared_requirements() -> set[str]:
+    """Distribution names from requirements.txt, lowercased with separators folded."""
+    if not REQUIREMENTS.exists():
+        return set()
+    names = set()
+    for line in REQUIREMENTS.read_text().splitlines():
+        line = line.split("#", 1)[0].strip()
+        if not line or line.startswith("-"):
+            continue
+        name = re.split(r"[<>=!~\[;]", line, 1)[0].strip()
+        if name:
+            names.add(name.lower().replace("-", "_"))
+    return names
+
+
+# Import name differs from distribution name often enough to need a map. Only the
+# ones this repo actually depends on -- a general solution needs package metadata.
+IMPORT_TO_DISTRIBUTION = {"yaml": "pyyaml"}
+
+
+def local_module_names() -> set[str]:
+    """Modules importable via sys.path juggling inside a skill, so not third-party."""
+    return {p.stem for p in SKILLS_DIR.rglob("*.py")}
+
+
+def audit_imports(py_files: list[Path]) -> list[Finding]:
+    """Flag third-party imports that requirements.txt does not declare.
+
+    An undeclared import passes on any machine that happens to have the package and
+    then fails in CI. That is a slow, confusing failure, and it is trivially
+    preventable by comparing what the code imports against what we promised to install.
+    """
+    declared = declared_requirements()
+    local = local_module_names()
+    findings: list[Finding] = []
+    seen: set[tuple[str, str]] = set()
+
+    for path in py_files:
+        rel = str(path.relative_to(REPO_ROOT))
+        try:
+            tree = ast.parse(path.read_text())
+        except SyntaxError:
+            continue  # audit_python already reports this
+
+        for node in ast.walk(tree):
+            if isinstance(node, ast.Import):
+                roots = [alias.name.split(".")[0] for alias in node.names]
+            elif isinstance(node, ast.ImportFrom):
+                # A relative import never resolves to a distribution.
+                roots = [] if node.level else [(node.module or "").split(".")[0]]
+            else:
+                continue
+
+            for root in roots:
+                if not root or root in sys.stdlib_module_names or root in local:
+                    continue
+                distribution = IMPORT_TO_DISTRIBUTION.get(root, root).lower().replace("-", "_")
+                if distribution in declared:
+                    continue
+                key = (rel, root)
+                if key in seen:
+                    continue
+                seen.add(key)
+                findings.append(
+                    Finding(
+                        "error",
+                        f"{rel}:{node.lineno}",
+                        f"imports '{root}' but requirements.txt does not declare it",
+                        "passes locally wherever the package happens to exist, then fails in CI",
+                    )
+                )
+    return findings
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--json", action="store_true", help="Emit findings as JSON for the log.")
@@ -215,6 +290,7 @@ def main() -> int:
     py_files = sorted(SKILLS_DIR.rglob("*.py"))
     for path in py_files:
         findings.extend(audit_python(path))
+    findings.extend(audit_imports(py_files))
 
     if args.json:
         print(json.dumps([f.to_dict() for f in findings], indent=2))
