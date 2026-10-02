@@ -30,3 +30,6 @@ next-env.d.ts
 # Python bytecode from running the scripts/ helpers locally.
 __pycache__/
 *.py[cod]
+
+# Market-data pipeline staging (never committed; promote cleans it up)
+.market-staging/

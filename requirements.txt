@@ -1,0 +1,3 @@
+# Market-data pipeline (see .claude/skills/market-data-ingest/).
+# Python tooling only -- the Next.js site has no runtime dependency on any of this.
+massive>=2.8.0,<3
